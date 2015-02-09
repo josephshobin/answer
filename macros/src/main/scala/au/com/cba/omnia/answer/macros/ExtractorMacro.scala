@@ -52,24 +52,38 @@ object ExtractorMacro {
       val timeType              = c.universe.weakTypeOf[java.sql.Time]
       val timestampType         = c.universe.weakTypeOf[java.sql.Timestamp]
 
-      typ match {
-        case `booleanType`           => q"rs.boolean($position)"
-        case `byteType`              => q"rs.byte($position)"
-        case `doubleType`            => q"rs.double($position)"
-        case `floatType`             => q"rs.float($position)"
-        case `intType`               => q"rs.int($position)"
-        case `longType`              => q"rs.long($position)"
-        case `stringType`            => q"rs.string($position)"
-        case `bigDecimalType`        => q"rs.bigDecimal($position)"
-        case `dateType`              => q"rs.date($position)"
-        case `jodaDateTimeType`      => q"rs.jodaDateTime($position)"
-        case `jodaLocalDateType`     => q"rs.jodaLocalDate($position)"
-        case `jodaLocalDateTimeType` => q"rs.jodaLocalDateTime($position)"
-        case `jodaLocalTimeType`     => q"rs.jodaLocalTime($position)"
-        case `timeType`              => q"rs.time($position)"
-        case `timestampType`         => q"rs.timestamp($position)"
+      val optionConstructor = weakTypeOf[Option[_]].typeConstructor
+
+      val underlyingType =
+        if (typ.typeConstructor == optionConstructor) {
+          val TypeRef(_, _, typParams) = typ
+          typParams.head
+        } else typ
+
+      val method = underlyingType match {
+        case `booleanType`           => "boolean"
+        case `byteType`              => "byte"
+        case `doubleType`            => "double"
+        case `floatType`             => "float"
+        case `intType`               => "int"
+        case `longType`              => "long"
+        case `stringType`            => "string"
+        case `bigDecimalType`        => "bigDecimal"
+        case `dateType`              => "date"
+        case `jodaDateTimeType`      => "jodaDateTime"
+        case `jodaLocalDateType`     => "jodaLocalDate"
+        case `jodaLocalDateTimeType` => "jodaLocalDateTime"
+        case `jodaLocalTimeType`     => "jodaLocalTime"
+        case `timeType`              => "time"
+        case `timestampType`         => "timestamp"
         case _                       => abort(s"$typ is not an expected type")
       }
+
+      val getter =
+        if (typ.typeConstructor == optionConstructor) newTermName(method + "Opt")
+        else newTermName(method)
+
+      q"rs.$getter($position)"
     }
 
     val targetTypes = targetType.declarations.sorted.toList collect {

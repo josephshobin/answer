@@ -73,8 +73,8 @@ ExtractorMacro
       val ex = ExtractorMacro.mkExtractor[Date]
       sql"SELECT dateColumn FROM test.test".map(ex.extract).single.apply() must_== Option(data._9)
 
-      val ex2 = ExtractorMacro.mkExtractor[(Int, Date)]
-      sql"SELECT intColumn, dateColumn FROM test.test".map(ex2.extract).single.apply() must_== Option((data._5, data._9))
+      val ex2 = ExtractorMacro.mkExtractor[(Int, Option[Date])]
+      sql"SELECT intColumn, dateColumn FROM test.test".map(ex2.extract).single.apply() must_== Option((data._5, Option(data._9)))
 
     }
   }
