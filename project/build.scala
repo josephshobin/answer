@@ -45,7 +45,7 @@ object build extends Build {
 
   lazy val core = Project(
     id = "core"
-  , base = file("answer-core")
+  , base = file("core")
   , settings =
        standardSettings
     ++ uniform.project("answer-core", "au.com.cba.omnia.answer.core")
@@ -64,7 +64,7 @@ object build extends Build {
 
   lazy val macros = Project(
     id = "macros"
-  , base = file("answer-macros")
+  , base = file("macros")
   , settings =
        standardSettings
     ++ uniform.project("answer-macros", "au.com.cba.omnia.answer.macros")
@@ -74,8 +74,9 @@ object build extends Build {
          , "org.scala-lang"   % "scala-reflect"    % sv
          , "org.scalamacros" %% "quasiquotes"      % "2.0.0"
          , "org.scalikejdbc" %% "scalikejdbc"      % "2.1.2" exclude("joda-time", "joda-time")
-         , "org.scalikejdbc" %% "scalikejdbc-test" % "2.1.2" % "test"
-         , "com.twitter"      % "util-eval_2.10" % "6.22.1"  % "test"
+         , "org.scalikejdbc" %% "scalikejdbc-test" % "2.1.2"  % "test"
+         , "com.twitter"      % "util-eval_2.10"   % "6.22.1" % "test"
+         , "org.hsqldb"       % "hsqldb"           % "2.3.2"  % "test"
          ) ++ depend.scalaz()
            ++ depend.testing() ++ depend.time()
            ++ depend.omnia("omnitool-core", omnitoolVersion)
