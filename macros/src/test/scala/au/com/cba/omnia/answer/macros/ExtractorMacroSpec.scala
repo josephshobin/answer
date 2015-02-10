@@ -14,7 +14,10 @@
 
 package au.com.cba.omnia.answer.macros
 
+import java.math.{BigDecimal => JBigDecimal}
 import java.sql.{Date, Time, Timestamp}
+
+import org.joda.time.{DateTime, LocalDate, LocalDateTime, LocalTime}
 
 import scalikejdbc._
 
@@ -47,7 +50,7 @@ ExtractorMacro
           intColumn            integer,
           longColumn           bigint,
           stringColumn         varchar(1024),
-          bigDecimalColumn     decimal(12, 4),
+          bigDecimalColumn     decimal(12, 0),
           dateColumn           date,
           jDateTimeColumn      timestamp,
           jLocalDateColumn     date,
@@ -57,25 +60,35 @@ ExtractorMacro
           timestampColumn      timestamp
         )""".execute.apply()
 
-      val data = (
-        true, 1, 3.0, 4.0F, 6, 8L, "abc",
-        BigDecimal(30), new Date(493567200000L), new Timestamp(493567200000L),
-        new Date(493567200000L), new Timestamp(493567200000L), new Time(493567200000L),
-        new Time(493567200000L), new Timestamp(493567200000L)
+      val data = List(
+        (
+          Option(true), Option(1), Option(3.0), Option(4.0F), Option(6), Option(8L), Option("abc"),
+          Option(new JBigDecimal(30)), Option(new Date(493567200000L)),
+          Option(new DateTime(493567200000L)), Option(new LocalDate(493567200000L)),
+          Option(new LocalDateTime(493567200000L)), Option(new LocalTime(493567200000L)),
+          Option(new Time(18000000L)), Option(new Timestamp(493567200000L))
+        ), (None, None, None, None, None, None, None, None, None, None, None, None, None, None, None)
       )
 
-      sql"""INSERT INTO test.test VALUES((
-          ${data._1}, ${data._2}, ${data._3}, ${data._4}, ${data._5}, ${data._6}, ${data._7},
-          ${data._8}, ${data._9}, ${data._10}, ${data._11}, ${data._12}, ${data._13}, ${data._14},
-          ${data._15}
+      data.map(d => 
+        sql"""INSERT INTO test.test VALUES((
+          ${d._1}, ${d._2}, ${d._3}, ${d._4}, ${d._5}, ${d._6}, ${d._7},
+          ${d._8}, ${d._9}, ${d._10}, ${d._11}, ${d._12}, ${d._13}, ${d._14},
+          ${d._15}
         ))""".execute.apply
+      )
 
-      val ex = ExtractorMacro.mkExtractor[Date]
-      sql"SELECT dateColumn FROM test.test".map(ex.extract).single.apply() must_== Option(data._9)
+      val ex = ExtractorMacro.mkExtractor[(
+        Option[Boolean], Option[Byte], Option[Double], Option[Float], Option[Int], Option[Long],
+        Option[String], Option[JBigDecimal], Option[Date], Option[DateTime], Option[LocalDate],
+        Option[LocalDateTime], Option[LocalTime], Option[Time], Option[Timestamp]
+      )]
 
-      val ex2 = ExtractorMacro.mkExtractor[(Int, Option[Date])]
-      sql"SELECT intColumn, dateColumn FROM test.test".map(ex2.extract).single.apply() must_== Option((data._5, Option(data._9)))
+      val result1 = sql"SELECT * FROM test.test WHERE booleanColumn IS NOT NULL".map(ex.extract).single.apply()
+      val result2 = sql"SELECT * FROM test.test WHERE booleanColumn IS NULL".map(ex.extract).single.apply()
 
+      result1 must_== Option(data.head)
+      result2 must_== Option(data.last)
     }
   }
 }
