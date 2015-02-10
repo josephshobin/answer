@@ -33,58 +33,7 @@ object ExtractorMacro {
       c.abort(c.enclosingPosition, s"Can't create Extractor for $targetType: $msg")
 
     /** Process an individual column. */
-    def processColumn(typ: Type, position: Int): Tree = {
-      // Primitives plus String
-      val booleanType           = c.universe.weakTypeOf[Boolean]
-      val byteType              = c.universe.weakTypeOf[Byte]
-      val doubleType            = c.universe.weakTypeOf[Double]
-      val floatType             = c.universe.weakTypeOf[Float]
-      val intType               = c.universe.weakTypeOf[Int]
-      val longType              = c.universe.weakTypeOf[Long]
-      val stringType            = c.universe.weakTypeOf[String]
-
-      val bigDecimalType        = c.universe.weakTypeOf[java.math.BigDecimal]
-      val dateType              = c.universe.weakTypeOf[java.sql.Date]
-      val jodaDateTimeType      = c.universe.weakTypeOf[org.joda.time.DateTime]
-      val jodaLocalDateType     = c.universe.weakTypeOf[org.joda.time.LocalDate]
-      val jodaLocalDateTimeType = c.universe.weakTypeOf[org.joda.time.LocalDateTime]
-      val jodaLocalTimeType     = c.universe.weakTypeOf[org.joda.time.LocalTime]
-      val timeType              = c.universe.weakTypeOf[java.sql.Time]
-      val timestampType         = c.universe.weakTypeOf[java.sql.Timestamp]
-
-      val optionConstructor = weakTypeOf[Option[_]].typeConstructor
-
-      val underlyingType =
-        if (typ.typeConstructor == optionConstructor) {
-          val TypeRef(_, _, typParams) = typ
-          typParams.head
-        } else typ
-
-      val method = underlyingType match {
-        case `booleanType`           => "boolean"
-        case `byteType`              => "byte"
-        case `doubleType`            => "double"
-        case `floatType`             => "float"
-        case `intType`               => "int"
-        case `longType`              => "long"
-        case `stringType`            => "string"
-        case `bigDecimalType`        => "bigDecimal"
-        case `dateType`              => "date"
-        case `jodaDateTimeType`      => "jodaDateTime"
-        case `jodaLocalDateType`     => "jodaLocalDate"
-        case `jodaLocalDateTimeType` => "jodaLocalDateTime"
-        case `jodaLocalTimeType`     => "jodaLocalTime"
-        case `timeType`              => "time"
-        case `timestampType`         => "timestamp"
-        case _                       => abort(s"$typ is not an expected type")
-      }
-
-      val getter =
-        if (typ.typeConstructor == optionConstructor) newTermName(method + "Opt")
-        else newTermName(method)
-
-      q"rs.$getter($position)"
-    }
+    def processColumn(typ: Type, position: Int): Tree = q"rs.get[$typ]($position)"
 
     val targetTypes = targetType.declarations.sorted.toList collect {
       case sym: TermSymbol if sym.isVal && sym.isCaseAccessor => sym.typeSignatureIn(targetType)
