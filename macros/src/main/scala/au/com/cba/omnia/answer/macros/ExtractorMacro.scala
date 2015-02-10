@@ -18,9 +18,10 @@ import scala.reflect.macros.Context
 
 import scalikejdbc.{DB => SDB, _}
 
-case class Extractor[A](extract: WrappedResultSet => A)
+import au.com.cba.omnia.answer.Extractor
 
 object ExtractorMacro {
+  /** Creates an extractor for a singleton type or product. */
   def mkExtractor[A]: Extractor[A] = macro impl[A]
 
   def impl[A : c.WeakTypeTag](c: Context): c.Expr[Extractor[A]] = {
@@ -46,7 +47,10 @@ object ExtractorMacro {
         q"(..$parts)"
       }
 
-    c.Expr[Extractor[A]](q"Extractor(rs => $extractors)")
+    c.Expr[Extractor[A]](q"""
+      import au.com.cba.omnia.answer.Extractor
+      Extractor(rs => $extractors)
+    """)
   }
 }
 

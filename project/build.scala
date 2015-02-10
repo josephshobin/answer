@@ -60,7 +60,7 @@ object build extends Build {
         ),
       parallelExecution in Test := false
     )
-  ).dependsOn(macros)
+  )
 
   lazy val macros = Project(
     id = "macros"
@@ -83,5 +83,5 @@ object build extends Build {
          )
        , addCompilerPlugin("org.scalamacros" % "paradise" % "2.0.0" cross CrossVersion.full)
     )
-  )
+  ).dependsOn(core)
 }
