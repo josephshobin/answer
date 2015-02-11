@@ -24,3 +24,7 @@ notifications:
     on_success: always
     on_failure: always
     on_start: false
+env:
+  global:
+  - secure: ZGE+ZT5K7ogTvvMzGR7wy1oJ1C0PiehHnC79oM+yKOU33xUSU+/+414LrExs0dhWVtXn0ZymmkMf3cFhXfRHJfR9CB97eETVvPlj3S0AeIEN2+kEfeN+I9kRDrd4chvpEnyd9cE51deIBTl+ghdYwAOzUvRzMXkIxETj5odZr6c=
+  - secure: GdNU7RH19VjztAsfj6KrsPvIgOcLuu+/djXUjWvageahh/kOpclfaN+6OzV84D/OK7jhK2+kjEtMpQBJONkGbd/z2ANvb5rdLTzH0VX1rC3tmwpP9nM8Q73RFN9gVPlxCm/o02l57gV1fG+ZR0rCBNgMQcM7enOgJgxOfMJCAfw=
