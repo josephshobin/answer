@@ -48,7 +48,7 @@ case class DB[A](action: DBSession => Result[A]) {
     DB(c => try { action(c) } catch { case NonFatal(t) => Result.exception(t) })
 
   /**
-    * Runs the first Hdfs operation. If it fails, runs the second operation. Useful for chaining optional operations.
+    * Runs the first DB operation. If it fails, runs the second operation. Useful for chaining optional operations.
     *
     * Throws away any error from the first operation.
     */
