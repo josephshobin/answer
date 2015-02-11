@@ -55,8 +55,10 @@ object build extends Build {
         ++ depend.testing() ++ depend.time()
         ++ depend.omnia("omnitool-core", omnitoolVersion)
         ++ Seq(
-          "org.scalikejdbc"       %% "scalikejdbc"              % "2.1.2"  exclude("joda-time", "joda-time"),
-          "org.scalikejdbc"       %% "scalikejdbc-test"         % "2.1.2" % "test"
+             "org.scalikejdbc"  %% "scalikejdbc"      % "2.1.2" exclude("joda-time", "joda-time")
+           , "org.scalikejdbc"  %% "scalikejdbc-test" % "2.1.2"                        % "test"
+           , "org.hsqldb"        % "hsqldb"           % "2.3.2"                        % "test"
+           , "au.com.cba.omnia" %% "omnitool-core"    % "1.5.0-20150113041805-fef6da5" % "test" classifier "tests"
         ),
       parallelExecution in Test := false
     )
@@ -73,13 +75,10 @@ object build extends Build {
            "org.scala-lang"   % "scala-compiler"   % sv
          , "org.scala-lang"   % "scala-reflect"    % sv
          , "org.scalamacros" %% "quasiquotes"      % "2.0.0"
-         , "org.scalikejdbc" %% "scalikejdbc"      % "2.1.2" exclude("joda-time", "joda-time")
          , "org.scalikejdbc" %% "scalikejdbc-test" % "2.1.2"  % "test"
          , "com.twitter"      % "util-eval_2.10"   % "6.22.1" % "test"
          , "org.hsqldb"       % "hsqldb"           % "2.3.2"  % "test"
-         ) ++ depend.scalaz()
-           ++ depend.testing() ++ depend.time()
-           ++ depend.omnia("omnitool-core", omnitoolVersion)
+         ) ++ depend.testing()
          )
        , addCompilerPlugin("org.scalamacros" % "paradise" % "2.0.0" cross CrossVersion.full)
     )

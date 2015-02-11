@@ -21,6 +21,7 @@ import java.sql.Connection
 import scalikejdbc.{DB => SDB, _}
 
 import scalaz._, Scalaz._
+import scalaz.\&/.These
 
 import au.com.cba.omnia.omnitool.Result
 
@@ -46,8 +47,48 @@ case class DB[A](action: DBSession => Result[A]) {
   def safe: DB[A] =
     DB(c => try { action(c) } catch { case NonFatal(t) => Result.exception(t) })
 
+  /**
+    * Runs the first Hdfs operation. If it fails, runs the second operation. Useful for chaining optional operations.
+    *
+    * Throws away any error from the first operation.
+    */
+  def or(other: => DB[A]): DB[A] =
+    DB(c => action(c).fold(Result.ok, _ => other.action(c)))
+
+  /** Alias for `or`. Provides nice syntax: `DB.create("bad") ||| DB.create("good")` */
+  def |||(other: => DB[A]): DB[A] =
+    or(other)
+
+  /** Run the DB action with the provided connection. */
   def run(connection: Connection): Result[A] =
-    SDB(connection).autoCommit(action)
+    SDB(connection).localTx(action)
+
+    /** Recovers from an error. */
+  def recoverWith(recovery: PartialFunction[These[String, Throwable], DB[A]]): DB[A] =
+    DB(c => action(c).fold(
+      res   => Result.ok(res),
+      error => recovery.andThen(_.action(c)).applyOrElse(error, Result.these)
+    ))
+
+  /** Like "finally", but only performs the final action if there was an error. */
+  def onException[B](action: DB[B]): DB[A] =
+    this.recoverWith { case e => action >> DB.result(Result.these(e)) }
+
+  /**
+    * Applies the "during" action, calling "after" regardless of whether there was an error.
+    * All errors are rethrown. Generalizes try/finally.
+    */
+  def bracket[B, C](after: A => DB[B])(during: A => DB[C]): DB[C] = for {
+    a <- this
+    r <- during(a) onException after(a)
+    _ <- after(a)
+  } yield r
+
+  /** Like "bracket", but takes only a computation to run afterward. Generalizes "finally". */
+  def ensuring[B](sequel: DB[B]): DB[A] = for {
+    r <- onException(sequel)
+    _ <- sequel
+  } yield r
 }
 
 object DB {
@@ -104,10 +145,28 @@ object DB {
     action flatMap (prevent(_, message))
 
   /** Build a DB operation from a function. The resultant DB operation will not throw an exception. */
-  def query[A](f: DBSession => A): DB[A] =
-    DB(c => Result.safe(f(c)))
+  def ask[A](f: DBSession => A): DB[A] =
+    DB(s => Result.safe(f(s)))
+
+  /**
+    * Runs the specified query expecting a single row as response.
+    * 
+    * If no row matches the query it returns `None`.
+    */
+  def querySingle[A : Extractor](query: SQL[Nothing, NoExtractor]): DB[Option[A]] =
+    ask(implicit session => query.map(implicitly[Extractor[A]].extract).single.apply())
+
+  /** Runs the specified query. */
+  def query[A : Extractor](query: SQL[Nothing, NoExtractor]): DB[List[A]] =
+    ask(implicit session => query.map(implicitly[Extractor[A]].extract).list.apply())
 
   /** Build a DB operation from a value. The resultant DB operation will not throw an exception. */
   def value[A](v: => A): DB[A] =
-    query(_ => v)
+    ask(_ => v)
+
+  implicit def DBMonad: Monad[DB] = new Monad[DB] {
+    def point[A](v: => A) = result(Result.ok(v))
+    def bind[A, B](a: DB[A])(f: A => DB[B]) = a flatMap f
+  }
+
 }
