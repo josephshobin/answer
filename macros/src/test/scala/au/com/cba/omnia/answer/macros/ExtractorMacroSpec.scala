@@ -65,7 +65,7 @@ ExtractorMacro
           Option(true), Option(1), Option(3.0), Option(4.0F), Option(6), Option(8L), Option("abc"),
           Option(new JBigDecimal(30)), Option(new Date(493567200000L)),
           Option(new DateTime(493567200000L)), Option(new LocalDate(493567200000L)),
-          Option(new LocalDateTime(493567200000L)), Option(new LocalTime(493567200000L)),
+          Option(new LocalDateTime(493567200000L)), Option(new LocalTime(18000000L)),
           Option(new Time(18000000L)), Option(new Timestamp(493567200000L))
         ), (None, None, None, None, None, None, None, None, None, None, None, None, None, None, None)
       )
@@ -86,6 +86,22 @@ ExtractorMacro
 
       val result1 = sql"SELECT * FROM test.test WHERE booleanColumn IS NOT NULL".map(ex.extract).single.apply()
       val result2 = sql"SELECT * FROM test.test WHERE booleanColumn IS NULL".map(ex.extract).single.apply()
+
+      result1.get._1 must_== data.head._1
+      result1.get._2 must_== data.head._2
+      result1.get._3 must_== data.head._3
+      result1.get._4 must_== data.head._4
+      result1.get._5 must_== data.head._5
+      result1.get._6 must_== data.head._6
+      result1.get._7 must_== data.head._7
+      result1.get._8 must_== data.head._8
+      result1.get._9 must_== data.head._9
+      result1.get._10 must_== data.head._10
+      result1.get._11 must_== data.head._11
+      result1.get._12 must_== data.head._12
+      result1.get._13 must_== data.head._13
+      result1.get._14 must_== data.head._14
+      result1.get._15 must_== data.head._15
 
       result1 must_== Option(data.head)
       result2 must_== Option(data.last)
