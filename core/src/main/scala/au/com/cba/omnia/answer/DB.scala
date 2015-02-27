@@ -25,7 +25,14 @@ import scalaz.\&/.These
 
 import au.com.cba.omnia.omnitool.Result
 
-
+/**
+  * A datatype that operates on a scalikejdbc `DBSession` 
+  * to produces a `Result` and provides a nice set of
+  * combinators.
+  * 
+  * A quick way to run the DB action is call [[DB.run]]
+  * with a jdbc connection.
+  */
 case class DB[A](action: DBSession => Result[A]) {
   /** Map across successful Db operations. */
   def map[B](f: A => B): DB[B] =
@@ -155,6 +162,14 @@ object DB {
     */
   def querySingle[A : Extractor](query: SQL[Nothing, NoExtractor]): DB[Option[A]] =
     ask(implicit session => query.map(implicitly[Extractor[A]].extract).single.apply())
+
+  /**
+    * Runs the specified query and get the first row as response.
+    * 
+    * If no row matches the query it returns `None`.
+    */
+  def queryFirst[A : Extractor](query: SQL[Nothing, NoExtractor]): DB[Option[A]] =
+    ask(implicit session => query.map(implicitly[Extractor[A]].extract).first.apply())
 
   /** Runs the specified query. */
   def query[A : Extractor](query: SQL[Nothing, NoExtractor]): DB[List[A]] =

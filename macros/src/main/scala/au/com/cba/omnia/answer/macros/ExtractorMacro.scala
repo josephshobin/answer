@@ -20,6 +20,16 @@ import scalikejdbc.{DB => SDB, _}
 
 import au.com.cba.omnia.answer.Extractor
 
+/**
+  * This macro creates an `Extractor` for the provided type.
+  * 
+  * usage :-
+  * {{{
+  *
+  *   val extractor = ExtractorMacro.mkExtractor[(Option[String], Option[Long])]
+  *
+  * }}}
+  */
 object ExtractorMacro {
   /** Creates an extractor for a singleton type or product. */
   def mkExtractor[A]: Extractor[A] = macro impl[A]
@@ -33,7 +43,10 @@ object ExtractorMacro {
     def abort(msg: String) =
       c.abort(c.enclosingPosition, s"Can't create Extractor for $targetType: $msg")
 
-    /** Process an individual column. */
+    /** Process an individual column. 
+      * TODO: Check for the availability of ScalikeJdbc TypeBinder for typ and
+      * fail the compilation if one can't be found.
+      */
     def processColumn(typ: Type, position: Int): Tree = q"rs.get[$typ]($position)"
 
     val targetTypes = targetType.declarations.sorted.toList collect {

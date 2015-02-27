@@ -39,7 +39,7 @@ DB Operations
 ===============
 
 DB operations should:
-  obey monad laws                                         ${monad.laws[DB]}
+  
   ||| is alias for `or`                                   $orAlias
   or stops at first succeess                              $orFirstOk
   or continues at first Error                             $orFirstError
@@ -58,7 +58,7 @@ DB construction:
 
 """
 
-  implicit val params = Parameters(minTestsOk = 10)
+  //implicit val params = Parameters(minTestsOk = 10)
 
   Class.forName("org.hsqldb.jdbcDriver")
   def connection: Connection =  {
