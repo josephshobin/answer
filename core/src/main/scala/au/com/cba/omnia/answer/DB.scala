@@ -156,24 +156,24 @@ object DB {
     DB(s => Result.safe(f(s)))
 
   /**
-    * Runs the specified query expecting a single row as response.
+    * Runs the specified sql query expecting a single row as response.
     * 
     * If no row matches the query it returns `None`.
     */
-  def querySingle[A : Extractor](query: SQL[Nothing, NoExtractor]): DB[Option[A]] =
-    ask(implicit session => query.map(implicitly[Extractor[A]].extract).single.apply())
+  def querySingle[A : Extractor](sql: SQL[Nothing, NoExtractor]): DB[Option[A]] =
+    ask(implicit session => sql.map(implicitly[Extractor[A]].extract).single.apply())
 
   /**
-    * Runs the specified query and get the first row as response.
+    * Runs the specified sql query and get the first row as response.
     * 
     * If no row matches the query it returns `None`.
     */
-  def queryFirst[A : Extractor](query: SQL[Nothing, NoExtractor]): DB[Option[A]] =
-    ask(implicit session => query.map(implicitly[Extractor[A]].extract).first.apply())
+  def queryFirst[A : Extractor](sql: SQL[Nothing, NoExtractor]): DB[Option[A]] =
+    ask(implicit session => sql.map(implicitly[Extractor[A]].extract).first.apply())
 
-  /** Runs the specified query. */
-  def query[A : Extractor](query: SQL[Nothing, NoExtractor]): DB[List[A]] =
-    ask(implicit session => query.map(implicitly[Extractor[A]].extract).list.apply())
+  /** Runs the specified sql query */
+  def query[A : Extractor](sql: SQL[Nothing, NoExtractor]): DB[List[A]] =
+    ask(implicit session => sql.map(implicitly[Extractor[A]].extract).list.apply())
 
   /** Build a DB operation from a value. The resultant DB operation will not throw an exception. */
   def value[A](v: => A): DB[A] =

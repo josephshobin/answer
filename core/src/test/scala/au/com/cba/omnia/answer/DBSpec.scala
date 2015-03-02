@@ -16,7 +16,7 @@ package au.com.cba.omnia.answer
 
 import java.sql.Connection
 
-import scalikejdbc.{ConnectionPool, DB => SDB}
+import scalikejdbc.{DB => SDB, _}
 
 import scalaz._, Scalaz._
 import scalaz.\&/.{This, That}
@@ -34,7 +34,7 @@ import au.com.cba.omnia.omnitool.test.Arbitraries._
 class DBSpec extends Specification
   with TerminationMatchers
   with ThrownExpectations
-  with ScalaCheck{ def is = s2"""
+  with ScalaCheck { def is = s2"""
 DB Operations
 ===============
 
@@ -56,9 +56,17 @@ DB construction:
   guard success iif condition is true                     $guardMeansTrue
   prevent success iif condition is false                  $preventMeansFalse
 
+DB query:
+  can ask for data                                        $ask
+  can do a queryFirst                                     $queryFirst
+  can do a querySingle                                    $querySingle
+  can do a query for list                                 $query
+
 """
+
   Class.forName("org.hsqldb.jdbcDriver")
-  ConnectionPool.singleton("jdbc:hsqldb:mem:test", "sa", "")
+  ConnectionPool.singleton("jdbc:hsqldb:mem:test", "sa", "") 
+  setupDb
 
   def connection: Connection =  {
     ConnectionPool.borrow()
@@ -137,6 +145,92 @@ DB construction:
     }
     DB.prevent(false, "").run(connection) must beLike {
       case Ok(_) => ok
+    }
+  }
+
+  def ask = {
+    DB.ask { implicit session =>
+      sql"""
+        SELECT NAME FROM TEST.CUSTOMER
+      """.map(rs => rs.string(1)).list.apply()
+    }.run(connection) must_== Ok(List("BRUCE", "WAYNE"))
+  }
+
+  def queryFirst = {
+    implicit val idExtractor: Extractor[Long]       = new Extractor(_.long(1))
+    implicit val streetExtractor: Extractor[String] = new Extractor(_.string(1))
+
+    DB.queryFirst[Long](
+      sql"""SELECT CUSTOMER_ID FROM TEST.CUSTOMER ASC"""
+    ).flatMap {id => 
+      DB.query[String](sql"""SELECT STREET FROM TEST.ADDRESS WHERE CUSTOMER_ID = ${id.get}""")
+    }.run(connection) must_== Ok(List("WAYNE MANOR", "WAYNE HOUSE"))
+  }
+
+  def querySingle = {
+    implicit val extractor: Extractor[(Long, String, Int)] = new Extractor(rs => (rs.long(1), rs.string(2), rs.int(3)))
+    
+    DB.queryFirst[(Long, String, Int)](
+      sql"""SELECT * FROM TEST.CUSTOMER WHERE NAME = 'BRUCE'"""
+    ).run(connection) must_== Ok(Some((1, "BRUCE", 37)))
+  }
+
+  def query = {
+    case class Customer(id: Long, name: String, age: Int)
+    implicit val extractor: Extractor[Customer] = new Extractor(rs => Customer(rs.long(1), rs.string(2), rs.int(3)))
+    
+    DB.query[Customer](
+      sql"""SELECT * FROM TEST.CUSTOMER"""
+    ).run(connection) must_== Ok(List(Customer(1, "BRUCE", 37), Customer(2, "WAYNE", 37)))
+  }
+
+  def setupDb = {
+    SDB(connection) autoCommit { implicit session =>
+      sql"""DROP SCHEMA IF EXISTS TEST CASCADE""".execute.apply()
+      sql"""CREATE SCHEMA TEST AUTHORIZATION DBA""".execute.apply()
+      sql"""
+        CREATE TABLE TEST.CUSTOMER (
+          CUSTOMER_ID      BIGINT GENERATED ALWAYS AS IDENTITY(START WITH 1) PRIMARY KEY,
+          NAME             VARCHAR(25) NOT NULL,
+          AGE              INTEGER  NOT NULL
+        )
+      """.execute.apply()
+
+      sql"""
+        CREATE TABLE TEST.ADDRESS (
+          ADDRESS_ID    BIGINT GENERATED ALWAYS AS IDENTITY(START WITH 1) PRIMARY KEY,
+          STREET        VARCHAR(100) NOT NULL,
+          CITY          VARCHAR(50)  NOT NULL,
+          STATE         VARCHAR(10)  NOT NULL,
+          CUSTOMER_ID   BIGINT       NOT NULL 
+        )
+      """.execute.apply()
+      sql"""
+        ALTER TABLE TEST.ADDRESS 
+          ADD FOREIGN KEY (CUSTOMER_ID) REFERENCES TEST.CUSTOMER(CUSTOMER_ID)
+      """.execute.apply()
+
+      val id1 = sql"""
+        INSERT INTO TEST.CUSTOMER(NAME, AGE)
+          VALUES ('BRUCE', 37)
+      """.updateAndReturnGeneratedKey.apply()
+      val id2 = sql"""
+        INSERT INTO TEST.CUSTOMER(NAME, AGE)
+          VALUES ('WAYNE', 37)
+      """.updateAndReturnGeneratedKey.apply()
+
+      sql"""
+        INSERT INTO TEST.ADDRESS(STREET, CITY, STATE, CUSTOMER_ID)
+          VALUES ('WAYNE MANOR', 'GOTHAM', 'NSW', $id1)
+      """.updateAndReturnGeneratedKey.apply()
+      sql"""
+        INSERT INTO TEST.ADDRESS(STREET, CITY, STATE, CUSTOMER_ID)
+          VALUES ('WAYNE HOUSE', 'GOTHAM', 'NSW', $id1)
+      """.updateAndReturnGeneratedKey.apply()
+      sql"""
+        INSERT INTO TEST.ADDRESS(STREET, CITY, STATE, CUSTOMER_ID)
+          VALUES ('SOME HOUSE', 'INNER CITY', 'NSW', $id2)
+      """.updateAndReturnGeneratedKey.apply()
     }
   }
 
