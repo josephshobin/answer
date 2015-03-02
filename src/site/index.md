@@ -6,7 +6,7 @@ title: Answer
 Answer
 ==========
 
-Answer aims to provide an monadic wrapper around scalikejdbc.
+Answer aims to provide an monadic wrapper around [scalikejdbc](http://scalikejdbc.org/).
 
 * [Readme](https://github.com/CommBank/answer/)
 
