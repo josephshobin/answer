@@ -67,7 +67,8 @@ ExtractorMacro
           Option(new DateTime(493567200000L)), Option(new LocalDate(493567200000L)),
           Option(new LocalDateTime(493567200000L)), Option(new LocalTime(18000000L)),
           Option(new Time(18000000L)), Option(new Timestamp(493567200000L))
-        ), (None, None, None, None, None, None, None, None, None, None, None, None, None, None, None)
+        ), 
+        (None, None, None, None, None, None, None, None, None, None, None, None, None, None, None)
       )
 
       data.map(d => 
