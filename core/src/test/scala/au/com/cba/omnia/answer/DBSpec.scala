@@ -60,6 +60,7 @@ DB query:
   can ask for data                                        $ask
   can do a queryFirst                                     $queryFirst
   can do a querySingle                                    $querySingle
+  will error when querySingle returns more than one row   $querySingleWithError
   can do a query for list                                 $query
 
 """
@@ -170,9 +171,19 @@ DB query:
   def querySingle = {
     implicit val extractor: Extractor[(Long, String, Int)] = new Extractor(rs => (rs.long(1), rs.string(2), rs.int(3)))
     
-    DB.queryFirst[(Long, String, Int)](
+    DB.querySingle[(Long, String, Int)](
       sql"""SELECT * FROM TEST.CUSTOMER WHERE NAME = 'BRUCE'"""
     ).run(connection) must_== Ok(Some((1, "BRUCE", 37)))
+  }
+
+  def querySingleWithError = {
+    implicit val extractor: Extractor[(Long, String, Int)] = new Extractor(rs => (rs.long(1), rs.string(2), rs.int(3)))
+    
+    DB.querySingle[(Long, String, Int)](
+      sql"""SELECT * FROM TEST.CUSTOMER"""
+    ).run(connection) must beLike {
+      case Error(_) => ok
+    }
   }
 
   def query = {

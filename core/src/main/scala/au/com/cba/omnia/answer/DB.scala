@@ -158,7 +158,8 @@ object DB {
   /**
     * Runs the specified sql query expecting a single row as response.
     * 
-    * If no row matches the query it returns `None`.
+    * If no row matches the query it returns `None`. If the result is not single, an `Error` 
+    * is returned.
     */
   def querySingle[A : Extractor](sql: SQL[Nothing, NoExtractor]): DB[Option[A]] =
     ask(implicit session => sql.map(implicitly[Extractor[A]].extract).single.apply())
@@ -169,11 +170,11 @@ object DB {
     * If no row matches the query it returns `None`.
     */
   def queryFirst[A : Extractor](sql: SQL[Nothing, NoExtractor]): DB[Option[A]] =
-    ask(implicit session => sql.map(implicitly[Extractor[A]].extract).first.apply())
+    query[A](sql).map(_.headOption)
 
   /** Runs the specified sql query */
-  def query[A : Extractor](sql: SQL[Nothing, NoExtractor]): DB[List[A]] =
-    ask(implicit session => sql.map(implicitly[Extractor[A]].extract).list.apply())
+  def query[A : Extractor](sql: SQL[Nothing, NoExtractor]): DB[Traversable[A]] =
+    ask(implicit session => sql.map(implicitly[Extractor[A]].extract).traversable().apply())
 
   /** Build a DB operation from a value. The resultant DB operation will not throw an exception. */
   def value[A](v: => A): DB[A] =
