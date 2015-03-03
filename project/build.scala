@@ -20,7 +20,7 @@ import au.com.cba.omnia.uniform.dependency.UniformDependencyPlugin._
 
 object build extends Build {
   val thermometerVersion = "0.5.3-20150113044449-b47d6dd"
-  val omnitoolVersion    = "1.5.0-20150113041805-fef6da5"
+  val omnitoolVersion    = "1.6.0-20150310053432-47e0688"
 
   lazy val standardSettings =
     Defaults.coreDefaultSettings ++
@@ -55,9 +55,9 @@ object build extends Build {
         ++ depend.omnia("omnitool-core", omnitoolVersion)
         ++ Seq(
              "org.scalikejdbc"  %% "scalikejdbc"      % "2.1.2" exclude("joda-time", "joda-time")
-           , "org.scalikejdbc"  %% "scalikejdbc-test" % "2.1.2"                        % "test"
-           , "org.hsqldb"        % "hsqldb"           % "2.3.2"                        % "test"
-           , "au.com.cba.omnia" %% "omnitool-core"    % "1.5.0-20150113041805-fef6da5" % "test" classifier "tests"
+           , "org.scalikejdbc"  %% "scalikejdbc-test" % "2.1.2"         % "test"
+           , "org.hsqldb"        % "hsqldb"           % "2.3.2"         % "test"
+           , "au.com.cba.omnia" %% "omnitool-core"    % omnitoolVersion % "test" classifier "tests"
         ),
       parallelExecution in Test := false
     )
