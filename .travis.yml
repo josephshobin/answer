@@ -12,7 +12,8 @@ install:
 - ci/sbt-setup.sh
 - ci/sbt-setup-version.sh
 script:
-- sbt -Dsbt.global.base=$TRAVIS_BUILD_DIR/ci '; test; package' && ci/sbt-deploy.sh
+- sbt -Dsbt.global.base=$TRAVIS_BUILD_DIR/ci '; test; package' 
+- ci/sbt-deploy-to.sh libs-releases-local
 after_script:
 - rm -rf ci
 notifications:
