@@ -58,8 +58,7 @@ object build extends Build {
            , "org.scalikejdbc"  %% "scalikejdbc-test" % "2.1.2"         % "test"
            , "org.hsqldb"        % "hsqldb"           % "2.3.2"         % "test"
            , "au.com.cba.omnia" %% "omnitool-core"    % omnitoolVersion % "test" classifier "tests"
-        ),
-      parallelExecution in Test := false
+        )
     )
   )
 
