@@ -50,13 +50,11 @@ DB query:
   can do a query for list                                 $query
 
 """
-
-  Class.forName("org.hsqldb.jdbcDriver")
-  ConnectionPool.singleton("jdbc:hsqldb:mem:test", "sa", "") 
+  val conf = DBConfig("jdbc:hsqldb:mem:test", "sa", "")
   setupDb
 
   def connection: Connection =  {
-    ConnectionPool.borrow()
+    DB.connection(conf).toOption.get
   }
 
   def ask = {
@@ -64,7 +62,7 @@ DB query:
       sql"""
         SELECT NAME FROM TEST.CUSTOMER
       """.map(rs => rs.string(1)).list.apply()
-    }.run(connection) must_== Ok(List("BRUCE", "WAYNE"))
+    }.run(conf) must_== Ok(List("BRUCE", "WAYNE"))
   }
 
   def queryFirst = {
@@ -75,7 +73,7 @@ DB query:
       sql"""SELECT CUSTOMER_ID FROM TEST.CUSTOMER ASC"""
     ).flatMap {id => 
       DB.query[String](sql"""SELECT STREET FROM TEST.ADDRESS WHERE CUSTOMER_ID = ${id.get}""")
-    }.run(connection) must_== Ok(List("WAYNE MANOR", "WAYNE HOUSE"))
+    }.run(conf) must_== Ok(List("WAYNE MANOR", "WAYNE HOUSE"))
   }
 
   def querySingle = {
@@ -83,7 +81,7 @@ DB query:
     
     DB.querySingle[(Long, String, Int)](
       sql"""SELECT * FROM TEST.CUSTOMER WHERE NAME = 'BRUCE'"""
-    ).run(connection) must_== Ok(Some((1, "BRUCE", 37)))
+    ).run(conf) must_== Ok(Some((1, "BRUCE", 37)))
   }
 
   def querySingleWithError = {
@@ -91,7 +89,7 @@ DB query:
     
     DB.querySingle[(Long, String, Int)](
       sql"""SELECT * FROM TEST.CUSTOMER"""
-    ).run(connection) must beLike {
+    ).run(conf) must beLike {
       case Error(_) => ok
     }
   }
@@ -102,7 +100,7 @@ DB query:
     
     DB.query[Customer](
       sql"""SELECT * FROM TEST.CUSTOMER"""
-    ).run(connection) must_== Ok(List(Customer(1, "BRUCE", 37), Customer(2, "WAYNE", 37)))
+    ).run(conf) must_== Ok(List(Customer(1, "BRUCE", 37), Customer(2, "WAYNE", 37)))
   }
 
   def setupDb = {
@@ -167,13 +165,13 @@ DB query:
 
   implicit def DBEqual: Equal[DB[Int]] =
     Equal.equal[DB[Int]]((a, b) =>
-      a.run(connection) must_== b.run(connection))
+      a.run(conf) must_== b.run(conf))
 
   def beResult[A](expected: Result[A]): Matcher[DB[A]] =
-    (h: DB[A]) => h.run(connection) must_== expected
+    (h: DB[A]) => h.run(conf) must_== expected
 
   def beResultLike[A](expected: Result[A] => SpecResult): Matcher[DB[A]] =
-    (h: DB[A]) => expected(h.run(connection))
+    (h: DB[A]) => expected(h.run(conf))
 
   def beValue[A](expected: A): Matcher[DB[A]] =
     beResult(Result.ok(expected))

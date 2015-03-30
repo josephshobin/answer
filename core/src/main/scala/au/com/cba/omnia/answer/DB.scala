@@ -23,7 +23,20 @@ import scalikejdbc.{DB => SDB, _}
 import scalaz._, Scalaz._
 import scalaz.\&/.These
 
-import au.com.cba.omnia.omnitool.{Result, ResultantMonad, ResultantOps}
+import au.com.cba.omnia.omnitool.{Result, Ok, ResultantMonad, ResultantOps}
+
+/** Configuration required to run a `DB` instance. 
+  * 
+  * @param jdbcUrl  : jdbc url to the database
+  * @param user     : user name for the database
+  * @param password : password for the database
+  * @param driver   : Optional driver name like `oracle.jdbc.OracleDriver`. In the absence
+                      of a driver name, the driver to use is derived from the jdbcUrl provided.
+  */
+case class DBConfig(jdbcUrl: String, user: String, password: String, driver: Option[String] = None) {
+  /** Unique name for this config. This unique name is used internally as the connection pool name.*/
+  val name = s"$jdbcUrl/$user"
+}
 
 /**
   * A datatype that operates on a scalikejdbc `DBSession` 
@@ -34,9 +47,36 @@ import au.com.cba.omnia.omnitool.{Result, ResultantMonad, ResultantOps}
   * with a jdbc connection.
   */
 case class DB[A](action: DBSession => Result[A]) {
-  /** Run the DB action with the provided connection. */
-  def run(connection: Connection): Result[A] =
-    SDB(connection).localTx(action)
+  /**
+    * Run the DB action with the provided connection. 
+    *
+    * @param connection: SQL Connection used to run this action
+    *
+    * @return Result `A` of this DB action.
+    */
+  def run(connection: Connection): Result[A] = Result.safe {
+    val sdb = SDB(connection) 
+    sdb.begin()
+    val result = sdb.withinTx(action)
+    result match {
+      case Ok(_) => sdb.commit()
+      case _     => sdb.rollback()
+    }
+    result
+  }.join
+
+  /** Run the DB action with the provided configuration and return the Result.
+    * 
+    * @param config: database configuration to run the DB action against
+    *
+    * @return Result `A` of DB action
+    */
+  def run(config: DBConfig): Result[A] = 
+    DB.connection(config).flatMap { conn =>
+      LoanPattern.using(conn) { safeConn =>
+        run(safeConn)
+      }
+    }
 }
 
 object DB {
@@ -65,6 +105,28 @@ object DB {
   def query[A : Extractor](sql: SQL[Nothing, NoExtractor]): DB[Traversable[A]] =
     ask(implicit session => sql.map(implicitly[Extractor[A]].extract).traversable().apply())
 
+  /** Create a new SQL connection or get a pooled connection. Library users are responsible 
+    * for adding the appropriate jdbc drivers as a dependency.
+    *
+    * @param config: database configuration for the connection
+    *
+    * @return The SQL connection 
+    */
+  def connection(config: DBConfig): Result[java.sql.Connection] = Result.safe {
+    if (!ConnectionPool.isInitialized(config.name)) { 
+      lazy val derivedDriver = config.jdbcUrl.split(":").take(3) match {
+        case Array("jdbc", "sqlserver", _) => "com.microsoft.sqlserver.jdbc.SQLServerDriver"
+        case Array("jdbc", "hsqldb"   , _) => "org.hsqldb.jdbcDriver" 
+        case Array("jdbc", "oracle"   , _) => "oracle.jdbc.OracleDriver"
+        case Array("jdbc", "mysql"    , _) => "com.mysql.jdbc.Driver"
+        case Array("jdbc", unknown    , _) => throw new Exception(s"Unsupported jdbc driver: $unknown")
+        case _                             => throw new Exception(s"Invalid jdbc url: ${config.jdbcUrl}")
+      }
+      Class.forName(config.driver.fold(derivedDriver)(identity))
+      ConnectionPool.add(config.name, config.jdbcUrl, config.user, config.password)
+    }
+    ConnectionPool.borrow(config.name)
+  }
 
   implicit def DBResultantMonad: ResultantMonad[DB] = new ResultantMonad[DB] {
     def rPoint[A](v: => Result[A]): DB[A] = DB[A](_ => v)
