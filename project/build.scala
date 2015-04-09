@@ -20,7 +20,7 @@ import au.com.cba.omnia.uniform.dependency.UniformDependencyPlugin._
 
 object build extends Build {
   val thermometerVersion = "0.5.3-20150113044449-b47d6dd"
-  val omnitoolVersion    = "1.6.0-20150310053432-47e0688"
+  val omnitoolVersion    = "1.8.1-20150326034344-bbff728"
 
   lazy val standardSettings =
     Defaults.coreDefaultSettings ++

@@ -23,7 +23,7 @@ import scalikejdbc.{DB => SDB, _}
 import scalaz._, Scalaz._
 import scalaz.\&/.These
 
-import au.com.cba.omnia.omnitool.{Result, Ok, ResultantMonad, ResultantOps}
+import au.com.cba.omnia.omnitool.{Result, Ok, ResultantMonad, ResultantOps, ToResultantMonadOps}
 
 /** Configuration required to run a `DB` instance. 
   * 
@@ -79,7 +79,7 @@ case class DB[A](action: DBSession => Result[A]) {
     }
 }
 
-object DB {
+object DB extends ResultantOps[DB] with ToResultantMonadOps {
   /** Build a DB operation from a function. The resultant DB operation will not throw an exception. */
   def ask[A](f: DBSession => A): DB[A] =
     DB(s => Result.safe(f(s)))
@@ -128,12 +128,9 @@ object DB {
     ConnectionPool.borrow(config.name)
   }
 
-  implicit def DBResultantMonad: ResultantMonad[DB] = new ResultantMonad[DB] {
+  implicit val monad: ResultantMonad[DB] = new ResultantMonad[DB] {
     def rPoint[A](v: => Result[A]): DB[A] = DB[A](_ => v)
     def rBind[A, B](ma: DB[A])(f: Result[A] => DB[B]): DB[B] =
       DB(c => f(ma.action(c)).action(c))
   }
-
-  implicit def ToResultantOps(v: DB.type): ResultantOps[DB.type, DB] =
-    new ResultantOps[DB.type, DB](v)
 }
