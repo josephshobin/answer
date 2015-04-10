@@ -14,7 +14,7 @@ The `DB` automatically manages transactions as part of its execution ensuring
 that an [`Ok`](https://commbank.github.io/omnitool/latest/api/index.html#au.com.cba.omnia.omnitool.Ok) 
 transpires to a database commit while everything else is rolled back.
 
-A simple use of the API:
+A simple use of the API: 
 
 ```scala
 import scalikejdbc.{DB => _, _}
