@@ -23,8 +23,8 @@ notifications:
     - https://webhooks.gitter.im/e/a803046bf00a8b62a326
     on_success: always
     on_failure: always
-    on_start: false
+    on_start: never
 env:
   global:
-  - secure: ZGE+ZT5K7ogTvvMzGR7wy1oJ1C0PiehHnC79oM+yKOU33xUSU+/+414LrExs0dhWVtXn0ZymmkMf3cFhXfRHJfR9CB97eETVvPlj3S0AeIEN2+kEfeN+I9kRDrd4chvpEnyd9cE51deIBTl+ghdYwAOzUvRzMXkIxETj5odZr6c=
-  - secure: GdNU7RH19VjztAsfj6KrsPvIgOcLuu+/djXUjWvageahh/kOpclfaN+6OzV84D/OK7jhK2+kjEtMpQBJONkGbd/z2ANvb5rdLTzH0VX1rC3tmwpP9nM8Q73RFN9gVPlxCm/o02l57gV1fG+ZR0rCBNgMQcM7enOgJgxOfMJCAfw=
+  - secure: "HGgtd/cqYl49tB2SC8lupk6ThXLZSNpA6tlUCkrhsmNBWBE+B6yxk1HLGVA5D0DTBj2NEAT/G+aScYujVKi7GrqEfe8H0R9HgGwyPxZ71qdAAlTkDDiMcVStl/kOqTv1AU569ckYs6aJk0a+OGz2hSreB8BGuwXEB5UydDptbXI="
+  - secure: "dZSv1bYKhrLaJ1aE+phCsrnHZzXVBBxXYd2r7o94DWXhHX05D8xjtSUekdrrIT9ljcbIuvGyVm5FYKCh3Qv2v0NHWkntr+uVNnPGo4g0uKE2xTsZqOv6ddmtbWSNpmj2h9zF7VIwvFIbtH6DWs4WWOt9dx6Fk4tbmKD29B23BRE="

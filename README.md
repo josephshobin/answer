@@ -1,6 +1,6 @@
 #answer
 
-[![Build Status](https://magnum.travis-ci.com/CommBank/answer.svg?token=6WcgXnx6oydcjHDuorV5&branch=master)](https://magnum.travis-ci.com/CommBank/answer)
+[![Build Status](https://travis-ci.org/CommBank/answer.svg?branch=master)](https://travis-ci.org/CommBank/answer)
 
 answer is a functional wrapper for [ScalikeJDBC](http://scalikejdbc.org). The 
 central concept in answer is the `DB` monad which operates on a scalikejdbc 
@@ -12,7 +12,7 @@ rudimentary form of sql connection pooling. However, advanced users might want
 to manage their own sql connections and can run `DB` with just a sql connection. 
 The `DB` automatically manages transactions as part of its execution ensuring 
 that an [`Ok`](https://commbank.github.io/omnitool/latest/api/index.html#au.com.cba.omnia.omnitool.Ok) 
-transpires into a database commit while everything else is rolled back.
+transpires to a database commit while everything else is rolled back.
 
 A simple use of the API:
 
