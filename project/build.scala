@@ -19,8 +19,10 @@ import au.com.cba.omnia.uniform.core.version.UniqueVersionPlugin._
 import au.com.cba.omnia.uniform.dependency.UniformDependencyPlugin._
 
 object build extends Build {
-  val thermometerVersion = "0.5.3-20150113044449-b47d6dd"
-  val omnitoolVersion    = "1.8.1-20150326034344-bbff728"
+  val thermometerVersion = "1.0.0-20150513002558-a6bcf7f"
+  val omnitoolVersion    = "1.10.0-20150430044321-3ca9118"
+  val scalikejdbcVersion = "2.2.6"
+  val hsqldbVersion      = "2.3.2"
 
   lazy val standardSettings =
     Defaults.coreDefaultSettings ++
@@ -37,7 +39,7 @@ object build extends Build {
     ++ uniform.ghsettings
     ++ Seq(
          publishArtifact := false
-       , addCompilerPlugin("org.scalamacros" % "paradise" % "2.0.0" cross CrossVersion.full)
+       , addCompilerPlugin("org.scalamacros" % "paradise" % "2.0.1" cross CrossVersion.full)
     )
   , aggregate = Seq(core, macros)
   )
@@ -54,10 +56,11 @@ object build extends Build {
         ++ depend.testing() ++ depend.time()
         ++ depend.omnia("omnitool-core", omnitoolVersion)
         ++ Seq(
-             "org.scalikejdbc"  %% "scalikejdbc"      % "2.1.2" exclude("joda-time", "joda-time")
-           , "org.scalikejdbc"  %% "scalikejdbc-test" % "2.1.2"         % "test"
-           , "org.hsqldb"        % "hsqldb"           % "2.3.2"         % "test"
-           , "au.com.cba.omnia" %% "omnitool-core"    % omnitoolVersion % "test" classifier "tests"
+             "org.scalikejdbc"  %% "scalikejdbc"          % scalikejdbcVersion exclude("joda-time", "joda-time")
+           , "org.scalikejdbc"  %% "scalikejdbc-test"     % scalikejdbcVersion    % "test"
+           , "org.hsqldb"        % "hsqldb"               % hsqldbVersion         % "test"
+           , "au.com.cba.omnia" %% "omnitool-core"        % omnitoolVersion       % "test" classifier "tests"
+           , "org.specs2"       %% "specs2-matcher-extra" % depend.versions.specs % "test"
         )
     )
   )
@@ -70,15 +73,15 @@ object build extends Build {
     ++ uniform.project("answer-macros", "au.com.cba.omnia.answer.macros")
     ++ Seq(
          libraryDependencies <++= scalaVersion.apply(sv => Seq(
-           "org.scala-lang"   % "scala-compiler"   % sv
-         , "org.scala-lang"   % "scala-reflect"    % sv
-         , "org.scalamacros" %% "quasiquotes"      % "2.0.0"
-         , "org.scalikejdbc" %% "scalikejdbc-test" % "2.1.2"  % "test"
-         , "com.twitter"      % "util-eval_2.10"   % "6.22.1" % "test"
-         , "org.hsqldb"       % "hsqldb"           % "2.3.2"  % "test"
+           "org.scala-lang"   % "scala-compiler"       % sv
+         , "org.scala-lang"   % "scala-reflect"        % sv
+         , "org.scalikejdbc" %% "scalikejdbc-test"     % scalikejdbcVersion    % "test"
+         , "com.twitter"     %% "util-eval"            % "6.24.0"              % "test"
+         , "org.hsqldb"       % "hsqldb"               % hsqldbVersion         % "test"
+         , "org.specs2"      %% "specs2-matcher-extra" % depend.versions.specs % "test"
          ) ++ depend.testing()
          )
-       , addCompilerPlugin("org.scalamacros" % "paradise" % "2.0.0" cross CrossVersion.full)
+       , addCompilerPlugin("org.scalamacros" % "paradise" % "2.0.1" cross CrossVersion.full)
     )
   ).dependsOn(core)
 }

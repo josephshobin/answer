@@ -21,7 +21,6 @@ import java.sql.Connection
 import scalikejdbc.{DB => SDB, _}
 
 import scalaz._, Scalaz._
-import scalaz.\&/.These
 
 import au.com.cba.omnia.omnitool.{Result, Ok, ResultantMonad, ResultantOps, ToResultantMonadOps}
 

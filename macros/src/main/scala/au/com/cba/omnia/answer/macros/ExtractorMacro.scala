@@ -14,7 +14,7 @@
 
 package au.com.cba.omnia.answer.macros
 
-import scala.reflect.macros.Context
+import scala.reflect.macros.whitebox.Context
 
 import scalikejdbc.{DB => SDB, _}
 
@@ -49,7 +49,7 @@ object ExtractorMacro {
       */
     def processColumn(typ: Type, position: Int): Tree = q"rs.get[$typ]($position)"
 
-    val targetTypes = targetType.declarations.sorted.toList collect {
+    val targetTypes = targetType.decls.sorted.toList collect {
       case sym: TermSymbol if sym.isVal && sym.isCaseAccessor => sym.typeSignatureIn(targetType)
     }
 

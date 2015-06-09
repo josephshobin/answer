@@ -18,7 +18,7 @@ import java.sql.Connection
 
 import scalikejdbc.{DB => SDB, _}
 
-import scalaz.Equal
+import scalaz._, Scalaz._
 
 import org.specs2.{Specification, ScalaCheck}
 import org.specs2.matcher.{TerminationMatchers, ThrownExpectations, Matcher}
@@ -27,7 +27,6 @@ import org.specs2.execute.{Result => SpecResult}
 import org.scalacheck.Arbitrary, Arbitrary.arbitrary
 
 import au.com.cba.omnia.omnitool.{Result, Ok, Error}
-import au.com.cba.omnia.omnitool.ResultantMonadSyntax._
 import au.com.cba.omnia.omnitool.test.OmnitoolProperties.resultantMonad
 import au.com.cba.omnia.omnitool.test.Arbitraries._
 
