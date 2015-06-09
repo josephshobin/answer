@@ -1,5 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<!DOCTYPE html >
 <html>
         <head>
           <title>answer - au.com.cba.omnia.answer</title>
@@ -9,6 +8,11 @@
           
       <link href="../../../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
       <link href="../../../../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../../../../../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../../../../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../../../lib/tools.tooltip.js"></script>
+      
       <script type="text/javascript">
          if(top === self) {
             var url = '../../../../../index.html';
@@ -26,7 +30,11 @@
       <div id="definition">
         <img src="../../../../../lib/package_big.png" />
         <p id="owner"><a href="../../../../package.html" class="extype" name="au">au</a>.<a href="../../../package.html" class="extype" name="au.com">com</a>.<a href="../../package.html" class="extype" name="au.com.cba">cba</a>.<a href="../package.html" class="extype" name="au.com.cba.omnia">omnia</a></p>
-        <h1>answer</h1>
+        <h1>answer</h1><span class="permalink">
+      <a href="../../../../../index.html#au.com.cba.omnia.answer.package" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" />
+      </a>
+    </span>
       </div>
 
       <h4 id="signature" class="signature">
@@ -58,7 +66,7 @@
 
         <div id="types" class="types members">
               <h3>Type Members</h3>
-              <ol><li name="au.com.cba.omnia.answer.DB" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+              <ol><li name="au.com.cba.omnia.answer.DB" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="DB[A]extendsProductwithSerializable"></a>
       <a id="DB[A]:DB[A]"></a>
       <h4 class="signature">
@@ -67,13 +75,21 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a href="DB.html"><span class="name">DB</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="action">action: (<span class="extype" name="scalikejdbc.DBSession">DBSession</span>) ⇒ <span class="extype" name="au.com.cba.omnia.omnitool.Result">Result</span>[<span class="extype" name="au.com.cba.omnia.answer.DB.A">A</span>]</span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="DB.html"><span class="name">DB</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="action">action: (<span class="extype" name="scalikejdbc.DBSession">DBSession</span>) ⇒ <a href="https://github.com/CommBank/edge/index.html#au.com.cba.omnia.omnitool.Result" class="extype" target="_top">Result</a>[<span class="extype" name="au.com.cba.omnia.answer.DB.A">A</span>]</span>)</span><span class="result"> extends <a href="http://www.scala-lang.org/api/2.11.6/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.11.6/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
       </span>
-      </h4>
-      <p class="comment cmt">A datatype that operates on a scalikejdbc <code>DBSession</code>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#au.com.cba.omnia.answer.package@DB[A]extendsProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">A datatype that operates on a scalikejdbc <code>DBSession</code>
 to produces a <code>Result</code> and provides a nice set of
-combinators.</p>
-    </li><li name="au.com.cba.omnia.answer.DBConfig" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+combinators.</p><div class="fullcomment"><div class="comment cmt"><p>A datatype that operates on a scalikejdbc <code>DBSession</code>
+to produces a <code>Result</code> and provides a nice set of
+combinators.</p><p>A quick way to run the DB action is call <a href="DB.html#run(config:au.com.cba.omnia.answer.DBConfig):au.com.cba.omnia.omnitool.Result[A]" class="extmbr" name="au.com.cba.omnia.answer.DB#run">DB.run</a>
+with a jdbc connection.
+</p></div></div>
+    </li><li name="au.com.cba.omnia.answer.DBConfig" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="DBConfigextendsProductwithSerializable"></a>
       <a id="DBConfig:DBConfig"></a>
       <h4 class="signature">
@@ -82,10 +98,17 @@ combinators.</p>
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a href="DBConfig.html"><span class="name">DBConfig</span></a><span class="params">(<span name="jdbcUrl">jdbcUrl: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="user">user: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="password">password: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="driver">driver: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Predef.String">String</span>] = <span class="symbol">scala.None</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="DBConfig.html"><span class="name">DBConfig</span></a><span class="params">(<span name="jdbcUrl">jdbcUrl: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="user">user: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="password">password: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="driver">driver: <a href="http://www.scala-lang.org/api/2.11.6/index.html#scala.Option" class="extype" target="_top">Option</a>[<span class="extype" name="scala.Predef.String">String</span>] = <span class="symbol">None</span></span>)</span><span class="result"> extends <a href="http://www.scala-lang.org/api/2.11.6/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.11.6/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
       </span>
-      </h4>
-      <p class="comment cmt">Configuration required to run a <code>DB</code> instance.</p>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#au.com.cba.omnia.answer.package@DBConfigextendsProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Configuration required to run a <code>DB</code> instance.</p><div class="fullcomment"><div class="comment cmt"><p>Configuration required to run a <code>DB</code> instance.
+</p></div><dl class="paramcmts block"><dt class="param">jdbcUrl</dt><dd class="cmt"><p>: jdbc url to the database</p></dd><dt class="param">user</dt><dd class="cmt"><p>: user name for the database</p></dd><dt class="param">password</dt><dd class="cmt"><p>: password for the database</p></dd><dt class="param">driver</dt><dd class="cmt"><p>: Optional driver name like <code>oracle.jdbc.OracleDriver</code>. In the absence
+                      of a driver name, the driver to use is derived from the jdbcUrl provided.
+</p></dd></dl></div>
     </li><li name="au.com.cba.omnia.answer.Extractor" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="Extractor[A]extendsProductwithSerializable"></a>
       <a id="Extractor[A]:Extractor[A]"></a>
@@ -95,10 +118,14 @@ combinators.</p>
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a href="Extractor.html"><span class="name">Extractor</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="extract">extract: (<span class="extype" name="scalikejdbc.WrappedResultSet">WrappedResultSet</span>) ⇒ <span class="extype" name="au.com.cba.omnia.answer.Extractor.A">A</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="Extractor.html"><span class="name">Extractor</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="extract">extract: (<span class="extype" name="scalikejdbc.WrappedResultSet">WrappedResultSet</span>) ⇒ <span class="extype" name="au.com.cba.omnia.answer.Extractor.A">A</span></span>)</span><span class="result"> extends <a href="http://www.scala-lang.org/api/2.11.6/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.11.6/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
       </span>
-      </h4>
-      <p class="comment cmt">Extractor that can create a <code>A</code> from the row of a query.</p>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#au.com.cba.omnia.answer.package@Extractor[A]extendsProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Extractor that can create a <code>A</code> from the row of a query.</p>
     </li></ol>
             </div>
 
@@ -115,9 +142,13 @@ combinators.</p>
         <span class="kind">object</span>
       </span>
       <span class="symbol">
-        <a href="DB$.html"><span class="name">DB</span></a><span class="result"> extends <span class="extype" name="au.com.cba.omnia.omnitool.ResultantOps">ResultantOps</span>[<a href="DB.html" class="extype" name="au.com.cba.omnia.answer.DB">DB</a>] with <span class="extype" name="au.com.cba.omnia.omnitool.ToResultantMonadOps">ToResultantMonadOps</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="DB$.html"><span class="name">DB</span></a><span class="result"> extends <a href="https://github.com/CommBank/edge/index.html#au.com.cba.omnia.omnitool.ResultantOps" class="extype" target="_top">ResultantOps</a>[<a href="DB.html" class="extype" name="au.com.cba.omnia.answer.DB">DB</a>] with <a href="https://github.com/CommBank/edge/index.html#au.com.cba.omnia.omnitool.ToResultantMonadOps" class="extype" target="_top">ToResultantMonadOps</a> with <a href="http://www.scala-lang.org/api/2.11.6/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#au.com.cba.omnia.answer.package@DB" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="au.com.cba.omnia.answer.VersionInfo" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="VersionInfo"></a>
@@ -130,7 +161,11 @@ combinators.</p>
       <span class="symbol">
         <a href="VersionInfo$.html"><span class="name">VersionInfo</span></a>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#au.com.cba.omnia.answer.package@VersionInfo" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="au.com.cba.omnia.answer.core" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="core"></a>
@@ -143,7 +178,11 @@ combinators.</p>
       <span class="symbol">
         <a href="core/package.html"><span class="name">core</span></a>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#au.com.cba.omnia.answer.package@core" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="au.com.cba.omnia.answer.macros" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="macros"></a>
@@ -156,7 +195,11 @@ combinators.</p>
       <span class="symbol">
         <a href="macros/package.html"><span class="name">macros</span></a>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../../../../../index.html#au.com.cba.omnia.answer.package@macros" title="Permalink" target="_top">
+        <img src="../../../../../lib/permalink.png" />
+      </a>
+    </span>
       
     </li></ol>
             </div>
@@ -183,6 +226,7 @@ combinators.</p>
       <div id="tooltip"></div>
 
       <div id="footer">  </div>
-      <script defer="defer" type="text/javascript" id="jquery-js" src="../../../../../lib/jquery.js"></script><script defer="defer" type="text/javascript" id="jquery-ui-js" src="../../../../../lib/jquery-ui.js"></script><script defer="defer" type="text/javascript" id="tools-tooltip-js" src="../../../../../lib/tools.tooltip.js"></script><script defer="defer" type="text/javascript" id="template-js" src="../../../../../lib/template.js"></script>
+
+
     </body>
       </html>

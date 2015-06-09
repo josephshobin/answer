@@ -1,5 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<!DOCTYPE html >
 <html>
         <head>
           <title>scalikejdbc - scalikejdbc</title>
@@ -9,6 +8,11 @@
           
       <link href="../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
       <link href="../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../lib/template.js"></script>
+      <script type="text/javascript" src="../lib/tools.tooltip.js"></script>
+      
       <script type="text/javascript">
          if(top === self) {
             var url = '../index.html';
@@ -26,7 +30,11 @@
       <div id="definition">
         <img src="../lib/package_big.png" />
         
-        <h1>scalikejdbc</h1>
+        <h1>scalikejdbc</h1><span class="permalink">
+      <a href="../index.html#scalikejdbc.package" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       </div>
 
       <h4 id="signature" class="signature">
@@ -41,7 +49,7 @@
       
           <div id="comment" class="fullcommenttop"><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
-          <div class="superTypes hiddenContent"><span class="extype" name="scalikejdbc.UnixTimeInMillisConverterImplicits">UnixTimeInMillisConverterImplicits</span>, <span class="extype" name="scalikejdbc.ScalaBigDecimalConverterImplicits">ScalaBigDecimalConverterImplicits</span>, <span class="extype" name="scalikejdbc.SQLInterpolation">SQLInterpolation</span>, <span class="extype" name="scalikejdbc.QueryDSLFeature">QueryDSLFeature</span>, <span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature">SQLSyntaxSupportFeature</span>, <span class="extype" name="scalikejdbc.SQLInterpolationFeature">SQLInterpolationFeature</span>, <span class="extype" name="scalikejdbc.SQLInterpolationCoreTypeAlias">SQLInterpolationCoreTypeAlias</span>, <span class="extype" name="scalikejdbc.interpolation.Implicits">Implicits</span>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><span class="extype" name="scalikejdbc.UnixTimeInMillisConverterImplicits">UnixTimeInMillisConverterImplicits</span>, <span class="extype" name="scalikejdbc.ScalaBigDecimalConverterImplicits">ScalaBigDecimalConverterImplicits</span>, <span class="extype" name="scalikejdbc.SQLInterpolation">SQLInterpolation</span>, <span class="extype" name="scalikejdbc.QueryDSLFeature">QueryDSLFeature</span>, <span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature">SQLSyntaxSupportFeature</span>, <span class="extype" name="scalikejdbc.SQLInterpolationFeature">SQLInterpolationFeature</span>, <span class="extype" name="scalikejdbc.SQLInterpolationCoreTypeAlias">SQLInterpolationCoreTypeAlias</span>, <span class="extype" name="scalikejdbc.interpolation.Implicits">Implicits</span>, <a href="http://www.scala-lang.org/api/2.11.6/index.html#scala.AnyRef" class="extype" target="_top">AnyRef</a>, <a href="http://www.scala-lang.org/api/2.11.6/index.html#scala.Any" class="extype" target="_top">Any</a></div>
         </div></div>
         
 
@@ -92,7 +100,11 @@
       <span class="symbol">
         <span class="name">AsteriskProvider</span><span class="result"> = <span class="extype" name="scalikejdbc.interpolation.AsteriskProvider">scalikejdbc.interpolation.AsteriskProvider</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#scalikejdbc.package@AsteriskProvider=scalikejdbc.interpolation.AsteriskProvider" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>SQLInterpolationCoreTypeAlias</dd></dl></div>
     </li><li name="scalikejdbc.SQLSyntaxSupportFeature.BasicResultNameSQLSyntaxProvider" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="BasicResultNameSQLSyntaxProvider[S&lt;:&lt;?&gt;,A&lt;:&lt;?&gt;]extendsSQLSyntaxSupportFeature.this.SQLSyntaxProviderCommonImpl[S,A]withSQLSyntaxSupportFeature.this.ResultNameSQLSyntaxProvider[S,A]withProductwithSerializable"></a>
@@ -103,9 +115,13 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">BasicResultNameSQLSyntaxProvider</span><span class="tparams">[<span name="S">S &lt;: (<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature">SQLSyntaxSupportFeature</span>.this)#<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.SQLSyntaxSupport">SQLSyntaxSupport</span>[<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.BasicResultNameSQLSyntaxProvider.A">A</span>]</span>, <span name="A">A</span>]</span><span class="result"> extends (<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature">SQLSyntaxSupportFeature</span>.this)#<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.SQLSyntaxProviderCommonImpl">SQLSyntaxProviderCommonImpl</span>[<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.BasicResultNameSQLSyntaxProvider.S">S</span>, <span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.BasicResultNameSQLSyntaxProvider.A">A</span>] with (<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature">SQLSyntaxSupportFeature</span>.this)#<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.ResultNameSQLSyntaxProvider">ResultNameSQLSyntaxProvider</span>[<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.BasicResultNameSQLSyntaxProvider.S">S</span>, <span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.BasicResultNameSQLSyntaxProvider.A">A</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <span class="name">BasicResultNameSQLSyntaxProvider</span><span class="tparams">[<span name="S">S &lt;: (<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature">SQLSyntaxSupportFeature</span>.this)#<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.SQLSyntaxSupport">SQLSyntaxSupport</span>[<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.BasicResultNameSQLSyntaxProvider.A">A</span>]</span>, <span name="A">A</span>]</span><span class="result"> extends (<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature">SQLSyntaxSupportFeature</span>.this)#<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.SQLSyntaxProviderCommonImpl">SQLSyntaxProviderCommonImpl</span>[<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.BasicResultNameSQLSyntaxProvider.S">S</span>, <span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.BasicResultNameSQLSyntaxProvider.A">A</span>] with (<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature">SQLSyntaxSupportFeature</span>.this)#<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.ResultNameSQLSyntaxProvider">ResultNameSQLSyntaxProvider</span>[<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.BasicResultNameSQLSyntaxProvider.S">S</span>, <span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.BasicResultNameSQLSyntaxProvider.A">A</span>] with <a href="http://www.scala-lang.org/api/2.11.6/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.11.6/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#scalikejdbc.package@BasicResultNameSQLSyntaxProvider[S&lt;:SQLSyntaxSupportFeature.this.SQLSyntaxSupport[A],A]extendsSQLSyntaxSupportFeature.this.SQLSyntaxProviderCommonImpl[S,A]withSQLSyntaxSupportFeature.this.ResultNameSQLSyntaxProvider[S,A]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>SQLSyntaxSupportFeature</dd></dl></div>
     </li><li name="scalikejdbc.Closable" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="Closable=AnyRef{defclose():Unit}"></a>
@@ -116,9 +132,13 @@
         <span class="kind">type</span>
       </span>
       <span class="symbol">
-        <span class="name">Closable</span><span class="result"> = <span class="extype" name="scala.AnyRef">AnyRef</span> { def close(): Unit }</span>
+        <span class="name">Closable</span><span class="result"> = <a href="http://www.scala-lang.org/api/2.11.6/index.html#scala.AnyRef" class="extype" target="_top">AnyRef</a> { def close(): Unit }</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#scalikejdbc.package@Closable=AnyRef{defclose():Unit}" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="scalikejdbc.SQLSyntaxSupportFeature.ColumnName" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ColumnName[A&lt;:&lt;?&gt;]=SQLSyntaxSupportFeature.this.ColumnSQLSyntaxProvider[SQLSyntaxSupportFeature.this.SQLSyntaxSupport[A],A]"></a>
@@ -131,7 +151,11 @@
       <span class="symbol">
         <span class="name">ColumnName</span><span class="tparams">[<span name="A">A</span>]</span><span class="result"> = (<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature">SQLSyntaxSupportFeature</span>.this)#<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.ColumnSQLSyntaxProvider">ColumnSQLSyntaxProvider</span>[(<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature">SQLSyntaxSupportFeature</span>.this)#<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.SQLSyntaxSupport">SQLSyntaxSupport</span>[<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.ColumnName.A">A</span>], <span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.ColumnName.A">A</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#scalikejdbc.package@ColumnName[A]=SQLSyntaxSupportFeature.this.ColumnSQLSyntaxProvider[SQLSyntaxSupportFeature.this.SQLSyntaxSupport[A],A]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>SQLSyntaxSupportFeature</dd></dl></div>
     </li><li name="scalikejdbc.SQLSyntaxSupportFeature.ColumnSQLSyntaxProvider" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ColumnSQLSyntaxProvider[S&lt;:&lt;?&gt;,A&lt;:&lt;?&gt;]extendsSQLSyntaxSupportFeature.this.SQLSyntaxProvider[A]withSQLSyntaxSupportFeature.this.AsteriskProviderwithProductwithSerializable"></a>
@@ -142,9 +166,13 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">ColumnSQLSyntaxProvider</span><span class="tparams">[<span name="S">S &lt;: (<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature">SQLSyntaxSupportFeature</span>.this)#<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.SQLSyntaxSupport">SQLSyntaxSupport</span>[<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.ColumnSQLSyntaxProvider.A">A</span>]</span>, <span name="A">A</span>]</span><span class="result"> extends (<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature">SQLSyntaxSupportFeature</span>.this)#<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.SQLSyntaxProvider">SQLSyntaxProvider</span>[<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.ColumnSQLSyntaxProvider.A">A</span>] with (<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature">SQLSyntaxSupportFeature</span>.this)#<span class="extype" name="scalikejdbc.SQLInterpolationCoreTypeAlias.AsteriskProvider">AsteriskProvider</span> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <span class="name">ColumnSQLSyntaxProvider</span><span class="tparams">[<span name="S">S &lt;: (<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature">SQLSyntaxSupportFeature</span>.this)#<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.SQLSyntaxSupport">SQLSyntaxSupport</span>[<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.ColumnSQLSyntaxProvider.A">A</span>]</span>, <span name="A">A</span>]</span><span class="result"> extends (<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature">SQLSyntaxSupportFeature</span>.this)#<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.SQLSyntaxProvider">SQLSyntaxProvider</span>[<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.ColumnSQLSyntaxProvider.A">A</span>] with (<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature">SQLSyntaxSupportFeature</span>.this)#<span class="extype" name="scalikejdbc.SQLInterpolationCoreTypeAlias.AsteriskProvider">AsteriskProvider</span> with <a href="http://www.scala-lang.org/api/2.11.6/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.11.6/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#scalikejdbc.package@ColumnSQLSyntaxProvider[S&lt;:SQLSyntaxSupportFeature.this.SQLSyntaxSupport[A],A]extendsSQLSyntaxSupportFeature.this.SQLSyntaxProvider[A]withSQLSyntaxSupportFeature.this.AsteriskProviderwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>SQLSyntaxSupportFeature</dd></dl></div>
     </li><li name="scalikejdbc.QueryDSLFeature.ConditionSQLBuilder" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
       <a id="ConditionSQLBuilder[A&lt;:&lt;?&gt;]extendsQueryDSLFeature.this.SQLBuilder[A]withQueryDSLFeature.this.PagingSQLBuilder[A]withQueryDSLFeature.this.GroupBySQLBuilder[A]"></a>
@@ -157,7 +185,11 @@
       <span class="symbol">
         <span class="name">ConditionSQLBuilder</span><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends (<span class="extype" name="scalikejdbc.QueryDSLFeature">QueryDSLFeature</span>.this)#<span class="extype" name="scalikejdbc.QueryDSLFeature.SQLBuilder">SQLBuilder</span>[<span class="extype" name="scalikejdbc.QueryDSLFeature.ConditionSQLBuilder.A">A</span>] with (<span class="extype" name="scalikejdbc.QueryDSLFeature">QueryDSLFeature</span>.this)#<span class="extype" name="scalikejdbc.QueryDSLFeature.PagingSQLBuilder">PagingSQLBuilder</span>[<span class="extype" name="scalikejdbc.QueryDSLFeature.ConditionSQLBuilder.A">A</span>] with (<span class="extype" name="scalikejdbc.QueryDSLFeature">QueryDSLFeature</span>.this)#<span class="extype" name="scalikejdbc.QueryDSLFeature.GroupBySQLBuilder">GroupBySQLBuilder</span>[<span class="extype" name="scalikejdbc.QueryDSLFeature.ConditionSQLBuilder.A">A</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#scalikejdbc.package@ConditionSQLBuilder[A]extendsQueryDSLFeature.this.SQLBuilder[A]withQueryDSLFeature.this.PagingSQLBuilder[A]withQueryDSLFeature.this.GroupBySQLBuilder[A]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>QueryDSLFeature</dd></dl></div>
     </li><li name="scalikejdbc.QueryDSLFeature.DeleteSQLBuilder" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="DeleteSQLBuilderextendsQueryDSLFeature.this.SQLBuilder[QueryDSLFeature.this.UpdateOperation]withQueryDSLFeature.this.WhereSQLBuilder[QueryDSLFeature.this.UpdateOperation]withProductwithSerializable"></a>
@@ -168,9 +200,13 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">DeleteSQLBuilder</span><span class="result"> extends (<span class="extype" name="scalikejdbc.QueryDSLFeature">QueryDSLFeature</span>.this)#<span class="extype" name="scalikejdbc.QueryDSLFeature.SQLBuilder">SQLBuilder</span>[(<span class="extype" name="scalikejdbc.QueryDSLFeature">QueryDSLFeature</span>.this)#<span class="extype" name="scalikejdbc.QueryDSLFeature.UpdateOperation">UpdateOperation</span>] with (<span class="extype" name="scalikejdbc.QueryDSLFeature">QueryDSLFeature</span>.this)#<span class="extype" name="scalikejdbc.QueryDSLFeature.WhereSQLBuilder">WhereSQLBuilder</span>[(<span class="extype" name="scalikejdbc.QueryDSLFeature">QueryDSLFeature</span>.this)#<span class="extype" name="scalikejdbc.QueryDSLFeature.UpdateOperation">UpdateOperation</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <span class="name">DeleteSQLBuilder</span><span class="result"> extends (<span class="extype" name="scalikejdbc.QueryDSLFeature">QueryDSLFeature</span>.this)#<span class="extype" name="scalikejdbc.QueryDSLFeature.SQLBuilder">SQLBuilder</span>[(<span class="extype" name="scalikejdbc.QueryDSLFeature">QueryDSLFeature</span>.this)#<span class="extype" name="scalikejdbc.QueryDSLFeature.UpdateOperation">UpdateOperation</span>] with (<span class="extype" name="scalikejdbc.QueryDSLFeature">QueryDSLFeature</span>.this)#<span class="extype" name="scalikejdbc.QueryDSLFeature.WhereSQLBuilder">WhereSQLBuilder</span>[(<span class="extype" name="scalikejdbc.QueryDSLFeature">QueryDSLFeature</span>.this)#<span class="extype" name="scalikejdbc.QueryDSLFeature.UpdateOperation">UpdateOperation</span>] with <a href="http://www.scala-lang.org/api/2.11.6/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.11.6/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#scalikejdbc.package@DeleteSQLBuilderextendsQueryDSLFeature.this.SQLBuilder[QueryDSLFeature.this.UpdateOperation]withQueryDSLFeature.this.WhereSQLBuilder[QueryDSLFeature.this.UpdateOperation]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>QueryDSLFeature</dd></dl></div>
     </li><li name="scalikejdbc.QueryDSLFeature.ExceptQuerySQLBuilder" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
       <a id="ExceptQuerySQLBuilder[A&lt;:&lt;?&gt;]extendsQueryDSLFeature.this.SQLBuilder[A]"></a>
@@ -183,7 +219,11 @@
       <span class="symbol">
         <span class="name">ExceptQuerySQLBuilder</span><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends (<span class="extype" name="scalikejdbc.QueryDSLFeature">QueryDSLFeature</span>.this)#<span class="extype" name="scalikejdbc.QueryDSLFeature.SQLBuilder">SQLBuilder</span>[<span class="extype" name="scalikejdbc.QueryDSLFeature.ExceptQuerySQLBuilder.A">A</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#scalikejdbc.package@ExceptQuerySQLBuilder[A]extendsQueryDSLFeature.this.SQLBuilder[A]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>QueryDSLFeature</dd></dl></div>
     </li><li name="scalikejdbc.QueryDSLFeature.ForUpdateQuerySQLBuilder" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
       <a id="ForUpdateQuerySQLBuilder[A&lt;:&lt;?&gt;]extendsQueryDSLFeature.this.SQLBuilder[A]"></a>
@@ -196,7 +236,11 @@
       <span class="symbol">
         <span class="name">ForUpdateQuerySQLBuilder</span><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends (<span class="extype" name="scalikejdbc.QueryDSLFeature">QueryDSLFeature</span>.this)#<span class="extype" name="scalikejdbc.QueryDSLFeature.SQLBuilder">SQLBuilder</span>[<span class="extype" name="scalikejdbc.QueryDSLFeature.ForUpdateQuerySQLBuilder.A">A</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#scalikejdbc.package@ForUpdateQuerySQLBuilder[A]extendsQueryDSLFeature.this.SQLBuilder[A]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>QueryDSLFeature</dd></dl></div>
     </li><li name="scalikejdbc.QueryDSLFeature.GroupBySQLBuilder" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
       <a id="GroupBySQLBuilder[A&lt;:&lt;?&gt;]extendsQueryDSLFeature.this.SQLBuilder[A]withQueryDSLFeature.this.PagingSQLBuilder[A]"></a>
@@ -209,7 +253,11 @@
       <span class="symbol">
         <span class="name">GroupBySQLBuilder</span><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends (<span class="extype" name="scalikejdbc.QueryDSLFeature">QueryDSLFeature</span>.this)#<span class="extype" name="scalikejdbc.QueryDSLFeature.SQLBuilder">SQLBuilder</span>[<span class="extype" name="scalikejdbc.QueryDSLFeature.GroupBySQLBuilder.A">A</span>] with (<span class="extype" name="scalikejdbc.QueryDSLFeature">QueryDSLFeature</span>.this)#<span class="extype" name="scalikejdbc.QueryDSLFeature.PagingSQLBuilder">PagingSQLBuilder</span>[<span class="extype" name="scalikejdbc.QueryDSLFeature.GroupBySQLBuilder.A">A</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#scalikejdbc.package@GroupBySQLBuilder[A]extendsQueryDSLFeature.this.SQLBuilder[A]withQueryDSLFeature.this.PagingSQLBuilder[A]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>QueryDSLFeature</dd></dl></div>
     </li><li name="scalikejdbc.QueryDSLFeature.InsertSQLBuilder" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="InsertSQLBuilderextendsQueryDSLFeature.this.SQLBuilder[QueryDSLFeature.this.UpdateOperation]withProductwithSerializable"></a>
@@ -220,9 +268,13 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">InsertSQLBuilder</span><span class="result"> extends (<span class="extype" name="scalikejdbc.QueryDSLFeature">QueryDSLFeature</span>.this)#<span class="extype" name="scalikejdbc.QueryDSLFeature.SQLBuilder">SQLBuilder</span>[(<span class="extype" name="scalikejdbc.QueryDSLFeature">QueryDSLFeature</span>.this)#<span class="extype" name="scalikejdbc.QueryDSLFeature.UpdateOperation">UpdateOperation</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <span class="name">InsertSQLBuilder</span><span class="result"> extends (<span class="extype" name="scalikejdbc.QueryDSLFeature">QueryDSLFeature</span>.this)#<span class="extype" name="scalikejdbc.QueryDSLFeature.SQLBuilder">SQLBuilder</span>[(<span class="extype" name="scalikejdbc.QueryDSLFeature">QueryDSLFeature</span>.this)#<span class="extype" name="scalikejdbc.QueryDSLFeature.UpdateOperation">UpdateOperation</span>] with <a href="http://www.scala-lang.org/api/2.11.6/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.11.6/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#scalikejdbc.package@InsertSQLBuilderextendsQueryDSLFeature.this.SQLBuilder[QueryDSLFeature.this.UpdateOperation]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>QueryDSLFeature</dd></dl></div>
     </li><li name="scalikejdbc.QueryDSLFeature.IntersectQuerySQLBuilder" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
       <a id="IntersectQuerySQLBuilder[A&lt;:&lt;?&gt;]extendsQueryDSLFeature.this.SQLBuilder[A]"></a>
@@ -235,7 +287,11 @@
       <span class="symbol">
         <span class="name">IntersectQuerySQLBuilder</span><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends (<span class="extype" name="scalikejdbc.QueryDSLFeature">QueryDSLFeature</span>.this)#<span class="extype" name="scalikejdbc.QueryDSLFeature.SQLBuilder">SQLBuilder</span>[<span class="extype" name="scalikejdbc.QueryDSLFeature.IntersectQuerySQLBuilder.A">A</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#scalikejdbc.package@IntersectQuerySQLBuilder[A]extendsQueryDSLFeature.this.SQLBuilder[A]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>QueryDSLFeature</dd></dl></div>
     </li><li name="scalikejdbc.QueryDSLFeature.PagingSQLBuilder" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
       <a id="PagingSQLBuilder[A&lt;:&lt;?&gt;]extendsQueryDSLFeature.this.SQLBuilder[A]withQueryDSLFeature.this.UnionQuerySQLBuilder[A]withQueryDSLFeature.this.ExceptQuerySQLBuilder[A]withQueryDSLFeature.this.IntersectQuerySQLBuilder[A]withQueryDSLFeature.this.ForUpdateQuerySQLBuilder[A]withQueryDSLFeature.this.SubQuerySQLBuilder[A]"></a>
@@ -248,7 +304,11 @@
       <span class="symbol">
         <span class="name">PagingSQLBuilder</span><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends (<span class="extype" name="scalikejdbc.QueryDSLFeature">QueryDSLFeature</span>.this)#<span class="extype" name="scalikejdbc.QueryDSLFeature.SQLBuilder">SQLBuilder</span>[<span class="extype" name="scalikejdbc.QueryDSLFeature.PagingSQLBuilder.A">A</span>] with (<span class="extype" name="scalikejdbc.QueryDSLFeature">QueryDSLFeature</span>.this)#<span class="extype" name="scalikejdbc.QueryDSLFeature.UnionQuerySQLBuilder">UnionQuerySQLBuilder</span>[<span class="extype" name="scalikejdbc.QueryDSLFeature.PagingSQLBuilder.A">A</span>] with (<span class="extype" name="scalikejdbc.QueryDSLFeature">QueryDSLFeature</span>.this)#<span class="extype" name="scalikejdbc.QueryDSLFeature.ExceptQuerySQLBuilder">ExceptQuerySQLBuilder</span>[<span class="extype" name="scalikejdbc.QueryDSLFeature.PagingSQLBuilder.A">A</span>] with (<span class="extype" name="scalikejdbc.QueryDSLFeature">QueryDSLFeature</span>.this)#<span class="extype" name="scalikejdbc.QueryDSLFeature.IntersectQuerySQLBuilder">IntersectQuerySQLBuilder</span>[<span class="extype" name="scalikejdbc.QueryDSLFeature.PagingSQLBuilder.A">A</span>] with (<span class="extype" name="scalikejdbc.QueryDSLFeature">QueryDSLFeature</span>.this)#<span class="extype" name="scalikejdbc.QueryDSLFeature.ForUpdateQuerySQLBuilder">ForUpdateQuerySQLBuilder</span>[<span class="extype" name="scalikejdbc.QueryDSLFeature.PagingSQLBuilder.A">A</span>] with (<span class="extype" name="scalikejdbc.QueryDSLFeature">QueryDSLFeature</span>.this)#<span class="extype" name="scalikejdbc.QueryDSLFeature.SubQuerySQLBuilder">SubQuerySQLBuilder</span>[<span class="extype" name="scalikejdbc.QueryDSLFeature.PagingSQLBuilder.A">A</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#scalikejdbc.package@PagingSQLBuilder[A]extendsQueryDSLFeature.this.SQLBuilder[A]withQueryDSLFeature.this.UnionQuerySQLBuilder[A]withQueryDSLFeature.this.ExceptQuerySQLBuilder[A]withQueryDSLFeature.this.IntersectQuerySQLBuilder[A]withQueryDSLFeature.this.ForUpdateQuerySQLBuilder[A]withQueryDSLFeature.this.SubQuerySQLBuilder[A]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>QueryDSLFeature</dd></dl></div>
     </li><li name="scalikejdbc.SQLSyntaxSupportFeature.PartialResultSQLSyntaxProvider" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="PartialResultSQLSyntaxProvider[S&lt;:&lt;?&gt;,A&lt;:&lt;?&gt;]extendsSQLSyntaxSupportFeature.this.SQLSyntaxProviderCommonImpl[S,A]withProductwithSerializable"></a>
@@ -259,9 +319,13 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">PartialResultSQLSyntaxProvider</span><span class="tparams">[<span name="S">S &lt;: (<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature">SQLSyntaxSupportFeature</span>.this)#<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.SQLSyntaxSupport">SQLSyntaxSupport</span>[<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.PartialResultSQLSyntaxProvider.A">A</span>]</span>, <span name="A">A</span>]</span><span class="result"> extends (<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature">SQLSyntaxSupportFeature</span>.this)#<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.SQLSyntaxProviderCommonImpl">SQLSyntaxProviderCommonImpl</span>[<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.PartialResultSQLSyntaxProvider.S">S</span>, <span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.PartialResultSQLSyntaxProvider.A">A</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <span class="name">PartialResultSQLSyntaxProvider</span><span class="tparams">[<span name="S">S &lt;: (<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature">SQLSyntaxSupportFeature</span>.this)#<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.SQLSyntaxSupport">SQLSyntaxSupport</span>[<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.PartialResultSQLSyntaxProvider.A">A</span>]</span>, <span name="A">A</span>]</span><span class="result"> extends (<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature">SQLSyntaxSupportFeature</span>.this)#<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.SQLSyntaxProviderCommonImpl">SQLSyntaxProviderCommonImpl</span>[<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.PartialResultSQLSyntaxProvider.S">S</span>, <span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.PartialResultSQLSyntaxProvider.A">A</span>] with <a href="http://www.scala-lang.org/api/2.11.6/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.11.6/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#scalikejdbc.package@PartialResultSQLSyntaxProvider[S&lt;:SQLSyntaxSupportFeature.this.SQLSyntaxSupport[A],A]extendsSQLSyntaxSupportFeature.this.SQLSyntaxProviderCommonImpl[S,A]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>SQLSyntaxSupportFeature</dd></dl></div>
     </li><li name="scalikejdbc.SQLSyntaxSupportFeature.PartialSubQueryResultNameSQLSyntaxProvider" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="PartialSubQueryResultNameSQLSyntaxProvider[S&lt;:&lt;?&gt;,A&lt;:&lt;?&gt;]extendsSQLSyntaxSupportFeature.this.SQLSyntaxProviderCommonImpl[S,A]withSQLSyntaxSupportFeature.this.ResultNameSQLSyntaxProvider[S,A]withProductwithSerializable"></a>
@@ -272,9 +336,13 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">PartialSubQueryResultNameSQLSyntaxProvider</span><span class="tparams">[<span name="S">S &lt;: (<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature">SQLSyntaxSupportFeature</span>.this)#<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.SQLSyntaxSupport">SQLSyntaxSupport</span>[<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.PartialSubQueryResultNameSQLSyntaxProvider.A">A</span>]</span>, <span name="A">A</span>]</span><span class="result"> extends (<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature">SQLSyntaxSupportFeature</span>.this)#<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.SQLSyntaxProviderCommonImpl">SQLSyntaxProviderCommonImpl</span>[<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.PartialSubQueryResultNameSQLSyntaxProvider.S">S</span>, <span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.PartialSubQueryResultNameSQLSyntaxProvider.A">A</span>] with (<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature">SQLSyntaxSupportFeature</span>.this)#<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.ResultNameSQLSyntaxProvider">ResultNameSQLSyntaxProvider</span>[<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.PartialSubQueryResultNameSQLSyntaxProvider.S">S</span>, <span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.PartialSubQueryResultNameSQLSyntaxProvider.A">A</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <span class="name">PartialSubQueryResultNameSQLSyntaxProvider</span><span class="tparams">[<span name="S">S &lt;: (<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature">SQLSyntaxSupportFeature</span>.this)#<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.SQLSyntaxSupport">SQLSyntaxSupport</span>[<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.PartialSubQueryResultNameSQLSyntaxProvider.A">A</span>]</span>, <span name="A">A</span>]</span><span class="result"> extends (<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature">SQLSyntaxSupportFeature</span>.this)#<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.SQLSyntaxProviderCommonImpl">SQLSyntaxProviderCommonImpl</span>[<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.PartialSubQueryResultNameSQLSyntaxProvider.S">S</span>, <span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.PartialSubQueryResultNameSQLSyntaxProvider.A">A</span>] with (<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature">SQLSyntaxSupportFeature</span>.this)#<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.ResultNameSQLSyntaxProvider">ResultNameSQLSyntaxProvider</span>[<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.PartialSubQueryResultNameSQLSyntaxProvider.S">S</span>, <span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.PartialSubQueryResultNameSQLSyntaxProvider.A">A</span>] with <a href="http://www.scala-lang.org/api/2.11.6/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.11.6/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#scalikejdbc.package@PartialSubQueryResultNameSQLSyntaxProvider[S&lt;:SQLSyntaxSupportFeature.this.SQLSyntaxSupport[A],A]extendsSQLSyntaxSupportFeature.this.SQLSyntaxProviderCommonImpl[S,A]withSQLSyntaxSupportFeature.this.ResultNameSQLSyntaxProvider[S,A]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>SQLSyntaxSupportFeature</dd></dl></div>
     </li><li name="scalikejdbc.SQLSyntaxSupportFeature.PartialSubQueryResultSQLSyntaxProvider" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="PartialSubQueryResultSQLSyntaxProvider[S&lt;:&lt;?&gt;,A&lt;:&lt;?&gt;]extendsSQLSyntaxSupportFeature.this.SQLSyntaxProviderCommonImpl[S,A]withProductwithSerializable"></a>
@@ -285,9 +353,13 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">PartialSubQueryResultSQLSyntaxProvider</span><span class="tparams">[<span name="S">S &lt;: (<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature">SQLSyntaxSupportFeature</span>.this)#<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.SQLSyntaxSupport">SQLSyntaxSupport</span>[<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.PartialSubQueryResultSQLSyntaxProvider.A">A</span>]</span>, <span name="A">A</span>]</span><span class="result"> extends (<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature">SQLSyntaxSupportFeature</span>.this)#<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.SQLSyntaxProviderCommonImpl">SQLSyntaxProviderCommonImpl</span>[<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.PartialSubQueryResultSQLSyntaxProvider.S">S</span>, <span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.PartialSubQueryResultSQLSyntaxProvider.A">A</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <span class="name">PartialSubQueryResultSQLSyntaxProvider</span><span class="tparams">[<span name="S">S &lt;: (<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature">SQLSyntaxSupportFeature</span>.this)#<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.SQLSyntaxSupport">SQLSyntaxSupport</span>[<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.PartialSubQueryResultSQLSyntaxProvider.A">A</span>]</span>, <span name="A">A</span>]</span><span class="result"> extends (<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature">SQLSyntaxSupportFeature</span>.this)#<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.SQLSyntaxProviderCommonImpl">SQLSyntaxProviderCommonImpl</span>[<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.PartialSubQueryResultSQLSyntaxProvider.S">S</span>, <span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.PartialSubQueryResultSQLSyntaxProvider.A">A</span>] with <a href="http://www.scala-lang.org/api/2.11.6/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.11.6/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#scalikejdbc.package@PartialSubQueryResultSQLSyntaxProvider[S&lt;:SQLSyntaxSupportFeature.this.SQLSyntaxSupport[A],A]extendsSQLSyntaxSupportFeature.this.SQLSyntaxProviderCommonImpl[S,A]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>SQLSyntaxSupportFeature</dd></dl></div>
     </li><li name="scalikejdbc.SQLSyntaxSupportFeature.PartialSubQuerySQLSyntaxProvider" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="PartialSubQuerySQLSyntaxProvider[S&lt;:&lt;?&gt;,A&lt;:&lt;?&gt;]extendsSQLSyntaxSupportFeature.this.SQLSyntaxProviderCommonImpl[S,A]withSQLSyntaxSupportFeature.this.AsteriskProviderwithProductwithSerializable"></a>
@@ -298,9 +370,13 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">PartialSubQuerySQLSyntaxProvider</span><span class="tparams">[<span name="S">S &lt;: (<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature">SQLSyntaxSupportFeature</span>.this)#<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.SQLSyntaxSupport">SQLSyntaxSupport</span>[<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.PartialSubQuerySQLSyntaxProvider.A">A</span>]</span>, <span name="A">A</span>]</span><span class="result"> extends (<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature">SQLSyntaxSupportFeature</span>.this)#<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.SQLSyntaxProviderCommonImpl">SQLSyntaxProviderCommonImpl</span>[<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.PartialSubQuerySQLSyntaxProvider.S">S</span>, <span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.PartialSubQuerySQLSyntaxProvider.A">A</span>] with (<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature">SQLSyntaxSupportFeature</span>.this)#<span class="extype" name="scalikejdbc.SQLInterpolationCoreTypeAlias.AsteriskProvider">AsteriskProvider</span> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <span class="name">PartialSubQuerySQLSyntaxProvider</span><span class="tparams">[<span name="S">S &lt;: (<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature">SQLSyntaxSupportFeature</span>.this)#<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.SQLSyntaxSupport">SQLSyntaxSupport</span>[<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.PartialSubQuerySQLSyntaxProvider.A">A</span>]</span>, <span name="A">A</span>]</span><span class="result"> extends (<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature">SQLSyntaxSupportFeature</span>.this)#<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.SQLSyntaxProviderCommonImpl">SQLSyntaxProviderCommonImpl</span>[<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.PartialSubQuerySQLSyntaxProvider.S">S</span>, <span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.PartialSubQuerySQLSyntaxProvider.A">A</span>] with (<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature">SQLSyntaxSupportFeature</span>.this)#<span class="extype" name="scalikejdbc.SQLInterpolationCoreTypeAlias.AsteriskProvider">AsteriskProvider</span> with <a href="http://www.scala-lang.org/api/2.11.6/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.11.6/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#scalikejdbc.package@PartialSubQuerySQLSyntaxProvider[S&lt;:SQLSyntaxSupportFeature.this.SQLSyntaxSupport[A],A]extendsSQLSyntaxSupportFeature.this.SQLSyntaxProviderCommonImpl[S,A]withSQLSyntaxSupportFeature.this.AsteriskProviderwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>SQLSyntaxSupportFeature</dd></dl></div>
     </li><li name="scalikejdbc.SQLSyntaxSupportFeature.QuerySQLSyntaxProvider" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="QuerySQLSyntaxProvider[S&lt;:&lt;?&gt;,A&lt;:&lt;?&gt;]extendsSQLSyntaxSupportFeature.this.SQLSyntaxProviderCommonImpl[S,A]withSQLSyntaxSupportFeature.this.ResultAllProviderwithSQLSyntaxSupportFeature.this.AsteriskProviderwithProductwithSerializable"></a>
@@ -311,9 +387,13 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">QuerySQLSyntaxProvider</span><span class="tparams">[<span name="S">S &lt;: (<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature">SQLSyntaxSupportFeature</span>.this)#<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.SQLSyntaxSupport">SQLSyntaxSupport</span>[<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.QuerySQLSyntaxProvider.A">A</span>]</span>, <span name="A">A</span>]</span><span class="result"> extends (<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature">SQLSyntaxSupportFeature</span>.this)#<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.SQLSyntaxProviderCommonImpl">SQLSyntaxProviderCommonImpl</span>[<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.QuerySQLSyntaxProvider.S">S</span>, <span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.QuerySQLSyntaxProvider.A">A</span>] with (<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature">SQLSyntaxSupportFeature</span>.this)#<span class="extype" name="scalikejdbc.SQLInterpolationCoreTypeAlias.ResultAllProvider">ResultAllProvider</span> with (<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature">SQLSyntaxSupportFeature</span>.this)#<span class="extype" name="scalikejdbc.SQLInterpolationCoreTypeAlias.AsteriskProvider">AsteriskProvider</span> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <span class="name">QuerySQLSyntaxProvider</span><span class="tparams">[<span name="S">S &lt;: (<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature">SQLSyntaxSupportFeature</span>.this)#<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.SQLSyntaxSupport">SQLSyntaxSupport</span>[<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.QuerySQLSyntaxProvider.A">A</span>]</span>, <span name="A">A</span>]</span><span class="result"> extends (<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature">SQLSyntaxSupportFeature</span>.this)#<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.SQLSyntaxProviderCommonImpl">SQLSyntaxProviderCommonImpl</span>[<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.QuerySQLSyntaxProvider.S">S</span>, <span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.QuerySQLSyntaxProvider.A">A</span>] with (<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature">SQLSyntaxSupportFeature</span>.this)#<span class="extype" name="scalikejdbc.SQLInterpolationCoreTypeAlias.ResultAllProvider">ResultAllProvider</span> with (<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature">SQLSyntaxSupportFeature</span>.this)#<span class="extype" name="scalikejdbc.SQLInterpolationCoreTypeAlias.AsteriskProvider">AsteriskProvider</span> with <a href="http://www.scala-lang.org/api/2.11.6/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.11.6/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#scalikejdbc.package@QuerySQLSyntaxProvider[S&lt;:SQLSyntaxSupportFeature.this.SQLSyntaxSupport[A],A]extendsSQLSyntaxSupportFeature.this.SQLSyntaxProviderCommonImpl[S,A]withSQLSyntaxSupportFeature.this.ResultAllProviderwithSQLSyntaxSupportFeature.this.AsteriskProviderwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>SQLSyntaxSupportFeature</dd></dl></div>
     </li><li name="scalikejdbc.SQLInterpolationCoreTypeAlias.ResultAllProvider" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ResultAllProvider=scalikejdbc.interpolation.ResultAllProvider"></a>
@@ -326,7 +406,11 @@
       <span class="symbol">
         <span class="name">ResultAllProvider</span><span class="result"> = <span class="extype" name="scalikejdbc.interpolation.ResultAllProvider">scalikejdbc.interpolation.ResultAllProvider</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#scalikejdbc.package@ResultAllProvider=scalikejdbc.interpolation.ResultAllProvider" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>SQLInterpolationCoreTypeAlias</dd></dl></div>
     </li><li name="scalikejdbc.SQLSyntaxSupportFeature.ResultName" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ResultName[A&lt;:&lt;?&gt;]=SQLSyntaxSupportFeature.this.ResultNameSQLSyntaxProvider[SQLSyntaxSupportFeature.this.SQLSyntaxSupport[A],A]"></a>
@@ -339,7 +423,11 @@
       <span class="symbol">
         <span class="name">ResultName</span><span class="tparams">[<span name="A">A</span>]</span><span class="result"> = (<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature">SQLSyntaxSupportFeature</span>.this)#<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.ResultNameSQLSyntaxProvider">ResultNameSQLSyntaxProvider</span>[(<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature">SQLSyntaxSupportFeature</span>.this)#<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.SQLSyntaxSupport">SQLSyntaxSupport</span>[<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.ResultName.A">A</span>], <span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.ResultName.A">A</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#scalikejdbc.package@ResultName[A]=SQLSyntaxSupportFeature.this.ResultNameSQLSyntaxProvider[SQLSyntaxSupportFeature.this.SQLSyntaxSupport[A],A]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>SQLSyntaxSupportFeature</dd></dl></div>
     </li><li name="scalikejdbc.SQLSyntaxSupportFeature.ResultNameSQLSyntaxProvider" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
       <a id="ResultNameSQLSyntaxProvider[S&lt;:&lt;?&gt;,A&lt;:&lt;?&gt;]extendsSQLSyntaxSupportFeature.this.SQLSyntaxProvider[A]"></a>
@@ -352,7 +440,11 @@
       <span class="symbol">
         <span class="name">ResultNameSQLSyntaxProvider</span><span class="tparams">[<span name="S">S &lt;: (<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature">SQLSyntaxSupportFeature</span>.this)#<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.SQLSyntaxSupport">SQLSyntaxSupport</span>[<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.ResultNameSQLSyntaxProvider.A">A</span>]</span>, <span name="A">A</span>]</span><span class="result"> extends (<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature">SQLSyntaxSupportFeature</span>.this)#<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.SQLSyntaxProvider">SQLSyntaxProvider</span>[<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.ResultNameSQLSyntaxProvider.A">A</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#scalikejdbc.package@ResultNameSQLSyntaxProvider[S&lt;:SQLSyntaxSupportFeature.this.SQLSyntaxSupport[A],A]extendsSQLSyntaxSupportFeature.this.SQLSyntaxProvider[A]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>SQLSyntaxSupportFeature</dd></dl></div>
     </li><li name="scalikejdbc.SQLSyntaxSupportFeature.ResultSQLSyntaxProvider" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ResultSQLSyntaxProvider[S&lt;:&lt;?&gt;,A&lt;:&lt;?&gt;]extendsSQLSyntaxSupportFeature.this.SQLSyntaxProviderCommonImpl[S,A]withProductwithSerializable"></a>
@@ -363,9 +455,13 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">ResultSQLSyntaxProvider</span><span class="tparams">[<span name="S">S &lt;: (<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature">SQLSyntaxSupportFeature</span>.this)#<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.SQLSyntaxSupport">SQLSyntaxSupport</span>[<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.ResultSQLSyntaxProvider.A">A</span>]</span>, <span name="A">A</span>]</span><span class="result"> extends (<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature">SQLSyntaxSupportFeature</span>.this)#<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.SQLSyntaxProviderCommonImpl">SQLSyntaxProviderCommonImpl</span>[<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.ResultSQLSyntaxProvider.S">S</span>, <span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.ResultSQLSyntaxProvider.A">A</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <span class="name">ResultSQLSyntaxProvider</span><span class="tparams">[<span name="S">S &lt;: (<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature">SQLSyntaxSupportFeature</span>.this)#<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.SQLSyntaxSupport">SQLSyntaxSupport</span>[<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.ResultSQLSyntaxProvider.A">A</span>]</span>, <span name="A">A</span>]</span><span class="result"> extends (<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature">SQLSyntaxSupportFeature</span>.this)#<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.SQLSyntaxProviderCommonImpl">SQLSyntaxProviderCommonImpl</span>[<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.ResultSQLSyntaxProvider.S">S</span>, <span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.ResultSQLSyntaxProvider.A">A</span>] with <a href="http://www.scala-lang.org/api/2.11.6/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.11.6/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#scalikejdbc.package@ResultSQLSyntaxProvider[S&lt;:SQLSyntaxSupportFeature.this.SQLSyntaxSupport[A],A]extendsSQLSyntaxSupportFeature.this.SQLSyntaxProviderCommonImpl[S,A]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>SQLSyntaxSupportFeature</dd></dl></div>
     </li><li name="scalikejdbc.QueryDSLFeature.SQLBuilder" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
       <a id="SQLBuilder[A&lt;:&lt;?&gt;]extendsAnyRef"></a>
@@ -376,9 +472,13 @@
         <span class="kind">trait</span>
       </span>
       <span class="symbol">
-        <span class="name">SQLBuilder</span><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+        <span class="name">SQLBuilder</span><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends <a href="http://www.scala-lang.org/api/2.11.6/index.html#scala.AnyRef" class="extype" target="_top">AnyRef</a></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#scalikejdbc.package@SQLBuilder[A]extendsAnyRef" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>QueryDSLFeature</dd></dl></div>
     </li><li name="scalikejdbc.SQLInterpolationCoreTypeAlias.SQLSyntax" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="SQLSyntax=scalikejdbc.interpolation.SQLSyntax"></a>
@@ -391,7 +491,11 @@
       <span class="symbol">
         <span class="name">SQLSyntax</span><span class="result"> = <span class="extype" name="scalikejdbc.interpolation.SQLSyntax">scalikejdbc.interpolation.SQLSyntax</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#scalikejdbc.package@SQLSyntax=scalikejdbc.interpolation.SQLSyntax" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>SQLInterpolationCoreTypeAlias</dd></dl></div>
     </li><li name="scalikejdbc.SQLSyntaxSupportFeature.SQLSyntaxProvider" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
       <a id="SQLSyntaxProvider[A&lt;:&lt;?&gt;]extendsDynamic"></a>
@@ -402,9 +506,13 @@
         <span class="kind">trait</span>
       </span>
       <span class="symbol">
-        <span class="name">SQLSyntaxProvider</span><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends <span class="extype" name="scala.Dynamic">Dynamic</span></span>
+        <span class="name">SQLSyntaxProvider</span><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends <a href="http://www.scala-lang.org/api/2.11.6/index.html#scala.Dynamic" class="extype" target="_top">Dynamic</a></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#scalikejdbc.package@SQLSyntaxProvider[A]extendsDynamic" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>SQLSyntaxSupportFeature</dd></dl></div>
     </li><li name="scalikejdbc.SQLSyntaxSupportFeature.SQLSyntaxSupport" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
       <a id="SQLSyntaxSupport[A&lt;:&lt;?&gt;]extendsAnyRef"></a>
@@ -415,9 +523,13 @@
         <span class="kind">trait</span>
       </span>
       <span class="symbol">
-        <span class="name">SQLSyntaxSupport</span><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+        <span class="name">SQLSyntaxSupport</span><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends <a href="http://www.scala-lang.org/api/2.11.6/index.html#scala.AnyRef" class="extype" target="_top">AnyRef</a></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#scalikejdbc.package@SQLSyntaxSupport[A]extendsAnyRef" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>SQLSyntaxSupportFeature</dd></dl></div>
     </li><li name="scalikejdbc.QueryDSLFeature.SelectSQLBuilder" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="SelectSQLBuilder[A&lt;:&lt;?&gt;]extendsQueryDSLFeature.this.SQLBuilder[A]withQueryDSLFeature.this.SubQuerySQLBuilder[A]withProductwithSerializable"></a>
@@ -428,9 +540,13 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">SelectSQLBuilder</span><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends (<span class="extype" name="scalikejdbc.QueryDSLFeature">QueryDSLFeature</span>.this)#<span class="extype" name="scalikejdbc.QueryDSLFeature.SQLBuilder">SQLBuilder</span>[<span class="extype" name="scalikejdbc.QueryDSLFeature.SelectSQLBuilder.A">A</span>] with (<span class="extype" name="scalikejdbc.QueryDSLFeature">QueryDSLFeature</span>.this)#<span class="extype" name="scalikejdbc.QueryDSLFeature.SubQuerySQLBuilder">SubQuerySQLBuilder</span>[<span class="extype" name="scalikejdbc.QueryDSLFeature.SelectSQLBuilder.A">A</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <span class="name">SelectSQLBuilder</span><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends (<span class="extype" name="scalikejdbc.QueryDSLFeature">QueryDSLFeature</span>.this)#<span class="extype" name="scalikejdbc.QueryDSLFeature.SQLBuilder">SQLBuilder</span>[<span class="extype" name="scalikejdbc.QueryDSLFeature.SelectSQLBuilder.A">A</span>] with (<span class="extype" name="scalikejdbc.QueryDSLFeature">QueryDSLFeature</span>.this)#<span class="extype" name="scalikejdbc.QueryDSLFeature.SubQuerySQLBuilder">SubQuerySQLBuilder</span>[<span class="extype" name="scalikejdbc.QueryDSLFeature.SelectSQLBuilder.A">A</span>] with <a href="http://www.scala-lang.org/api/2.11.6/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.11.6/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#scalikejdbc.package@SelectSQLBuilder[A]extendsQueryDSLFeature.this.SQLBuilder[A]withQueryDSLFeature.this.SubQuerySQLBuilder[A]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>QueryDSLFeature</dd></dl></div>
     </li><li name="scalikejdbc.SQLSyntaxSupportFeature.SubQueryResultName" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="SubQueryResultName=SQLSyntaxSupportFeature.this.SubQueryResultNameSQLSyntaxProvider"></a>
@@ -443,7 +559,11 @@
       <span class="symbol">
         <span class="name">SubQueryResultName</span><span class="result"> = (<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature">SQLSyntaxSupportFeature</span>.this)#<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.SubQueryResultNameSQLSyntaxProvider">SubQueryResultNameSQLSyntaxProvider</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#scalikejdbc.package@SubQueryResultName=SQLSyntaxSupportFeature.this.SubQueryResultNameSQLSyntaxProvider" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>SQLSyntaxSupportFeature</dd></dl></div>
     </li><li name="scalikejdbc.SQLSyntaxSupportFeature.SubQueryResultNameSQLSyntaxProvider" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="SubQueryResultNameSQLSyntaxProviderextendsProductwithSerializable"></a>
@@ -454,9 +574,13 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">SubQueryResultNameSQLSyntaxProvider</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <span class="name">SubQueryResultNameSQLSyntaxProvider</span><span class="result"> extends <a href="http://www.scala-lang.org/api/2.11.6/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.11.6/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#scalikejdbc.package@SubQueryResultNameSQLSyntaxProviderextendsProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>SQLSyntaxSupportFeature</dd></dl></div>
     </li><li name="scalikejdbc.SQLSyntaxSupportFeature.SubQueryResultSQLSyntaxProvider" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="SubQueryResultSQLSyntaxProviderextendsProductwithSerializable"></a>
@@ -467,9 +591,13 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">SubQueryResultSQLSyntaxProvider</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <span class="name">SubQueryResultSQLSyntaxProvider</span><span class="result"> extends <a href="http://www.scala-lang.org/api/2.11.6/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.11.6/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#scalikejdbc.package@SubQueryResultSQLSyntaxProviderextendsProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>SQLSyntaxSupportFeature</dd></dl></div>
     </li><li name="scalikejdbc.QueryDSLFeature.SubQuerySQLBuilder" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
       <a id="SubQuerySQLBuilder[A&lt;:&lt;?&gt;]extendsQueryDSLFeature.this.SQLBuilder[A]"></a>
@@ -482,7 +610,11 @@
       <span class="symbol">
         <span class="name">SubQuerySQLBuilder</span><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends (<span class="extype" name="scalikejdbc.QueryDSLFeature">QueryDSLFeature</span>.this)#<span class="extype" name="scalikejdbc.QueryDSLFeature.SQLBuilder">SQLBuilder</span>[<span class="extype" name="scalikejdbc.QueryDSLFeature.SubQuerySQLBuilder.A">A</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#scalikejdbc.package@SubQuerySQLBuilder[A]extendsQueryDSLFeature.this.SQLBuilder[A]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>QueryDSLFeature</dd></dl></div>
     </li><li name="scalikejdbc.SQLSyntaxSupportFeature.SubQuerySQLSyntaxProvider" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="SubQuerySQLSyntaxProviderextendsSQLSyntaxSupportFeature.this.ResultAllProviderwithSQLSyntaxSupportFeature.this.AsteriskProviderwithProductwithSerializable"></a>
@@ -493,9 +625,13 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">SubQuerySQLSyntaxProvider</span><span class="result"> extends (<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature">SQLSyntaxSupportFeature</span>.this)#<span class="extype" name="scalikejdbc.SQLInterpolationCoreTypeAlias.ResultAllProvider">ResultAllProvider</span> with (<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature">SQLSyntaxSupportFeature</span>.this)#<span class="extype" name="scalikejdbc.SQLInterpolationCoreTypeAlias.AsteriskProvider">AsteriskProvider</span> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <span class="name">SubQuerySQLSyntaxProvider</span><span class="result"> extends (<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature">SQLSyntaxSupportFeature</span>.this)#<span class="extype" name="scalikejdbc.SQLInterpolationCoreTypeAlias.ResultAllProvider">ResultAllProvider</span> with (<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature">SQLSyntaxSupportFeature</span>.this)#<span class="extype" name="scalikejdbc.SQLInterpolationCoreTypeAlias.AsteriskProvider">AsteriskProvider</span> with <a href="http://www.scala-lang.org/api/2.11.6/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.11.6/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#scalikejdbc.package@SubQuerySQLSyntaxProviderextendsSQLSyntaxSupportFeature.this.ResultAllProviderwithSQLSyntaxSupportFeature.this.AsteriskProviderwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>SQLSyntaxSupportFeature</dd></dl></div>
     </li><li name="scalikejdbc.SQLSyntaxSupportFeature.SubQuerySyntaxProvider" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="SubQuerySyntaxProvider=SQLSyntaxSupportFeature.this.SubQuerySQLSyntaxProvider"></a>
@@ -508,7 +644,11 @@
       <span class="symbol">
         <span class="name">SubQuerySyntaxProvider</span><span class="result"> = (<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature">SQLSyntaxSupportFeature</span>.this)#<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.SubQuerySQLSyntaxProvider">SubQuerySQLSyntaxProvider</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#scalikejdbc.package@SubQuerySyntaxProvider=SQLSyntaxSupportFeature.this.SubQuerySQLSyntaxProvider" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>SQLSyntaxSupportFeature</dd></dl></div>
     </li><li name="scalikejdbc.SQLSyntaxSupportFeature.SyntaxProvider" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="SyntaxProvider[A&lt;:&lt;?&gt;]=SQLSyntaxSupportFeature.this.QuerySQLSyntaxProvider[SQLSyntaxSupportFeature.this.SQLSyntaxSupport[A],A]"></a>
@@ -521,7 +661,11 @@
       <span class="symbol">
         <span class="name">SyntaxProvider</span><span class="tparams">[<span name="A">A</span>]</span><span class="result"> = (<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature">SQLSyntaxSupportFeature</span>.this)#<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.QuerySQLSyntaxProvider">QuerySQLSyntaxProvider</span>[(<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature">SQLSyntaxSupportFeature</span>.this)#<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.SQLSyntaxSupport">SQLSyntaxSupport</span>[<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.SyntaxProvider.A">A</span>], <span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature.SyntaxProvider.A">A</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#scalikejdbc.package@SyntaxProvider[A]=SQLSyntaxSupportFeature.this.QuerySQLSyntaxProvider[SQLSyntaxSupportFeature.this.SQLSyntaxSupport[A],A]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>SQLSyntaxSupportFeature</dd></dl></div>
     </li><li name="scalikejdbc.SQLSyntaxSupportFeature.TableAsAliasSQLSyntax" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="TableAsAliasSQLSyntaxextendsSQLSyntaxSupportFeature.this.SQLSyntaxwithProductwithSerializable"></a>
@@ -532,9 +676,13 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">TableAsAliasSQLSyntax</span><span class="result"> extends (<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature">SQLSyntaxSupportFeature</span>.this)#<span class="extype" name="scalikejdbc.SQLInterpolationCoreTypeAlias.SQLSyntax">SQLSyntax</span> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <span class="name">TableAsAliasSQLSyntax</span><span class="result"> extends (<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature">SQLSyntaxSupportFeature</span>.this)#<span class="extype" name="scalikejdbc.SQLInterpolationCoreTypeAlias.SQLSyntax">SQLSyntax</span> with <a href="http://www.scala-lang.org/api/2.11.6/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.11.6/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#scalikejdbc.package@TableAsAliasSQLSyntaxextendsSQLSyntaxSupportFeature.this.SQLSyntaxwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>SQLSyntaxSupportFeature</dd></dl></div>
     </li><li name="scalikejdbc.SQLSyntaxSupportFeature.TableDefSQLSyntax" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="TableDefSQLSyntaxextendsSQLSyntaxSupportFeature.this.SQLSyntaxwithProductwithSerializable"></a>
@@ -545,9 +693,13 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">TableDefSQLSyntax</span><span class="result"> extends (<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature">SQLSyntaxSupportFeature</span>.this)#<span class="extype" name="scalikejdbc.SQLInterpolationCoreTypeAlias.SQLSyntax">SQLSyntax</span> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <span class="name">TableDefSQLSyntax</span><span class="result"> extends (<span class="extype" name="scalikejdbc.SQLSyntaxSupportFeature">SQLSyntaxSupportFeature</span>.this)#<span class="extype" name="scalikejdbc.SQLInterpolationCoreTypeAlias.SQLSyntax">SQLSyntax</span> with <a href="http://www.scala-lang.org/api/2.11.6/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.11.6/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#scalikejdbc.package@TableDefSQLSyntaxextendsSQLSyntaxSupportFeature.this.SQLSyntaxwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>SQLSyntaxSupportFeature</dd></dl></div>
     </li><li name="scalikejdbc.QueryDSLFeature.UnionQuerySQLBuilder" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
       <a id="UnionQuerySQLBuilder[A&lt;:&lt;?&gt;]extendsQueryDSLFeature.this.SQLBuilder[A]"></a>
@@ -560,7 +712,11 @@
       <span class="symbol">
         <span class="name">UnionQuerySQLBuilder</span><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends (<span class="extype" name="scalikejdbc.QueryDSLFeature">QueryDSLFeature</span>.this)#<span class="extype" name="scalikejdbc.QueryDSLFeature.SQLBuilder">SQLBuilder</span>[<span class="extype" name="scalikejdbc.QueryDSLFeature.UnionQuerySQLBuilder.A">A</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#scalikejdbc.package@UnionQuerySQLBuilder[A]extendsQueryDSLFeature.this.SQLBuilder[A]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>QueryDSLFeature</dd></dl></div>
     </li><li name="scalikejdbc.QueryDSLFeature.UpdateOperation" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
       <a id="UpdateOperationextendsAnyRef"></a>
@@ -571,9 +727,13 @@
         <span class="kind">trait</span>
       </span>
       <span class="symbol">
-        <span class="name">UpdateOperation</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+        <span class="name">UpdateOperation</span><span class="result"> extends <a href="http://www.scala-lang.org/api/2.11.6/index.html#scala.AnyRef" class="extype" target="_top">AnyRef</a></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#scalikejdbc.package@UpdateOperationextendsAnyRef" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>QueryDSLFeature</dd></dl></div>
     </li><li name="scalikejdbc.QueryDSLFeature.UpdateSQLBuilder" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="UpdateSQLBuilderextendsQueryDSLFeature.this.SQLBuilder[QueryDSLFeature.this.UpdateOperation]withQueryDSLFeature.this.WhereSQLBuilder[QueryDSLFeature.this.UpdateOperation]withProductwithSerializable"></a>
@@ -584,9 +744,13 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">UpdateSQLBuilder</span><span class="result"> extends (<span class="extype" name="scalikejdbc.QueryDSLFeature">QueryDSLFeature</span>.this)#<span class="extype" name="scalikejdbc.QueryDSLFeature.SQLBuilder">SQLBuilder</span>[(<span class="extype" name="scalikejdbc.QueryDSLFeature">QueryDSLFeature</span>.this)#<span class="extype" name="scalikejdbc.QueryDSLFeature.UpdateOperation">UpdateOperation</span>] with (<span class="extype" name="scalikejdbc.QueryDSLFeature">QueryDSLFeature</span>.this)#<span class="extype" name="scalikejdbc.QueryDSLFeature.WhereSQLBuilder">WhereSQLBuilder</span>[(<span class="extype" name="scalikejdbc.QueryDSLFeature">QueryDSLFeature</span>.this)#<span class="extype" name="scalikejdbc.QueryDSLFeature.UpdateOperation">UpdateOperation</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <span class="name">UpdateSQLBuilder</span><span class="result"> extends (<span class="extype" name="scalikejdbc.QueryDSLFeature">QueryDSLFeature</span>.this)#<span class="extype" name="scalikejdbc.QueryDSLFeature.SQLBuilder">SQLBuilder</span>[(<span class="extype" name="scalikejdbc.QueryDSLFeature">QueryDSLFeature</span>.this)#<span class="extype" name="scalikejdbc.QueryDSLFeature.UpdateOperation">UpdateOperation</span>] with (<span class="extype" name="scalikejdbc.QueryDSLFeature">QueryDSLFeature</span>.this)#<span class="extype" name="scalikejdbc.QueryDSLFeature.WhereSQLBuilder">WhereSQLBuilder</span>[(<span class="extype" name="scalikejdbc.QueryDSLFeature">QueryDSLFeature</span>.this)#<span class="extype" name="scalikejdbc.QueryDSLFeature.UpdateOperation">UpdateOperation</span>] with <a href="http://www.scala-lang.org/api/2.11.6/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.11.6/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#scalikejdbc.package@UpdateSQLBuilderextendsQueryDSLFeature.this.SQLBuilder[QueryDSLFeature.this.UpdateOperation]withQueryDSLFeature.this.WhereSQLBuilder[QueryDSLFeature.this.UpdateOperation]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>QueryDSLFeature</dd></dl></div>
     </li><li name="scalikejdbc.QueryDSLFeature.WhereSQLBuilder" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
       <a id="WhereSQLBuilder[A&lt;:&lt;?&gt;]extendsQueryDSLFeature.this.SQLBuilder[A]"></a>
@@ -599,7 +763,11 @@
       <span class="symbol">
         <span class="name">WhereSQLBuilder</span><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends (<span class="extype" name="scalikejdbc.QueryDSLFeature">QueryDSLFeature</span>.this)#<span class="extype" name="scalikejdbc.QueryDSLFeature.SQLBuilder">SQLBuilder</span>[<span class="extype" name="scalikejdbc.QueryDSLFeature.WhereSQLBuilder.A">A</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#scalikejdbc.package@WhereSQLBuilder[A]extendsQueryDSLFeature.this.SQLBuilder[A]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>QueryDSLFeature</dd></dl></div>
     </li></ol>
             </div>
@@ -619,7 +787,11 @@
       <span class="symbol">
         <span class="name">SQLSyntax</span><span class="result">: <span class="extype" name="scalikejdbc.interpolation.SQLSyntax">scalikejdbc.interpolation.SQLSyntax</span>.type</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#scalikejdbc.package@SQLSyntax:scalikejdbc.interpolation.SQLSyntax.type" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>SQLInterpolationCoreTypeAlias</dd></dl></div>
     </li><li name="scalikejdbc.ScalaBigDecimalConverterImplicits#convertBigDecimal" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="convertBigDecimal(bd:java.math.BigDecimal):scalikejdbc.ScalaBigDecimalConverter"></a>
@@ -632,7 +804,11 @@
       <span class="symbol">
         <span class="name">convertBigDecimal</span><span class="params">(<span name="bd">bd: <span class="extype" name="java.math.BigDecimal">BigDecimal</span></span>)</span><span class="result">: <span class="extype" name="scalikejdbc.ScalaBigDecimalConverter">ScalaBigDecimalConverter</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#scalikejdbc.package@convertBigDecimal(bd:java.math.BigDecimal):scalikejdbc.ScalaBigDecimalConverter" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>ScalaBigDecimalConverterImplicits</dd></dl></div>
     </li><li name="scalikejdbc.UnixTimeInMillisConverterImplicits#convertJavaSqlDateToConverter" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="convertJavaSqlDateToConverter(t:java.sql.Date):scalikejdbc.UnixTimeInMillisConverter"></a>
@@ -645,7 +821,11 @@
       <span class="symbol">
         <span class="name">convertJavaSqlDateToConverter</span><span class="params">(<span name="t">t: <span class="extype" name="java.sql.Date">Date</span></span>)</span><span class="result">: <span class="extype" name="scalikejdbc.UnixTimeInMillisConverter">UnixTimeInMillisConverter</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#scalikejdbc.package@convertJavaSqlDateToConverter(t:java.sql.Date):scalikejdbc.UnixTimeInMillisConverter" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>UnixTimeInMillisConverterImplicits</dd></dl></div>
     </li><li name="scalikejdbc.UnixTimeInMillisConverterImplicits#convertJavaSqlTimeToConverter" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="convertJavaSqlTimeToConverter(t:java.sql.Time):scalikejdbc.UnixTimeInMillisConverter"></a>
@@ -658,7 +838,11 @@
       <span class="symbol">
         <span class="name">convertJavaSqlTimeToConverter</span><span class="params">(<span name="t">t: <span class="extype" name="java.sql.Time">Time</span></span>)</span><span class="result">: <span class="extype" name="scalikejdbc.UnixTimeInMillisConverter">UnixTimeInMillisConverter</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#scalikejdbc.package@convertJavaSqlTimeToConverter(t:java.sql.Time):scalikejdbc.UnixTimeInMillisConverter" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>UnixTimeInMillisConverterImplicits</dd></dl></div>
     </li><li name="scalikejdbc.UnixTimeInMillisConverterImplicits#convertJavaSqlTimestampToConverter" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="convertJavaSqlTimestampToConverter(t:java.sql.Timestamp):scalikejdbc.UnixTimeInMillisConverter"></a>
@@ -671,7 +855,11 @@
       <span class="symbol">
         <span class="name">convertJavaSqlTimestampToConverter</span><span class="params">(<span name="t">t: <span class="extype" name="java.sql.Timestamp">Timestamp</span></span>)</span><span class="result">: <span class="extype" name="scalikejdbc.UnixTimeInMillisConverter">UnixTimeInMillisConverter</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#scalikejdbc.package@convertJavaSqlTimestampToConverter(t:java.sql.Timestamp):scalikejdbc.UnixTimeInMillisConverter" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>UnixTimeInMillisConverterImplicits</dd></dl></div>
     </li><li name="scalikejdbc.UnixTimeInMillisConverterImplicits#convertJavaUtilDateToConverter" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="convertJavaUtilDateToConverter(t:java.util.Date):scalikejdbc.UnixTimeInMillisConverter"></a>
@@ -684,7 +872,11 @@
       <span class="symbol">
         <span class="name">convertJavaUtilDateToConverter</span><span class="params">(<span name="t">t: <span class="extype" name="java.util.Date">Date</span></span>)</span><span class="result">: <span class="extype" name="scalikejdbc.UnixTimeInMillisConverter">UnixTimeInMillisConverter</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#scalikejdbc.package@convertJavaUtilDateToConverter(t:java.util.Date):scalikejdbc.UnixTimeInMillisConverter" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>UnixTimeInMillisConverterImplicits</dd></dl></div>
     </li><li name="scalikejdbc.UnixTimeInMillisConverterImplicits#convertLocalTimeToConverter" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="convertLocalTimeToConverter(t:org.joda.time.LocalTime):scalikejdbc.LocalTimeConverter"></a>
@@ -697,7 +889,11 @@
       <span class="symbol">
         <span class="name">convertLocalTimeToConverter</span><span class="params">(<span name="t">t: <span class="extype" name="org.joda.time.LocalTime">LocalTime</span></span>)</span><span class="result">: <span class="extype" name="scalikejdbc.LocalTimeConverter">LocalTimeConverter</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#scalikejdbc.package@convertLocalTimeToConverter(t:org.joda.time.LocalTime):scalikejdbc.LocalTimeConverter" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>UnixTimeInMillisConverterImplicits</dd></dl></div>
     </li><li name="scalikejdbc.QueryDSLFeature#delete" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="delete:QueryDSLFeature.this.QueryDSL.delete.type"></a>
@@ -710,7 +906,11 @@
       <span class="symbol">
         <span class="name">delete</span><span class="result">: <span class="extype" name="scalikejdbc.QueryDSLFeature.QueryDSL.delete">scalikejdbc.QueryDSLFeature.QueryDSL.delete</span>.type</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#scalikejdbc.package@delete:QueryDSLFeature.this.QueryDSL.delete.type" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>QueryDSLFeature</dd></dl></div>
     </li><li name="scalikejdbc.QueryDSLFeature#deleteFrom" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="deleteFrom:QueryDSLFeature.this.QueryDSL.deleteFrom.type"></a>
@@ -723,7 +923,11 @@
       <span class="symbol">
         <span class="name">deleteFrom</span><span class="result">: <span class="extype" name="scalikejdbc.QueryDSLFeature.QueryDSL.deleteFrom">scalikejdbc.QueryDSLFeature.QueryDSL.deleteFrom</span>.type</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#scalikejdbc.package@deleteFrom:QueryDSLFeature.this.QueryDSL.deleteFrom.type" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>QueryDSLFeature</dd></dl></div>
     </li><li name="scalikejdbc.QueryDSLFeature#insert" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="insert:QueryDSLFeature.this.QueryDSL.insert.type"></a>
@@ -736,7 +940,11 @@
       <span class="symbol">
         <span class="name">insert</span><span class="result">: <span class="extype" name="scalikejdbc.QueryDSLFeature.QueryDSL.insert">scalikejdbc.QueryDSLFeature.QueryDSL.insert</span>.type</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#scalikejdbc.package@insert:QueryDSLFeature.this.QueryDSL.insert.type" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>QueryDSLFeature</dd></dl></div>
     </li><li name="scalikejdbc.QueryDSLFeature#insertInto" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="insertInto:QueryDSLFeature.this.QueryDSL.insertInto.type"></a>
@@ -749,9 +957,13 @@
       <span class="symbol">
         <span class="name">insertInto</span><span class="result">: <span class="extype" name="scalikejdbc.QueryDSLFeature.QueryDSL.insertInto">scalikejdbc.QueryDSLFeature.QueryDSL.insertInto</span>.type</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#scalikejdbc.package@insertInto:QueryDSLFeature.this.QueryDSL.insertInto.type" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>QueryDSLFeature</dd></dl></div>
-    </li><li name="scalikejdbc.package#opt" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+    </li><li name="scalikejdbc#opt" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="opt[A&lt;:&lt;?&gt;](v:&lt;?&gt;):Option[A]"></a>
       <a id="opt[A](Any):Option[A]"></a>
       <h4 class="signature">
@@ -760,9 +972,13 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">opt</span><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="v">v: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scalikejdbc.opt.A">A</span>]</span>
+        <span class="name">opt</span><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="v">v: <a href="http://www.scala-lang.org/api/2.11.6/index.html#scala.Any" class="extype" target="_top">Any</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.6/index.html#scala.Option" class="extype" target="_top">Option</a>[<span class="extype" name="scalikejdbc.opt.A">A</span>]</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#scalikejdbc.package@opt[A](v:Any):Option[A]" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       
     </li><li name="scalikejdbc.interpolation.Implicits#scalikejdbcSQLInterpolationImplicitDef" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="scalikejdbcSQLInterpolationImplicitDef(s:StringContext):scalikejdbc.SQLInterpolationString"></a>
@@ -775,7 +991,11 @@
       <span class="symbol">
         <span class="name">scalikejdbcSQLInterpolationImplicitDef</span><span class="params">(<span name="s">s: <span class="extype" name="scala.StringContext">StringContext</span></span>)</span><span class="result">: <span class="extype" name="scalikejdbc.SQLInterpolationString">SQLInterpolationString</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#scalikejdbc.package@scalikejdbcSQLInterpolationImplicitDef(s:StringContext):scalikejdbc.SQLInterpolationString" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Implicits</dd><dt>Annotations</dt><dd>
                 <span class="name">@inline</span><span class="args">()</span>
               
@@ -791,7 +1011,11 @@
       <span class="symbol">
         <span class="name">scalikejdbcSQLSyntaxToStringImplicitDef</span><span class="params">(<span name="syntax">syntax: <span class="extype" name="scalikejdbc.interpolation.SQLSyntax">scalikejdbc.interpolation.SQLSyntax</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#scalikejdbc.package@scalikejdbcSQLSyntaxToStringImplicitDef(syntax:scalikejdbc.interpolation.SQLSyntax):String" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Implicits</dd><dt>Annotations</dt><dd>
                 <span class="name">@inline</span><span class="args">()</span>
               
@@ -807,7 +1031,11 @@
       <span class="symbol">
         <span class="name">select</span><span class="result">: <span class="extype" name="scalikejdbc.QueryDSLFeature.QueryDSL.select">scalikejdbc.QueryDSLFeature.QueryDSL.select</span>.type</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#scalikejdbc.package@select:QueryDSLFeature.this.QueryDSL.select.type" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>QueryDSLFeature</dd></dl></div>
     </li><li name="scalikejdbc.QueryDSLFeature#selectFrom" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="selectFrom:QueryDSLFeature.this.QueryDSL.selectFrom.type"></a>
@@ -820,7 +1048,11 @@
       <span class="symbol">
         <span class="name">selectFrom</span><span class="result">: <span class="extype" name="scalikejdbc.QueryDSLFeature.QueryDSL.selectFrom">scalikejdbc.QueryDSLFeature.QueryDSL.selectFrom</span>.type</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#scalikejdbc.package@selectFrom:QueryDSLFeature.this.QueryDSL.selectFrom.type" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>QueryDSLFeature</dd></dl></div>
     </li><li name="scalikejdbc.SQLInterpolationCoreTypeAlias#sqls" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="sqls:scalikejdbc.interpolation.SQLSyntax.type"></a>
@@ -833,7 +1065,11 @@
       <span class="symbol">
         <span class="name">sqls</span><span class="result">: <span class="extype" name="scalikejdbc.interpolation.SQLSyntax">scalikejdbc.interpolation.SQLSyntax</span>.type</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#scalikejdbc.package@sqls:scalikejdbc.interpolation.SQLSyntax.type" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>SQLInterpolationCoreTypeAlias</dd></dl></div>
     </li><li name="scalikejdbc.QueryDSLFeature#update" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="update:QueryDSLFeature.this.QueryDSL.update.type"></a>
@@ -846,9 +1082,13 @@
       <span class="symbol">
         <span class="name">update</span><span class="result">: <span class="extype" name="scalikejdbc.QueryDSLFeature.QueryDSL.update">scalikejdbc.QueryDSLFeature.QueryDSL.update</span>.type</span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#scalikejdbc.package@update:QueryDSLFeature.this.QueryDSL.update.type" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>QueryDSLFeature</dd></dl></div>
-    </li><li name="scalikejdbc.package#using" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+    </li><li name="scalikejdbc#using" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="using[R&lt;:&lt;?&gt;,A&lt;:&lt;?&gt;](resource:&lt;?&gt;)(f:&lt;?&gt;):A"></a>
       <a id="using[R&lt;:Closable,A](R)((R)⇒A):A"></a>
       <h4 class="signature">
@@ -859,7 +1099,11 @@
       <span class="symbol">
         <span class="name">using</span><span class="tparams">[<span name="R">R &lt;: <a href="#Closable=AnyRef{defclose():Unit}" class="extmbr" name="scalikejdbc.Closable">Closable</a></span>, <span name="A">A</span>]</span><span class="params">(<span name="resource">resource: <span class="extype" name="scalikejdbc.using.R">R</span></span>)</span><span class="params">(<span name="f">f: (<span class="extype" name="scalikejdbc.using.R">R</span>) ⇒ <span class="extype" name="scalikejdbc.using.A">A</span></span>)</span><span class="result">: <span class="extype" name="scalikejdbc.using.A">A</span></span>
       </span>
-      </h4>
+      </h4><span class="permalink">
+      <a href="../index.html#scalikejdbc.package@using[R&lt;:scalikejdbc.package.Closable,A](resource:R)(f:R=&gt;A):A" title="Permalink" target="_top">
+        <img src="../lib/permalink.png" />
+      </a>
+    </span>
       
     </li></ol>
             </div>
@@ -887,9 +1131,9 @@
             </div><div class="parent" name="scalikejdbc.interpolation.Implicits">
               <h3>Inherited from <span class="extype" name="scalikejdbc.interpolation.Implicits">Implicits</span></h3>
             </div><div class="parent" name="scala.AnyRef">
-              <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
+              <h3>Inherited from <a href="http://www.scala-lang.org/api/2.11.6/index.html#scala.AnyRef" class="extype" target="_top">AnyRef</a></h3>
             </div><div class="parent" name="scala.Any">
-              <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
+              <h3>Inherited from <a href="http://www.scala-lang.org/api/2.11.6/index.html#scala.Any" class="extype" target="_top">Any</a></h3>
             </div>
         
         </div>
@@ -906,6 +1150,7 @@
       <div id="tooltip"></div>
 
       <div id="footer">  </div>
-      <script defer="defer" type="text/javascript" id="jquery-js" src="../lib/jquery.js"></script><script defer="defer" type="text/javascript" id="jquery-ui-js" src="../lib/jquery-ui.js"></script><script defer="defer" type="text/javascript" id="tools-tooltip-js" src="../lib/tools.tooltip.js"></script><script defer="defer" type="text/javascript" id="template-js" src="../lib/template.js"></script>
+
+
     </body>
       </html>
