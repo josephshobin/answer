@@ -22,10 +22,12 @@ import scalikejdbc.{DB => SDB, _}
 
 import scalaz._, Scalaz._
 
-import au.com.cba.omnia.omnitool.{Result, Ok, ResultantMonad, ResultantOps, ToResultantMonadOps}
+import au.com.cba.omnia.omnitool.{Result, ResultantMonad, ResultantOps, ToResultantMonadOps, ResultantMonadSyntax}
 
-/** Configuration required to run a `DB` instance. 
-  * 
+import au.com.cba.omnia.answer.RelMonad._
+
+/** Configuration required to run a `DB` instance.
+  *
   * @param jdbcUrl  : jdbc url to the database
   * @param user     : user name for the database
   * @param password : password for the database
@@ -38,98 +40,143 @@ case class DBConfig(jdbcUrl: String, user: String, password: String, driver: Opt
 }
 
 /**
-  * A datatype that operates on a scalikejdbc `DBSession` 
+  * A datatype that operates on a scalikejdbc `DBSession`
   * to produces a `Result` and provides a nice set of
   * combinators.
-  * 
-  * A quick way to run the DB action is call [[DB.run]]
+  *
+  * A quick way to run the DB action is call [[DB.run ]]
   * with a jdbc connection.
   */
-case class DB[A](action: DBSession => Result[A]) {
-  /**
-    * Run the DB action with the provided connection. 
-    *
-    * @param connection: SQL Connection used to run this action
-    *
-    * @return Result `A` of this DB action.
-    */
-  def run(connection: Connection): Result[A] = Result.safe {
-    val sdb = SDB(connection) 
-    sdb.begin()
-    val result = sdb.withinTx(action)
-    result match {
-      case Ok(_) => sdb.commit()
-      case _     => sdb.rollback()
-    }
-    result
-  }.join
+class DBT[R[_] : ResultantMonad] {
 
-  /** Run the DB action with the provided configuration and return the Result.
-    * 
-    * @param config: database configuration to run the DB action against
-    *
-    * @return Result `A` of DB action
-    */
-  def run(config: DBConfig): Result[A] = 
-    DB.connection(config).flatMap { conn =>
-      LoanPattern.using(conn) { safeConn =>
-        run(safeConn)
+  val R = ResultantMonad[R]
+  import ResultantMonadSyntax._
+
+  case class DB[A](action: DBSession => R[A]) { self =>
+    /**
+      * Run the DB action with the provided connection.
+      *
+      * @param connection: SQL Connection used to run this action
+      *
+      * @return result `R[A]` of this DB action.
+      */
+    def run(connection: Connection): R[A] = {
+      val sdb = SDB(connection)
+      (for {
+        _       <- R.point(sdb.begin())
+        actionR <- sdb.withinTx(action)
+        _       <- R.point(sdb.commit())
+      } yield actionR)
+        .onException(R.point(sdb.rollback()))
+    }
+
+    /** Run the DB action with the provided configuration and return the Result.
+      *
+      * @param config: database configuration to run the DB action against
+      *
+      * @return Result `A` of DB action
+      */
+    def run(config: DBConfig): R[A] =
+      DB.connection(config).flatMap { conn =>
+        LoanPattern.using(conn) { safeConn =>
+          run(safeConn)
+        }
       }
-    }
-}
 
-object DB extends ResultantOps[DB] with ToResultantMonadOps {
-  /** Build a DB operation from a function. The resultant DB operation will not throw an exception. */
-  def ask[A](f: DBSession => A): DB[A] =
-    DB(s => Result.safe(f(s)))
+    type RelDB[M[_]] = RelMonad[M, DB]
 
-  /**
-    * Runs the specified sql query expecting a single row as response.
-    * 
-    * If no row matches the query it returns `None`. If the result is not single, an `Error` 
-    * is returned.
-    */
-  def querySingle[A : Extractor](sql: SQL[Nothing, NoExtractor]): DB[Option[A]] =
-    ask(implicit session => sql.map(implicitly[Extractor[A]].extract).single.apply())
+    /** An alternative, generalized flatMap */
+    def rFlatMap[B, M[_]](f: (M[A]) => DB[B])(implicit MRelDB: RelMonad[M, DB]) = MRelDB.rBind(self)(f)
 
-  /**
-    * Runs the specified sql query and get the first row as response.
-    * 
-    * If no row matches the query it returns `None`.
-    */
-  def queryFirst[A : Extractor](sql: SQL[Nothing, NoExtractor]): DB[Option[A]] =
-    query[A](sql).map(_.headOption)
+      //DB[B](c => f(action(c)).action(c))
+      //DB.monad.rBind[A, B](this)(f)
+      //def flatMap[B](f: A => DB[B]): DB[B] =
+      //Relmonad[M, DB].rBind(this)(ma => f(ma))
 
-  /** Runs the specified sql query */
-  def query[A : Extractor](sql: SQL[Nothing, NoExtractor]): DB[Traversable[A]] =
-    ask(implicit session => sql.map(implicitly[Extractor[A]].extract).traversable().apply())
+    def filter(f: A => Boolean): DB[A] =
+      //DB.monad.rBind(this)(ra =>
+      //  DB.monad.rPoint(ra.filter(f))
+      //)
+      DB.monad.bind(this)(a =>
+        if(f(a)) this
+        else this
+        // else DB[A](_ => R.fail(""))  //("Filter condition is false")
+      )
 
-  /** Create a new SQL connection or get a pooled connection. Library users are responsible 
-    * for adding the appropriate jdbc drivers as a dependency.
-    *
-    * @param config: database configuration for the connection
-    *
-    * @return The SQL connection 
-    */
-  def connection(config: DBConfig): Result[java.sql.Connection] = Result.safe {
-    if (!ConnectionPool.isInitialized(config.name)) { 
-      lazy val derivedDriver = config.jdbcUrl.split(":").take(3) match {
-        case Array("jdbc", "sqlserver", _) => "com.microsoft.sqlserver.jdbc.SQLServerDriver"
-        case Array("jdbc", "hsqldb"   , _) => "org.hsqldb.jdbcDriver" 
-        case Array("jdbc", "oracle"   , _) => "oracle.jdbc.OracleDriver"
-        case Array("jdbc", "mysql"    , _) => "com.mysql.jdbc.Driver"
-        case Array("jdbc", unknown    , _) => throw new Exception(s"Unsupported jdbc driver: $unknown")
-        case _                             => throw new Exception(s"Invalid jdbc url: ${config.jdbcUrl}")
-      }
-      Class.forName(config.driver.fold(derivedDriver)(identity))
-      ConnectionPool.add(config.name, config.jdbcUrl, config.user, config.password)
-    }
-    ConnectionPool.borrow(config.name)
+      //DB[B](c => f(action(c)).action(c))
   }
 
-  implicit val monad: ResultantMonad[DB] = new ResultantMonad[DB] {
-    def rPoint[A](v: => Result[A]): DB[A] = DB[A](_ => v)
-    def rBind[A, B](ma: DB[A])(f: Result[A] => DB[B]): DB[B] =
-      DB(c => f(ma.action(c)).action(c))
+  object DB extends ResultantOps[DB] with ToResultantMonadOps {
+
+    /** Build a DB operation from a function. The resultant DB operation will not throw an exception. */
+    def ask[A](f: DBSession => A): DB[A] =
+      DB[A](s => R.point(f(s)))
+
+    /**
+      * Runs the specified sql query expecting a single row as response.
+      *
+      * If no row matches the query it returns `None`. If the result is not single, an `Error`
+      * is returned.
+      */
+    def querySingle[A : Extractor](sql: SQL[Nothing, NoExtractor]): DB[Option[A]] =
+      ask(implicit session => sql.map(implicitly[Extractor[A]].extract).single.apply())
+
+    /**
+      * Runs the specified sql query and get the first row as response.
+      *
+      * If no row matches the query it returns `None`.
+      */
+    def queryFirst[A : Extractor](sql: SQL[Nothing, NoExtractor]): DB[Option[A]] =
+      query[A](sql).map(_.headOption)
+
+    /** Runs the specified sql query */
+    def query[A : Extractor](sql: SQL[Nothing, NoExtractor]): DB[Traversable[A]] =
+      ask(implicit session => sql.map(implicitly[Extractor[A]].extract).traversable().apply())
+
+    /** Create a new SQL connection or get a pooled connection. Library users are responsible
+      * for adding the appropriate jdbc drivers as a dependency.
+      *
+      * @param config: database configuration for the connection
+      *
+      * @return The SQL connection
+      */
+    def connection(config: DBConfig): R[java.sql.Connection] = R.point {
+      if (!ConnectionPool.isInitialized(config.name)) {
+        lazy val derivedDriver = config.jdbcUrl.split(":").take(3) match {
+          case Array("jdbc", "sqlserver", _) => "com.microsoft.sqlserver.jdbc.SQLServerDriver"
+          case Array("jdbc", "hsqldb"   , _) => "org.hsqldb.jdbcDriver"
+          case Array("jdbc", "oracle"   , _) => "oracle.jdbc.OracleDriver"
+          case Array("jdbc", "mysql"    , _) => "com.mysql.jdbc.Driver"
+          case Array("jdbc", unknown    , _) => throw new Exception(s"Unsupported jdbc driver: $unknown")
+          case _                             => throw new Exception(s"Invalid jdbc url: ${config.jdbcUrl}")
+        }
+        Class.forName(config.driver.fold(derivedDriver)(identity))
+        ConnectionPool.add(config.name, config.jdbcUrl, config.user, config.password)
+      }
+      ConnectionPool.borrow(config.name)
+    }
+
+    implicit def toDB[A](ra: R[A]): DB[A] = DB(_ => ra)
+
+    implicit val relM: RelMonad[R, DB] = new RelMonad[R, DB] {
+      def rPoint[A](v: => R[A]): DB[A] = DB[A](_ => v)
+      def rBind[A, B](dbma: DB[A])(f: R[A] => DB[B]): DB[B] =
+        DB[B](c => f(dbma.action(c)).action(c))
+      def xBind[A, B](ra: R[A])(f: A => DB[B]): DB[B] = //xBind(ra)(f)
+        DB[B](c => R.bind(ra)((a:A) => f(a).action(c)))
+    }
+    implicit val relId: RelMonad[Id, DB] = new RelMonad[Id, DB] {
+      def rPoint[A](v: => A): DB[A] = DB[A](_ => R.point(v))
+      def rBind[A, B](dbma: DB[A])(f: A => DB[B]): DB[B] =
+        relM.rBind[A, B](dbma)(ra => relM.xBind(ra)(f))
+
+        // DB[B](c => f(dbma.action(c)).action(c))
+      def xBind[A, B](ra: A)(f: A => DB[B]): DB[B] = f(ra)
+    }
+    implicit val monad: ResultantMonad[DB] = new ResultantMonad[DB] {
+      def rPoint[A](v: => Result[A]): DB[A] = relM.rPoint[A](R.rPoint(v))
+      def rBind[A, B](dbma: DB[A])(f: Result[A] => DB[B]): DB[B] =
+        relM.rBind[A, B](dbma)(ra => relM.xBind(ra.map(Result.ok))(f))
+    }
   }
 }

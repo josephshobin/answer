@@ -68,16 +68,46 @@ DB query:
     implicit val idExtractor: Extractor[Long]       = new Extractor(_.long(1))
     implicit val streetExtractor: Extractor[String] = new Extractor(_.string(1))
 
-    DB.queryFirst[Long](
-      sql"""SELECT CUSTOMER_ID FROM TEST.CUSTOMER ASC"""
-    ).flatMap {id => 
+    DB.queryFirst[Long](sql"""SELECT CUSTOMER_ID FROM TEST.CUSTOMER ASC""").flatMap(id =>
       DB.query[String](sql"""SELECT STREET FROM TEST.ADDRESS WHERE CUSTOMER_ID = ${id.get}""")
-    }.run(conf) must_== Ok(List("WAYNE MANOR", "WAYNE HOUSE"))
+    ).run(conf) must_== Ok(List("WAYNE MANOR", "WAYNE HOUSE"))
   }
+
+  // def queryFirstFor = {
+  //   implicit val idExtractor: Extractor[Long]       = new Extractor(_.long(1))
+  //   implicit val streetExtractor: Extractor[String] = new Extractor(_.string(1))
+
+  //   (for {
+  //     id      <- DB.queryFirst[Long](sql"""SELECT CUSTOMER_ID FROM TEST.CUSTOMER ASC""")
+  //     streets <- DB.query[String](sql"""SELECT STREET FROM TEST.ADDRESS WHERE CUSTOMER_ID = ${id.get}""")
+  //   } yield streets)
+  //     .run(conf) must_== Ok(List("WAYNE MANOR", "WAYNE HOUSE"))
+  // }
+
+  // def queryFirstMinParens = {
+  //   implicit val idExtractor: Extractor[Long]       = new Extractor(_.long(1))
+  //   implicit val streetExtractor: Extractor[String] = new Extractor(_.string(1))
+
+  //   { DB.queryFirst[Long](sql"""SELECT CUSTOMER_ID FROM TEST.CUSTOMER ASC""") flatMap[Traversable[String], Id] (id =>
+  //     DB.query[String](sql"""SELECT STREET FROM TEST.ADDRESS WHERE CUSTOMER_ID = ${id.get}""")
+  //   )}.run(conf) must_== Ok(List("WAYNE MANOR", "WAYNE HOUSE"))
+  // }
+
+  // Requires a generalized flatMap[B, M: RelMonadDB] defined via rBind
+  // def queryFirstRelFor = {
+  //   implicit val idExtractor: Extractor[Long]       = new Extractor(_.long(1))
+  //   implicit val streetExtractor: Extractor[String] = new Extractor(_.string(1))
+
+  //   (for {
+  //     (id: Id[Option[Long]])      <- DB.queryFirst[Long](sql"""SELECT CUSTOMER_ID FROM TEST.CUSTOMER ASC""")
+  //     (streets: Id[Traversable[String]]) <- DB.query[String](sql"""SELECT STREET FROM TEST.ADDRESS WHERE CUSTOMER_ID = ${id.get}""")
+  //   } yield streets)
+  //     .run(conf) must_== Ok(List("WAYNE MANOR", "WAYNE HOUSE"))
+  // }
 
   def querySingle = {
     implicit val extractor: Extractor[(Long, String, Int)] = new Extractor(rs => (rs.long(1), rs.string(2), rs.int(3)))
-    
+
     DB.querySingle[(Long, String, Int)](
       sql"""SELECT * FROM TEST.CUSTOMER WHERE NAME = 'BRUCE'"""
     ).run(conf) must_== Ok(Some((1, "BRUCE", 37)))
@@ -85,7 +115,7 @@ DB query:
 
   def querySingleWithError = {
     implicit val extractor: Extractor[(Long, String, Int)] = new Extractor(rs => (rs.long(1), rs.string(2), rs.int(3)))
-    
+
     DB.querySingle[(Long, String, Int)](
       sql"""SELECT * FROM TEST.CUSTOMER"""
     ).run(conf) must beLike {
@@ -96,7 +126,7 @@ DB query:
   def query = {
     case class Customer(id: Long, name: String, age: Int)
     implicit val extractor: Extractor[Customer] = new Extractor(rs => Customer(rs.long(1), rs.string(2), rs.int(3)))
-    
+
     DB.query[Customer](
       sql"""SELECT * FROM TEST.CUSTOMER"""
     ).run(conf) must_== Ok(List(Customer(1, "BRUCE", 37), Customer(2, "WAYNE", 37)))
@@ -120,11 +150,11 @@ DB query:
           STREET        VARCHAR(100) NOT NULL,
           CITY          VARCHAR(50)  NOT NULL,
           STATE         VARCHAR(10)  NOT NULL,
-          CUSTOMER_ID   BIGINT       NOT NULL 
+          CUSTOMER_ID   BIGINT       NOT NULL
         )
       """.execute.apply()
       sql"""
-        ALTER TABLE TEST.ADDRESS 
+        ALTER TABLE TEST.ADDRESS
           ADD FOREIGN KEY (CUSTOMER_ID) REFERENCES TEST.CUSTOMER(CUSTOMER_ID)
       """.execute.apply()
 
