@@ -83,27 +83,11 @@ class DBT[R[_] : ResultantMonad] {
         }
       }
 
-    type RelDB[M[_]] = RelMonad[M, DB]
-
-    /** An alternative, generalized flatMap */
-    def rFlatMap[B, M[_]](f: (M[A]) => DB[B])(implicit MRelDB: RelMonad[M, DB]) = MRelDB.rBind(self)(f)
-
-      //DB[B](c => f(action(c)).action(c))
-      //DB.monad.rBind[A, B](this)(f)
-      //def flatMap[B](f: A => DB[B]): DB[B] =
-      //Relmonad[M, DB].rBind(this)(ma => f(ma))
-
     def filter(f: A => Boolean): DB[A] =
-      //DB.monad.rBind(this)(ra =>
-      //  DB.monad.rPoint(ra.filter(f))
-      //)
       DB.monad.bind(this)(a =>
         if(f(a)) this
         else this
-        // else DB[A](_ => R.fail(""))  //("Filter condition is false")
       )
-
-      //DB[B](c => f(action(c)).action(c))
   }
 
   object DB extends ResultantOps[DB] with ToResultantMonadOps {
@@ -156,27 +140,19 @@ class DBT[R[_] : ResultantMonad] {
       ConnectionPool.borrow(config.name)
     }
 
-    implicit def toDB[A](ra: R[A]): DB[A] = DB(_ => ra)
-
+    /** DBT[R].DB is relative to R */
     implicit val relM: RelMonad[R, DB] = new RelMonad[R, DB] {
       def rPoint[A](v: => R[A]): DB[A] = DB[A](_ => v)
       def rBind[A, B](dbma: DB[A])(f: R[A] => DB[B]): DB[B] =
         DB[B](c => f(dbma.action(c)).action(c))
-      def xBind[A, B](ra: R[A])(f: A => DB[B]): DB[B] = //xBind(ra)(f)
-        DB[B](c => R.bind(ra)((a:A) => f(a).action(c)))
     }
-    implicit val relId: RelMonad[Id, DB] = new RelMonad[Id, DB] {
-      def rPoint[A](v: => A): DB[A] = DB[A](_ => R.point(v))
-      def rBind[A, B](dbma: DB[A])(f: A => DB[B]): DB[B] =
-        relM.rBind[A, B](dbma)(ra => relM.xBind(ra)(f))
-
-        // DB[B](c => f(dbma.action(c)).action(c))
-      def xBind[A, B](ra: A)(f: A => DB[B]): DB[B] = f(ra)
-    }
+    /** DBT[R].DB is a resultant monad. */
     implicit val monad: ResultantMonad[DB] = new ResultantMonad[DB] {
       def rPoint[A](v: => Result[A]): DB[A] = relM.rPoint[A](R.rPoint(v))
       def rBind[A, B](dbma: DB[A])(f: Result[A] => DB[B]): DB[B] =
-        relM.rBind[A, B](dbma)(ra => relM.xBind(ra.map(Result.ok))(f))
+        relM.rBind[A, B](dbma)(ra => DB[B](c =>
+          R.bind(ra.map(Result.ok))((resA: Result[A]) => f(resA).action(c))
+        ))
     }
   }
 }

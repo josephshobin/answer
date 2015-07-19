@@ -14,13 +14,12 @@
 
 package au.com.cba.omnia.answer.RelMonad
 
-trait RelMonad[M[_], R[_]] {
-  def rPoint[A](v: => M[A]): R[A]
-  def rBind[A, B](ra: R[A])(f: M[A] => R[B]): R[B]
-  def xBind[A, B](ma: M[A])(f:    A => R[B]): R[B]  // "extended" bind or "across bind"
+trait RelMonad[R[_], M[_]] {
+  def rPoint[A](v: => R[A]): M[A]
+  def rBind[A, B](ma: M[A])(f: R[A] => M[B]): M[B]
 }
 
 object RelMonad {
-  @inline def apply[M[_], R[_]](implicit RM: RelMonad[M, R]): RelMonad[M, R] = RM
+  @inline def apply[M[_], R[_]](implicit RM: RelMonad[R, M]): RelMonad[R, M] = RM
 }
 
