@@ -26,6 +26,8 @@ import org.specs2.execute.{Result => SpecResult}
 
 import org.scalacheck.Arbitrary, Arbitrary.arbitrary
 
+import com.twitter.scalding.Execution  // Just to show the construction of DBT[Execution]
+
 import au.com.cba.omnia.omnitool.{Result, Ok, Error}
 import au.com.cba.omnia.omnitool.test.OmnitoolProperties.resultantMonad
 import au.com.cba.omnia.omnitool.test.Arbitraries._
@@ -72,38 +74,6 @@ DB query:
       DB.query[String](sql"""SELECT STREET FROM TEST.ADDRESS WHERE CUSTOMER_ID = ${id.get}""")
     ).run(conf) must_== Ok(List("WAYNE MANOR", "WAYNE HOUSE"))
   }
-
-  // def queryFirstFor = {
-  //   implicit val idExtractor: Extractor[Long]       = new Extractor(_.long(1))
-  //   implicit val streetExtractor: Extractor[String] = new Extractor(_.string(1))
-
-  //   (for {
-  //     id      <- DB.queryFirst[Long](sql"""SELECT CUSTOMER_ID FROM TEST.CUSTOMER ASC""")
-  //     streets <- DB.query[String](sql"""SELECT STREET FROM TEST.ADDRESS WHERE CUSTOMER_ID = ${id.get}""")
-  //   } yield streets)
-  //     .run(conf) must_== Ok(List("WAYNE MANOR", "WAYNE HOUSE"))
-  // }
-
-  // def queryFirstMinParens = {
-  //   implicit val idExtractor: Extractor[Long]       = new Extractor(_.long(1))
-  //   implicit val streetExtractor: Extractor[String] = new Extractor(_.string(1))
-
-  //   { DB.queryFirst[Long](sql"""SELECT CUSTOMER_ID FROM TEST.CUSTOMER ASC""") flatMap[Traversable[String], Id] (id =>
-  //     DB.query[String](sql"""SELECT STREET FROM TEST.ADDRESS WHERE CUSTOMER_ID = ${id.get}""")
-  //   )}.run(conf) must_== Ok(List("WAYNE MANOR", "WAYNE HOUSE"))
-  // }
-
-  // Requires a generalized flatMap[B, M: RelMonadDB] defined via rBind
-  // def queryFirstRelFor = {
-  //   implicit val idExtractor: Extractor[Long]       = new Extractor(_.long(1))
-  //   implicit val streetExtractor: Extractor[String] = new Extractor(_.string(1))
-
-  //   (for {
-  //     (id: Id[Option[Long]])      <- DB.queryFirst[Long](sql"""SELECT CUSTOMER_ID FROM TEST.CUSTOMER ASC""")
-  //     (streets: Id[Traversable[String]]) <- DB.query[String](sql"""SELECT STREET FROM TEST.ADDRESS WHERE CUSTOMER_ID = ${id.get}""")
-  //   } yield streets)
-  //     .run(conf) must_== Ok(List("WAYNE MANOR", "WAYNE HOUSE"))
-  // }
 
   def querySingle = {
     implicit val extractor: Extractor[(Long, String, Int)] = new Extractor(rs => (rs.long(1), rs.string(2), rs.int(3)))

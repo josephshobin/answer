@@ -54,6 +54,7 @@ object build extends Build {
       libraryDependencies ++=
            depend.scalaz()
         ++ depend.testing() ++ depend.time()
+        ++ depend.scalding()
         ++ depend.omnia("omnitool-core", omnitoolVersion)
         ++ Seq(
              "org.scalikejdbc"  %% "scalikejdbc"          % scalikejdbcVersion exclude("joda-time", "joda-time")
