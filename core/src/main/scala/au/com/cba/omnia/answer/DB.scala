@@ -52,7 +52,11 @@ class DBT[R[_] : ResultantMonad] {
   val R = ResultantMonad[R]
   import ResultantMonadSyntax._
 
+  /** The actual database monad for a particular `ResultantMonad` [[R]] */
   case class DB[A](action: DBSession => R[A]) { self =>
+
+    val reader = new ReaderT[R, DBSession, A](action)  // Includes an implicit `DBSession => R[A]`
+
     /**
       * Run the DB action with the provided connection.
       *
@@ -146,13 +150,25 @@ class DBT[R[_] : ResultantMonad] {
       def rBind[A, B](dbma: DB[A])(f: R[A] => DB[B]): DB[B] =
         DB[B](c => f(dbma.action(c)).action(c))
     }
+
+    /** DBT[R].DB is relative to L if R is relative to L */
+    implicit def relLowerR[L[_] : Monad](relL_R: RelMonad[L, R]) = new RelMonad[L, DB] {
+      val relReadTR = new ReaderTR[L, R, DBSession](relL_R).relMonad
+      def rPoint[A](v: => L[A]) = DB(relReadTR.rPoint(v))
+      def rBind[A, B](dba: DB[A])(f: L[A] => DB[B]) =
+        DB[B](relReadTR.rBind(dba.reader)(la => f(la).reader))
+    }
+
     /** DBT[R].DB is a resultant monad. */
     implicit val monad: ResultantMonad[DB] = new ResultantMonad[DB] {
-      def rPoint[A](v: => Result[A]): DB[A] = relM.rPoint[A](R.rPoint(v))
-      def rBind[A, B](dbma: DB[A])(f: Result[A] => DB[B]): DB[B] =
-        relM.rBind[A, B](dbma)(ra => DB[B](c =>
-          R.bind(ra.map(Result.ok))((resA: Result[A]) => f(resA).action(c))
-        ))
+      val relResultR = new RelMonad[Result, R] {
+        def rPoint[A](v: => Result[A]): R[A] = R.rPoint(v)
+        def rBind[A, B](rA: R[A])(f: Result[A] => R[B]): R[B] = R.rBind(rA)(f)
+      }
+
+      val relResultDB: RelMonad[Result, DB] = relLowerR[Result](relResultR)
+      def rPoint[A](v: => Result[A]): DB[A] = relResultDB.rPoint(v)
+      def rBind[A, B](dbma: DB[A])(f: Result[A] => DB[B]): DB[B] = relResultDB.rBind(dbma)(f)
     }
   }
 }
