@@ -160,15 +160,17 @@ class DBT[R[_] : ResultantMonad] {
     }
 
     /** DBT[R].DB is a resultant monad. */
-    implicit val monad: ResultantMonad[DB] = new ResultantMonad[DB] {
-      val relResultR = new RelMonad[Result, R] {
-        def rPoint[A](v: => Result[A]): R[A] = R.rPoint(v)
-        def rBind[A, B](rA: R[A])(f: Result[A] => R[B]): R[B] = R.rBind(rA)(f)
-      }
+    implicit val monad: ResultantMonad[DB] =
+      resultantFromRelMonad(relLowerR[Result](relMonadFromResultant(R)))
 
-      val relResultDB: RelMonad[Result, DB] = relLowerR[Result](relResultR)
-      def rPoint[A](v: => Result[A]): DB[A] = relResultDB.rPoint(v)
-      def rBind[A, B](dbma: DB[A])(f: Result[A] => DB[B]): DB[B] = relResultDB.rBind(dbma)(f)
+    // These two conversions should be in ResultantMonad or similar
+    def relMonadFromResultant[RM[_]](implicit RM: ResultantMonad[RM]) = new RelMonad[Result, RM] {
+      def rPoint[A](v: => Result[A]): RM[A] = RM.rPoint(v)
+      def rBind[A, B](rA: RM[A])(f: Result[A] => RM[B]): RM[B] = RM.rBind(rA)(f)
+    }
+    def resultantFromRelMonad[RR[_]](implicit RR: RelMonad[Result, RR]) = new ResultantMonad[RR] {
+      def rPoint[A](v: => Result[A]): RR[A] = RR.rPoint(v)
+      def rBind[A, B](rA: RR[A])(f: Result[A] => RR[B]): RR[B] = RR.rBind(rA)(f)
     }
   }
 }
