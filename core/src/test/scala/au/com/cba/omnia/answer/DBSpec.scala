@@ -28,7 +28,7 @@ import org.scalacheck.Arbitrary, Arbitrary.arbitrary
 
 import com.twitter.scalding.Execution  // Just to show the construction of DBT[Execution]
 
-import au.com.cba.omnia.omnitool.{Result, Ok, Error}
+import au.com.cba.omnia.omnitool.{Result, Ok, Error, ResultantMonad}
 import au.com.cba.omnia.omnitool.test.OmnitoolProperties.resultantMonad
 import au.com.cba.omnia.omnitool.test.Arbitraries._
 
@@ -53,6 +53,9 @@ DB query:
 """
   val conf = DBConfig("jdbc:hsqldb:mem:test", "sa", "")
   setupDb
+
+  implicit val monad: ResultantMonad[Execution] = ExecutionOps.ExecutionResultantMonad
+  object DBExecution extends DBT[Execution]
 
   def connection: Connection =  {
     DB.connection(conf).toOption.get
