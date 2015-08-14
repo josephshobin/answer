@@ -28,6 +28,8 @@ import org.scalacheck.Arbitrary, Arbitrary.arbitrary
 
 import com.twitter.scalding.Execution  // Just to show the construction of DBT[Execution]
 
+//import com.ambiata.mundane.control._
+
 import au.com.cba.omnia.omnitool.{Result, Ok, Error, ResultantMonad}
 import au.com.cba.omnia.omnitool.test.OmnitoolProperties.resultantMonad
 import au.com.cba.omnia.omnitool.test.Arbitraries._
@@ -41,7 +43,7 @@ DB Operations
 =============
 
 DB operations should:
-  obey monad laws                                         ${resultantMonad.laws[DB]}
+  obey monad laws                                         {resultantMonad.laws[DB]}
 
 DB query:
   can ask for data                                        $ask
@@ -54,11 +56,11 @@ DB query:
   val conf = DBConfig("jdbc:hsqldb:mem:test", "sa", "")
   setupDb
 
-  implicit val monad: ResultantMonad[Execution] = ExecutionOps.ExecutionResultantMonad
-  object DBExecution extends DBT[Execution]
+  //implicit val monad: ResultantMonad[Execution] = ExecutionOps.ExecutionResultantMonad
+  //object DBExecution extends DBT[Execution]
 
   def connection: Connection =  {
-    DB.connection(conf).toOption.get
+    DB.connection(conf).run.run.toOption.get
   }
 
   def ask = {
@@ -66,7 +68,7 @@ DB query:
       sql"""
         SELECT NAME FROM TEST.CUSTOMER
       """.map(rs => rs.string(1)).list.apply()
-    }.run(conf) must_== Ok(List("BRUCE", "WAYNE"))
+    }.run(conf).run.run must_== Ok(List("BRUCE", "WAYNE"))
   }
 
   def queryFirst = {
@@ -91,7 +93,7 @@ DB query:
 
     DB.querySingle[(Long, String, Int)](
       sql"""SELECT * FROM TEST.CUSTOMER"""
-    ).run(conf) must beLike {
+    ).run(conf).run.run must beLike {
       case Error(_) => ok
     }
   }
@@ -173,7 +175,7 @@ DB query:
     (h: DB[A]) => h.run(conf) must_== expected
 
   def beResultLike[A](expected: Result[A] => SpecResult): Matcher[DB[A]] =
-    (h: DB[A]) => expected(h.run(conf))
+    (h: DB[A]) => expected(h.run(conf).run.run)
 
   def beValue[A](expected: A): Matcher[DB[A]] =
     beResult(Result.ok(expected))
