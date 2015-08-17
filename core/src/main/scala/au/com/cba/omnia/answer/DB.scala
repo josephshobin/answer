@@ -53,7 +53,24 @@ class DBT[R[_] : ResultantMonad] {
   import ResultantMonadSyntax._
 
   /** The actual database monad for a particular `ResultantMonad` [[R]] */
-  case class DB[A](action: DBSession => R[A]) { self =>
+  case class DB[A](action: DBSession => R[A]) { // self =>
+
+  import scalaz.\&/.These
+
+  /** Recovers from an error. */
+  def recoverWithR[A](ra: R[A])(recovery: PartialFunction[These[String, Throwable], R[A]]): R[A] =
+    R.rBind(ra)(r => r.fold(
+      _     => R.rPoint(r),
+      error => recovery.applyOrElse[These[String, Throwable], R[A]](error, _ => R.rPoint(r))
+    ))
+
+  /**
+    * Like "finally", but only performs the final action if there was an error.
+    *
+    * If `action` fails that error is swallowed and only the initial error is returned.
+    */
+  def onExceptionR[A, B](ra: R[A])(action: R[B]): R[A] =
+    recoverWithR(ra) { case e => action.rFlatMap(_ => R.rPoint(Result.these(e))) }
 
     val reader = new ReaderT[R, DBSession, A](action)  // Includes an implicit `DBSession => R[A]`
 
@@ -66,12 +83,16 @@ class DBT[R[_] : ResultantMonad] {
       */
     def run(connection: Connection): R[A] = {
       val sdb = SDB(connection)
-      (for {
+      val ra = (for {
         _       <- R.point(sdb.begin())
         actionR <- sdb.withinTx(action)
+        _       <- R.point(println(s"precomit, actionR = ${actionR}"))
         _       <- R.point(sdb.commit())
+        _       <- R.point(println(s"comitted, actionR = ${actionR}"))
       } yield actionR)
-        .onException(R.point(sdb.rollback()))
+      onExceptionR(ra)(R.point(println(s"DB.run->onException")))  // Seems to cause "not active" failures??
+      .onException(R.point(sdb.rollback()))  // Seems to cause "not active" failures??
+      //  .recoverWith { case e => {println(e); error(e.toString)}}
     }
 
     /** Run the DB action with the provided configuration and return the Result.
@@ -81,17 +102,21 @@ class DBT[R[_] : ResultantMonad] {
       * @return Result `A` of DB action
       */
     def run(config: DBConfig): R[A] =
-      DB.connection(config).flatMap { conn =>
-        LoanPattern.using(conn) { safeConn =>
-          run(safeConn)
-        }
-      }
+      DB.connection(config).bracket(
+        conn => R.point{println(s"closing: ${this}"); conn.close()}  // close seems to cause "not active" errors?
+      )(conn => run(conn))
+//      DB.connection(config).flatMap { conn =>
+//        LoanPattern.using(conn) { safeConn =>
+//          run(safeConn)
+//        }
+//      }
 
-    def filter(f: A => Boolean): DB[A] =
-      DB.monad.bind(this)(a =>
-        if(f(a)) this
-        else this
-      )
+    // //  Almost implementation of filter (was dummy)
+    // def filter(f: A => Boolean): DB[A] =
+    //   DB.monad.bind(this)(a =>
+    //     if(f(a)) R.point(a)
+    //     else R.fail("Filtered via DB")
+    //   )
   }
 
   object DB extends ResultantOps[DB] with ToResultantMonadOps {
@@ -152,7 +177,7 @@ class DBT[R[_] : ResultantMonad] {
     }
 
     /** DBT[R].DB is relative to L if R is relative to L */
-    implicit def relLowerR[L[_] : Monad](relL_R: RelMonad[L, R]) = new RelMonad[L, DB] {
+    implicit def relLowerR[L[_] : Monad](relL_R: RelMonad[L, R]): RelMonad[L, DB] = new RelMonad[L, DB] {
       val relReadTR = new ReaderTR[L, R, DBSession](relL_R).relMonad
       def rPoint[A](v: => L[A]) = DB(relReadTR.rPoint(v))
       def rBind[A, B](dba: DB[A])(f: L[A] => DB[B]) =
@@ -172,5 +197,6 @@ class DBT[R[_] : ResultantMonad] {
       def rPoint[A](v: => Result[A]): RR[A] = RR.rPoint(v)
       def rBind[A, B](rA: RR[A])(f: Result[A] => RR[B]): RR[B] = RR.rBind(rA)(f)
     }
+
   }
 }

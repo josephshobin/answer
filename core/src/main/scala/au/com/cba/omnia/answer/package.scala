@@ -1,8 +1,8 @@
 package au.com.cba.omnia
 
-import scalaz._, Scalaz._, Free.Trampoline
+import scalaz._, Scalaz._, Free.Trampoline, effect.IO
 
-import com.ambiata.mundane.control._
+//import com.ambiata.mundane.control._
 
 import au.com.cba.omnia.omnitool.{Result, ResultantMonad}
 
@@ -20,20 +20,25 @@ import au.com.cba.omnia.omnitool.{Result, ResultantMonad}
 
 object ResultantMonadResultT {
 
-  type ResultTrampoline[A] = ResultT[Trampoline, A]
+  type TrampoResult[A] = Trampoline[() => Result[A]]
   val Trampoline = implicitly[Monad[Trampoline]]
 
-  implicit def monad: ResultantMonad[ResultTrampoline] = new ResultantMonad[ResultTrampoline] {
-      def rPoint[A](v: => Result[A]) = ResultT(Trampoline.point(v))
-      def rBind[A, B](m: ResultTrampoline[A])(f: Result[A] => ResultTrampoline[B]) =
-        m match {
-          case ResultT(fRes) => ResultT(
-            Trampoline.bind(fRes)(x => f(x) match {
-              case ResultT(fRes2) => fRes2
-            })
-          )
-        }
+  implicit def monad: ResultantMonad[TrampoResult] = new ResultantMonad[TrampoResult] {
+    def rPoint[A](v: => Result[A]) = {
+      def vv() = v
+      Trampoline.point(vv)
+    }
+    def rBind[A, B](mTramp: TrampoResult[A])(f: Result[A] => TrampoResult[B]) = { println(s"Tramp.rBind: preBind, mTramp = ${mTramp}")
+      Trampoline.bind(mTramp)(mRes => { // println(s"Tramp.rBind: in bind, mTramp = ${mTramp} mRes = ${mRes}")
+        f(mRes()) match {
+          case fRes => {       // println(s"Tramp.rBind:  in bind, mTramp = ${mTramp} mRes = ${mRes} fRes = ${fRes} ")
+            (fRes: TrampoResult[B]) }}
+        // `: Trampoline[B]` as required by Trampoline.bind
+      })
+    }
   }
+
+      //   }
 //  type FF[T] = Free[Function0, T]
 //  type RFF[A] = ResultT[FF, A]
 //  implicit def monad2: ResultantMonad[RFF] = monad
@@ -41,4 +46,7 @@ object ResultantMonadResultT {
 
 import ResultantMonadResultT._
 
-package object answer extends DBT[({ type l[a] = ResultT[Trampoline, a]})#l]
+// Instaniate DBT - effectively forming  DBSession => Trampoline[Result[_]]
+package object answer extends DBT[TrampoResult]
+
+//  { type l[a] = ResultT[Trampoline, a]})#l]
