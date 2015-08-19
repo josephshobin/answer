@@ -30,6 +30,12 @@ object build extends Build {
     uniform.docSettings("https://github.com/CommBank/answer") ++
     Seq(updateOptions := updateOptions.value.withCachedResolution(true))
 
+  def logging(scope: String = "compile") = Seq(
+    "org.slf4j" %  "slf4j-api"     % depend.versions.slf4j % "compile",
+    "org.slf4j" %  "slf4j-log4j12" % depend.versions.slf4j % scope,
+    "log4j"     %  "log4j"         % depend.versions.log4j % scope
+  )
+
   lazy val all = Project(
     id = "all"
   , base = file(".")
@@ -53,9 +59,12 @@ object build extends Build {
     ++ Seq(
       libraryDependencies ++=
            depend.scalaz()
-        ++ depend.testing() ++ depend.time()
+        ++ depend.testing()
+        ++ depend.time()
         ++ depend.scalding()
         ++ depend.omnia("omnitool-core", omnitoolVersion)
+        ++ depend.omnia("omnitool-log", omnitoolVersion)
+        ++ logging()
         ++ Seq(
              "org.scalikejdbc"  %% "scalikejdbc"          % scalikejdbcVersion exclude("joda-time", "joda-time")
            , "org.scalikejdbc"  %% "scalikejdbc-test"     % scalikejdbcVersion    % "test"
@@ -81,6 +90,7 @@ object build extends Build {
          , "org.hsqldb"       % "hsqldb"               % hsqldbVersion         % "test"
          , "org.specs2"      %% "specs2-matcher-extra" % depend.versions.specs % "test"
          ) ++ depend.testing()
+           ++ logging()
          )
        , addCompilerPlugin("org.scalamacros" % "paradise" % "2.0.1" cross CrossVersion.full)
     )

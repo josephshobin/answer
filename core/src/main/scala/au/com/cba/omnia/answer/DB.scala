@@ -22,6 +22,8 @@ import scalikejdbc.{DB => SDB, _}
 
 import scalaz._, Scalaz._
 
+import org.slf4j.Logger
+
 import au.com.cba.omnia.omnitool.{Result, ResultantMonad, ResultantOps, ToResultantMonadOps, ResultantMonadSyntax}
 
 import au.com.cba.omnia.answer.RelMonad._
@@ -47,30 +49,14 @@ case class DBConfig(jdbcUrl: String, user: String, password: String, driver: Opt
   * A quick way to run the DB action is call [[DB.run ]]
   * with a jdbc connection.
   */
-class DBT[R[_] : ResultantMonad] {
+class DBT[R[_] : ResultantMonad](logger: Logger) {
 
   val R = ResultantMonad[R]
   import ResultantMonadSyntax._
+  import NonStrict._
 
   /** The actual database monad for a particular `ResultantMonad` [[R]] */
   case class DB[A](action: DBSession => R[A]) { // self =>
-
-  import scalaz.\&/.These
-
-  /** Recovers from an error. */
-  def recoverWithR[A](ra: R[A])(recovery: PartialFunction[These[String, Throwable], R[A]]): R[A] =
-    R.rBind(ra)(r => r.fold(
-      _     => R.rPoint(r),
-      error => recovery.applyOrElse[These[String, Throwable], R[A]](error, _ => R.rPoint(r))
-    ))
-
-  /**
-    * Like "finally", but only performs the final action if there was an error.
-    *
-    * If `action` fails that error is swallowed and only the initial error is returned.
-    */
-  def onExceptionR[A, B](ra: R[A])(action: R[B]): R[A] =
-    recoverWithR(ra) { case e => action.rFlatMap(_ => R.rPoint(Result.these(e))) }
 
     val reader = new ReaderT[R, DBSession, A](action)  // Includes an implicit `DBSession => R[A]`
 
@@ -84,15 +70,16 @@ class DBT[R[_] : ResultantMonad] {
     def run(connection: Connection): R[A] = {
       val sdb = SDB(connection)
       val ra = (for {
-        _       <- R.point(sdb.begin())
-        actionR <- sdb.withinTx(action)
-        _       <- R.point(println(s"precomit, actionR = ${actionR}"))
-        _       <- R.point(sdb.commit())
-        _       <- R.point(println(s"comitted, actionR = ${actionR}"))
-      } yield actionR)
-      onExceptionR(ra)(R.point(println(s"DB.run->onException")))  // Seems to cause "not active" failures??
-      .onException(R.point(sdb.rollback()))  // Seems to cause "not active" failures??
-      //  .recoverWith { case e => {println(e); error(e.toString)}}
+        _ <- R.point(sdb.begin())
+        a <- sdb.withinTx(action)
+        _ <- R.point(logger.debug(s"pre-commit, a = ${a}"))
+        _ <- R.point(sdb.commit())
+        _ <- R.point(logger.debug(s"post-commit, a = ${a}"))
+      } yield a)
+      // .onException(R.point(sdb.rollback()))  // Causses rollback on each trampoline step
+      onExceptionR(ra) {  R.point(logger.debug(s"run:onException"));
+        R.point(sdb.rollback())
+      }
     }
 
     /** Run the DB action with the provided configuration and return the Result.
@@ -101,22 +88,57 @@ class DBT[R[_] : ResultantMonad] {
       *
       * @return Result `A` of DB action
       */
-    def run(config: DBConfig): R[A] =
-      DB.connection(config).bracket(
-        conn => R.point{println(s"closing: ${this}"); conn.close()}  // close seems to cause "not active" errors?
-      )(conn => run(conn))
-//      DB.connection(config).flatMap { conn =>
-//        LoanPattern.using(conn) { safeConn =>
-//          run(safeConn)
-//        }
-//      }
+    def run(config: DBConfig): R[A] = {
+      val res =
+        bracketR(DB.connection(config))(   // Ordinary `bracket` leads to a `close` on each step
+          conn => R.point{ logger.debug(s"closing: ${this}"); conn.close() }
+        )(conn => run(conn))
+      logger.debug(s"run(...) = ${res}")
+      res
+    }
 
-    // //  Almost implementation of filter (was dummy)
-    // def filter(f: A => Boolean): DB[A] =
-    //   DB.monad.bind(this)(a =>
-    //     if(f(a)) R.point(a)
-    //     else R.fail("Filtered via DB")
-    //   )
+  }
+
+  object NonStrict {
+
+    import scalaz.\&/.These
+
+    /** Recovers from an error. */
+    def recoverWithR[A](ra: R[A])(recovery: PartialFunction[These[String, Throwable], R[A]]): R[A] =
+      R.rBind(ra)(r => r.fold(
+        _     => R.rPoint(r),
+        error => recovery.applyOrElse[These[String, Throwable], R[A]](error, _ => R.rPoint(r))
+      ))
+
+    /**
+      * Like "finally", but only performs the final action if there was an error.
+      *
+      * If `action` fails that error is swallowed and only the initial error is returned.
+      */
+    def onExceptionR[A, B](ra: R[A])(action: => R[B]): R[A] =
+      recoverWithR(ra) { case e => action.rFlatMap(_ => R.rPoint(Result.these(e))) }
+
+    /**
+      * Ensures that the provided action is always run regardless of if `this` was successful.
+      * Generalizes "finally".
+      *
+      * If `ra` was successful and `sequel` fails it returns the failure from `sequel`. Otherwise
+      * the result of `ra` is returned.
+      */
+    def ensureR[A, B](ra: R[A])(sequel: => R[B]): R[A] = for {
+      r <- onExceptionR(ra)(sequel)
+      _ <- sequel
+    } yield r
+
+    /**
+      * Applies the "during" action, calling "after" regardless of whether there was an error.
+      *
+      * All errors are rethrown. Generalizes try/finally.
+      */
+    def bracketR[A, B, C](ra: R[A])(after: A => R[B])(during: A => R[C]): R[C] = for {
+      a <- ra
+      r <- ensureR(during(a))(after(a))
+    } yield r
   }
 
   object DB extends ResultantOps[DB] with ToResultantMonadOps {

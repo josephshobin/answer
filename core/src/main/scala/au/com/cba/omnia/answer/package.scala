@@ -1,52 +1,34 @@
 package au.com.cba.omnia
 
-import scalaz._, Scalaz._, Free.Trampoline, effect.IO
+import scalaz._, Scalaz._, Free.Trampoline
 
-//import com.ambiata.mundane.control._
+import org.slf4j.{Logger, LoggerFactory}
 
 import au.com.cba.omnia.omnitool.{Result, ResultantMonad}
 
 /** ResultantMonad instance for Result, to intantiate DBT, defining [[answer.DB]].
   * Should be moved to omnitool and generalized to `RelSelf: RelMonad[R, R]`.
   */
-// object ResultantMonadResult {
-//   implicit def monad: ResultantMonad[Result] = new ResultantMonad[Result] {
-//     def rPoint[A](v: => Result[A]): Result[A] = v
-//     def rBind[A, B](ma: Result[A])(f: Result[A] => Result[B]): Result[B] = f(ma)
-//   }
-// }
-// import ResultantMonadResult._
-// import com.ambiata.mundane.control.ResultT.ResultTResultantMonad
 
-object ResultantMonadResultT {
+object ResultantTrampoResult {
 
-  type TrampoResult[A] = Trampoline[() => Result[A]]
+  val logger = LoggerFactory.getLogger("au.com.cba.omnia.answer")
+
+  type TrampoResult[A] = Trampoline[Result[A]]
   val Trampoline = implicitly[Monad[Trampoline]]
 
   implicit def monad: ResultantMonad[TrampoResult] = new ResultantMonad[TrampoResult] {
-    def rPoint[A](v: => Result[A]) = {
-      def vv() = v
-      Trampoline.point(vv)
+    def rPoint[A](v: => Result[A]): Trampoline[Result[A]] = {
+      Trampoline.point(v)
     }
-    def rBind[A, B](mTramp: TrampoResult[A])(f: Result[A] => TrampoResult[B]) = { println(s"Tramp.rBind: preBind, mTramp = ${mTramp}")
-      Trampoline.bind(mTramp)(mRes => { // println(s"Tramp.rBind: in bind, mTramp = ${mTramp} mRes = ${mRes}")
-        f(mRes()) match {
-          case fRes => {       // println(s"Tramp.rBind:  in bind, mTramp = ${mTramp} mRes = ${mRes} fRes = ${fRes} ")
-            (fRes: TrampoResult[B]) }}
-        // `: Trampoline[B]` as required by Trampoline.bind
-      })
+    def rBind[A, B](m: Trampoline[Result[A]])(f: Result[A] => Trampoline[Result[B]]) = {
+      logger.debug(s"rBind(m)(f): before Trampline.bind(m)(f)  m = ${m}")
+      Trampoline.bind(m)(f)
     }
   }
-
-      //   }
-//  type FF[T] = Free[Function0, T]
-//  type RFF[A] = ResultT[FF, A]
-//  implicit def monad2: ResultantMonad[RFF] = monad
 }
 
-import ResultantMonadResultT._
+import ResultantTrampoResult._
 
-// Instaniate DBT - effectively forming  DBSession => Trampoline[Result[_]]
-package object answer extends DBT[TrampoResult]
-
-//  { type l[a] = ResultT[Trampoline, a]})#l]
+// Instaniate DBT, forming the monad: `DBSession => Trampoline[Result[_]]`
+package object answer extends DBT[TrampoResult](logger)
