@@ -12,9 +12,11 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-package au.com.cba.omnia.answer.RelMonad
+package au.com.cba.omnia.answer
 
 import scalaz.{Monad, ReaderT}
+
+import au.com.cba.omnia.omnitool.{Result, ResultantMonad} // ResultantOps, ToResultantMonadOps, ResultantMonadSyntax}
 
 trait RelMonad[R[_], M[_]] {
   def rPoint[A](v: => R[A]): M[A]
@@ -25,15 +27,30 @@ object RelMonad {
   @inline def apply[M[_], R[_]](implicit RM: RelMonad[R, M]): RelMonad[R, M] = RM
 }
 
-class ReaderTR[M[_]: Monad, N[_]: Monad, Rd](relM_N: RelMonad[M, N]) extends RelMonad[M, ({ type rN[A]=ReaderT[N, Rd, A] })#rN] {
+object ConvertRelM {
+  // These two conversions should be in ResultantMonad, RelMonad or similar
+  def fromResultant[RM[_]](implicit RM: ResultantMonad[RM]) = new RelMonad[Result, RM] {
+    def rPoint[A](v: => Result[A]): RM[A] = RM.rPoint(v)
+    def rBind[A, B](rA: RM[A])(f: Result[A] => RM[B]): RM[B] = RM.rBind(rA)(f)
+  }
+  def toResultant[RR[_]](implicit RR: RelMonad[Result, RR]) = new ResultantMonad[RR] {
+    def rPoint[A](v: => Result[A]): RR[A] = RR.rPoint(v)
+    def rBind[A, B](rA: RR[A])(f: Result[A] => RR[B]): RR[B] = RR.rBind(rA)(f)
+  }
+}
+
+/** RelMonad[M, N] instances can be extended via ReaderT to RelMonad[M, ReaderT[N, Rd, _]] */
+class ReaderTR[M[_]: Monad, N[_]: Monad, Rd](relM_N: RelMonad[M, N]) extends RelMonad[M,
+  ({ type rN[A]=ReaderT[N, Rd, A]})#rN   // aka ReadM (below)
+] {
   val N = Monad[N]
 
   type ReadM[A] = ReaderT[N, Rd, A]
   val readM = Monad[ReadM]
   def mkReadM[A](f: Rd => N[A]) = new ReaderT[N, Rd, A](f)
 
-  def rPoint[A](v: => M[A]): ReaderT[N, Rd, A] = new ReaderT(_ => relM_N.rPoint(v))
-  def rBind[A, B](rNA: ReaderT[N, Rd, A])(f: M[A] => ReaderT[N, Rd, B]): ReaderT[N, Rd, B] =
+  def rPoint[A](v: => M[A]): ReadM[A] = new ReaderT(_ => relM_N.rPoint(v))
+  def rBind[A, B](rNA: ReadM[A])(f: M[A] => ReadM[B]): ReadM[B] =
     readM.join(mkReadM[ReadM[B]](rd =>
       relM_N.rBind(rNA(rd))(ma => N.point(f(ma)))
     ))

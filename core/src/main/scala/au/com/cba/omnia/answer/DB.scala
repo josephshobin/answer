@@ -26,7 +26,7 @@ import org.slf4j.Logger
 
 import au.com.cba.omnia.omnitool.{Result, ResultantMonad, ResultantOps, ToResultantMonadOps, ResultantMonadSyntax}
 
-import au.com.cba.omnia.answer.RelMonad._
+//import au.com.cba.omnia.answer.RelMonad._
 
 /** Configuration required to run a `DB` instance.
   *
@@ -51,9 +51,10 @@ case class DBConfig(jdbcUrl: String, user: String, password: String, driver: Opt
   */
 class DBT[R[_] : ResultantMonad](logger: Logger) {
 
-  val R = ResultantMonad[R]
   import ResultantMonadSyntax._
-  import NonStrict._
+  import NonStrictResultantMonadSyntax._
+
+  val R = ResultantMonad[R]
 
   /** The actual database monad for a particular `ResultantMonad` [[R]] */
   case class DB[A](action: DBSession => R[A]) { // self =>
@@ -96,49 +97,6 @@ class DBT[R[_] : ResultantMonad](logger: Logger) {
       logger.debug(s"run(...) = ${res}")
       res
     }
-
-  }
-
-  object NonStrict {
-
-    import scalaz.\&/.These
-
-    /** Recovers from an error. */
-    def recoverWithR[A](ra: R[A])(recovery: PartialFunction[These[String, Throwable], R[A]]): R[A] =
-      R.rBind(ra)(r => r.fold(
-        _     => R.rPoint(r),
-        error => recovery.applyOrElse[These[String, Throwable], R[A]](error, _ => R.rPoint(r))
-      ))
-
-    /**
-      * Like "finally", but only performs the final action if there was an error.
-      *
-      * If `action` fails that error is swallowed and only the initial error is returned.
-      */
-    def onExceptionR[A, B](ra: R[A])(action: => R[B]): R[A] =
-      recoverWithR(ra) { case e => action.rFlatMap(_ => R.rPoint(Result.these(e))) }
-
-    /**
-      * Ensures that the provided action is always run regardless of if `this` was successful.
-      * Generalizes "finally".
-      *
-      * If `ra` was successful and `sequel` fails it returns the failure from `sequel`. Otherwise
-      * the result of `ra` is returned.
-      */
-    def ensureR[A, B](ra: R[A])(sequel: => R[B]): R[A] = for {
-      r <- onExceptionR(ra)(sequel)
-      _ <- sequel
-    } yield r
-
-    /**
-      * Applies the "during" action, calling "after" regardless of whether there was an error.
-      *
-      * All errors are rethrown. Generalizes try/finally.
-      */
-    def bracketR[A, B, C](ra: R[A])(after: A => R[B])(during: A => R[C]): R[C] = for {
-      a <- ra
-      r <- ensureR(during(a))(after(a))
-    } yield r
   }
 
   object DB extends ResultantOps[DB] with ToResultantMonadOps {
@@ -191,14 +149,23 @@ class DBT[R[_] : ResultantMonad](logger: Logger) {
       ConnectionPool.borrow(config.name)
     }
 
+    /** DBT[R].DB is a resultant monad. */
+    implicit val monad: ResultantMonad[DB] = new ResultantMonad[DB] {
+      def rPoint[A](v: => Result[A]): DB[A] = DB[A](_ => R.rPoint(v))
+      def rBind[A, B](dbA: DB[A])(f: Result[A] => DB[B]) =
+        DB[B](c => R.rBind(dbA.action(c))(resA =>
+          f(resA).action(c)
+        ))
+    }
+
     /** DBT[R].DB is relative to R */
     implicit val relM: RelMonad[R, DB] = new RelMonad[R, DB] {
       def rPoint[A](v: => R[A]): DB[A] = DB[A](_ => v)
-      def rBind[A, B](dbma: DB[A])(f: R[A] => DB[B]): DB[B] =
-        DB[B](c => f(dbma.action(c)).action(c))
+      def rBind[A, B](dbA: DB[A])(f: R[A] => DB[B]): DB[B] =
+        DB[B](c => f(dbA.action(c)).action(c))
     }
 
-    /** DBT[R].DB is relative to L if R is relative to L */
+    /** DBT[R].DB is relative to L if R is relative to L (including L=Result) - via a ReaderT instance  */
     implicit def relLowerR[L[_] : Monad](relL_R: RelMonad[L, R]): RelMonad[L, DB] = new RelMonad[L, DB] {
       val relReadTR = new ReaderTR[L, R, DBSession](relL_R).relMonad
       def rPoint[A](v: => L[A]) = DB(relReadTR.rPoint(v))
@@ -206,19 +173,49 @@ class DBT[R[_] : ResultantMonad](logger: Logger) {
         DB[B](relReadTR.rBind(dba.reader)(la => f(la).reader))
     }
 
-    /** DBT[R].DB is a resultant monad. */
-    implicit val monad: ResultantMonad[DB] =
-      resultantFromRelMonad(relLowerR[Result](relMonadFromResultant(R)))
+    // /** DBT[R].DB is a resultant monad - indirect version, via relLowerR. */
+    // implicit val monadViaRelLower: ResultantMonad[DB] =
+    //   ConvertRelM.toResultant(relLowerR[Result](ConvertRelM.fromResultant(R)))
+  }
 
-    // These two conversions should be in ResultantMonad or similar
-    def relMonadFromResultant[RM[_]](implicit RM: ResultantMonad[RM]) = new RelMonad[Result, RM] {
-      def rPoint[A](v: => Result[A]): RM[A] = RM.rPoint(v)
-      def rBind[A, B](rA: RM[A])(f: Result[A] => RM[B]): RM[B] = RM.rBind(rA)(f)
-    }
-    def resultantFromRelMonad[RR[_]](implicit RR: RelMonad[Result, RR]) = new ResultantMonad[RR] {
-      def rPoint[A](v: => Result[A]): RR[A] = RR.rPoint(v)
-      def rBind[A, B](rA: RR[A])(f: Result[A] => RR[B]): RR[B] = RR.rBind(rA)(f)
-    }
+  object NonStrictResultantMonadSyntax {
+    import scalaz.\&/.These
 
+    /** Recovers from an error. */
+    def recoverWithR[A](ra: R[A])(recovery: PartialFunction[These[String, Throwable], R[A]]): R[A] =
+      R.rBind(ra)(r => r.fold(
+        _     => R.rPoint(r),
+        error => recovery.applyOrElse[These[String, Throwable], R[A]](error, _ => R.rPoint(r))
+      ))
+
+    /**
+      * Like "finally", but only performs the final action if there was an error.
+      *
+      * If `action` fails that error is swallowed and only the initial error is returned.
+      */
+    def onExceptionR[A, B](ra: R[A])(action: => R[B]): R[A] =
+      recoverWithR(ra) { case e => action.rFlatMap(_ => R.rPoint(Result.these(e))) }
+
+    /**
+      * Ensures that the provided action is always run regardless of if `this` was successful.
+      * Generalizes "finally".
+      *
+      * If `ra` was successful and `sequel` fails it returns the failure from `sequel`. Otherwise
+      * the result of `ra` is returned.
+      */
+    def ensureR[A, B](ra: R[A])(sequel: => R[B]): R[A] = for {
+      r <- onExceptionR(ra)(sequel)
+      _ <- sequel
+    } yield r
+
+    /**
+      * Applies the "during" action, calling "after" regardless of whether there was an error.
+      *
+      * All errors are rethrown. Generalizes try/finally.
+      */
+    def bracketR[A, B, C](ra: R[A])(after: A => R[B])(during: A => R[C]): R[C] = for {
+      a <- ra
+      r <- ensureR(during(a))(after(a))
+    } yield r
   }
 }
