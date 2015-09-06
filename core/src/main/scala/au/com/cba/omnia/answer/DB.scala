@@ -22,7 +22,7 @@ import scalikejdbc.{DB => SDB, _}
 
 import scalaz._, Scalaz._
 
-import au.com.cba.omnia.omnitool.{Result, Ok, ResultantMonad, ResultantOps, ToResultantMonadOps}
+import au.com.cba.omnia.omnitool.{Result, Ok, ResultantMonad, ResultantOps, ToResultantMonadOps, RelMonad}
 
 /** Configuration required to run a `DB` instance. 
   * 
@@ -78,55 +78,10 @@ case class DB[A](action: DBSession => Result[A]) {
     }
 }
 
-object DB extends ResultantOps[DB] with ToResultantMonadOps {
-  /** Build a DB operation from a function. The resultant DB operation will not throw an exception. */
-  def ask[A](f: DBSession => A): DB[A] =
-    DB(s => Result.safe(f(s)))
+object DB extends ResultantOps[DB] with ToResultantMonadOps  with DbROps[DB] {
 
-  /**
-    * Runs the specified sql query expecting a single row as response.
-    * 
-    * If no row matches the query it returns `None`. If the result is not single, an `Error` 
-    * is returned.
-    */
-  def querySingle[A : Extractor](sql: SQL[Nothing, NoExtractor]): DB[Option[A]] =
-    ask(implicit session => sql.map(implicitly[Extractor[A]].extract).single.apply())
-
-  /**
-    * Runs the specified sql query and get the first row as response.
-    * 
-    * If no row matches the query it returns `None`.
-    */
-  def queryFirst[A : Extractor](sql: SQL[Nothing, NoExtractor]): DB[Option[A]] =
-    query[A](sql).map(_.headOption)
-
-  /** Runs the specified sql query */
-  def query[A : Extractor](sql: SQL[Nothing, NoExtractor]): DB[Traversable[A]] =
-    ask(implicit session => sql.map(implicitly[Extractor[A]].extract).traversable().apply())
-
-  /** Create a new SQL connection or get a pooled connection. Library users are responsible 
-    * for adding the appropriate jdbc drivers as a dependency.
-    *
-    * @param config: database configuration for the connection
-    *
-    * @return The SQL connection 
-    */
-  def connection(config: DBConfig): Result[java.sql.Connection] = Result.safe {
-    if (!ConnectionPool.isInitialized(config.name)) { 
-      lazy val derivedDriver = config.jdbcUrl.split(":").take(3) match {
-        case Array("jdbc", "sqlserver", _) => "com.microsoft.sqlserver.jdbc.SQLServerDriver"
-        case Array("jdbc", "hsqldb"   , _) => "org.hsqldb.jdbcDriver" 
-        case Array("jdbc", "oracle"   , _) => "oracle.jdbc.OracleDriver"
-        case Array("jdbc", "mysql"    , _) => "com.mysql.jdbc.Driver"
-        case Array("jdbc", unknown    , _) => throw new Exception(s"Unsupported jdbc driver: $unknown")
-        case _                             => throw new Exception(s"Invalid jdbc url: ${config.jdbcUrl}")
-      }
-      Class.forName(config.driver.fold(derivedDriver)(identity))
-      ConnectionPool.add(config.name, config.jdbcUrl, config.user, config.password)
-    }
-    ConnectionPool.borrow(config.name)
-  }
-
+  implicit val DbRel = new RelMonad.SelfR[DB]() 
+  
   implicit val monad: ResultantMonad[DB] = new ResultantMonad[DB] {
     def rPoint[A](v: => Result[A]): DB[A] = DB[A](_ => v)
     def rBind[A, B](ma: DB[A])(f: Result[A] => DB[B]): DB[B] =
