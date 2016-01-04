@@ -2,4 +2,4 @@ name: answer
 exclude: [Gemfile]
 markdown: kramdown
 
-releaseVersion:  "0.2.0-20151008040247-f5208db"
+releaseVersion:  "0.2.0-20160104235406-0585a88"
