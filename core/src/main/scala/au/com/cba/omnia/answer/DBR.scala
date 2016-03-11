@@ -20,7 +20,10 @@ import scalikejdbc.{DB => SDB, _}
 
 import scalaz._, Scalaz._
 
-import au.com.cba.omnia.omnitool.{Result, Ok, ResultantMonad, ResultantOps, ToResultantMonadOps, RelMonad}
+import au.com.cba.omnia.omnitool.{Result, Ok, ResultantMonad, ResultantMonadSyntax, ResultantOps, ToResultantMonadOps, RelMonad}
+import ResultantMonad._
+import ResultantMonadSyntax._
+
 
 /** Convenient operations that you can do on a `RelMonad[DB, _]`. */
 trait DbROps[M[_]] {

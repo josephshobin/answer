@@ -22,7 +22,9 @@ import scalikejdbc.{DB => SDB, _}
 
 import scalaz._, Scalaz._
 
-import au.com.cba.omnia.omnitool.{Result, Ok, ResultantMonad, ResultantOps, ToResultantMonadOps, RelMonad}
+import au.com.cba.omnia.omnitool.{Result, Ok, ResultantOps, ToResultantMonadOps, RelMonad}
+import au.com.cba.omnia.omnitool.ResultantMonad._
+import au.com.cba.omnia.omnitool.ResultantMonadSyntax._
 
 /** Configuration required to run a `DB` instance. 
   * 
@@ -37,9 +39,10 @@ case class DBConfig(jdbcUrl: String, user: String, password: String, driver: Opt
   val name = s"$jdbcUrl/$user"
 }
 
-class DBT[R: ResultantMonad] {
+class DBT[R[_]](implicit R: RelMonad[Result, R]) {
 
-  val R = ResultantMonad[R]
+  //  val R = ResultantMonad[R]
+  implicit def Resultant: ResultantMonad[R] = ResultantMonad[R](R)
 
   /**
     * A datatype that operates on a scalikejdbc `DBSession` 
@@ -59,26 +62,16 @@ class DBT[R: ResultantMonad] {
       * @return Resultant `A` of this DB action.
       */
     def run(connection: Connection): R[A] = {
-      R.safe(SDB(connection))   >>= (sdb =>
-        R.safe(sdb.begin())     >>
-        sdb.withinTx(action)            >>= (a =>
-        R.safe(sdb.commit())    .map(_ =>
+      R.point(SDB(connection))   >>= ((sdb: scalikejdbc.DB) =>
+        (
+          R.point(sdb.begin())     >>
+          sdb.withinTx(action)     >>= ((a: A) =>
+          R.point(sdb.commit())    .map(_ =>
           a
-        ))    // Proposed new parenthesis convention for "for-like" code
+        )))    // Proposed new parenthesis convention for "for-like" code
           .onException { R.point(sdb.rollback()) }   //TODO:  logger.warn(s"...");
       )
     }
-
-   def run(connection: Connection): R[A] = R.safe {
-      val sdb = SDB(connection) 
-      sdb.begin()
-      val result = sdb.withinTx(action)
-      result match {
-        case Ok(_) => sdb.commit()
-        case _     => sdb.rollback()
-      }
-      result
-    }.join
 
     /** Run the DB action with the provided configuration and return the Resultant.
       * 
@@ -86,17 +79,15 @@ class DBT[R: ResultantMonad] {
       *
       * @return Resultant `A` of DB action
       */
-    def run(config: DBConfig): R[A] = 
-      DB.connection(config).flatMap { conn =>
-        LoanPattern.using(conn) { safeConn =>
-          run(safeConn)
-        }
-      }
+    def run(config: DBConfig): R[A] =
+      R.rPoint(DB.connection(config)).bracket(
+        conn => R.point(conn.close())
+      )(conn => run(conn))
   }
 
   object DB extends ResultantOps[DB] with ToResultantMonadOps  with DbROps[DB] {
 
-    implicit val DbRel = new RelMonad.SelfR[DB]()   //  TODO
+    implicit val DbRel = ??? //new RelMonad.SelfR[DB]()   //  TODO
 
     implicit val RRel: RelMonad[R, DB] = new RelMonad[R, DB] {  // TODO
       def rPoint[A](v: => R[A]): DB[A] = DB[A](_ => v)
