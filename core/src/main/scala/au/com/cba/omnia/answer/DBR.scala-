@@ -21,15 +21,18 @@ import scalikejdbc.{DB => SDB, _}
 import scalaz._, Scalaz._
 
 import au.com.cba.omnia.omnitool.{Result, Ok, ResultantMonad, ResultantMonadSyntax, ResultantOps, ToResultantMonadOps, RelMonad}
-import ResultantMonad._
-import ResultantMonadSyntax._
+//import ResultantMonad._
+//import ResultantMonadSyntax._
 
 
 /** Convenient operations that you can do on a `RelMonad[DB, _]`. */
 trait DbROps[M[_]] {
-  implicit val monad: ResultantMonad[M] // Don't need this now
-
+  implicit val mon: Monad[M]        // Seems required for RelMonad composition below
   implicit val DbRel: RelMonad[DB, M]
+
+  // Derived instances
+  implicit def ResultRel: RelMonad[Result, M] = new RelMonad.ComposeR[Result, DB, M](DB.RRel, DbRel)
+  //implicit def ResultantMonad: Monad[M] = new ResultantMonad[M](ResultRel)
 
   def ask[A](f: DBSession => A): M[A] =
     DbRel.rPoint(DB(s => Result.safe(f(s))))
