@@ -22,9 +22,9 @@ import scalikejdbc.{DB => SDB, _}
 
 import scalaz._, Scalaz._
 
-import au.com.cba.omnia.omnitool.{Result, Ok, ResultantOps, ToResultantMonadOps, RelMonad}
-import au.com.cba.omnia.omnitool.ResultantMonad._
+import au.com.cba.omnia.omnitool.{Result, Ok, ResultantOps, ToResultantMonadOps, RelMonad, ResultantMonad}
 import au.com.cba.omnia.omnitool.ResultantMonadSyntax._
+import au.com.cba.omnia.omnitool.%~>._
 
 import au.com.cba.omnia.answer.{DB => DBResult}
 
@@ -45,7 +45,7 @@ case class DBConfig(jdbcUrl: String, user: String, password: String, driver: Opt
 /** Builds a DB monad for any Result-related monad R */
 class DBT[R[_]](implicit R: RelMonad[Result, R]) {
 
-  implicit def Resultant: ResultantMonad[R] = ResultantMonad[R](R)
+  //implicit def R: ResultantMonad[R] = ResRel
 
   /**
     * A datatype that operates on a scalikejdbc `DBSession` 
@@ -71,7 +71,7 @@ class DBT[R[_]](implicit R: RelMonad[Result, R]) {
           sdb.withinTx(action)  >>= ((a: A) =>
           R.point(sdb.commit()) .map(_ =>
           a
-        )))    // Proposed new parenthesis convention for "for-like" code
+        )))    // Proposed new "multiple close parenthesis" convention for "for-like" code
           .onException { R.point(sdb.rollback()) }   //TODO:  logger.warn(s"...");
       )
     }
@@ -83,30 +83,47 @@ class DBT[R[_]](implicit R: RelMonad[Result, R]) {
       * @return Resultant `A` of DB action
       */
     def run(config: DBConfig): R[A] =
-      R.rPoint(DB.connection(config)).bracket(
+      DB.DBR.connection(config).bracket(
         conn => R.point(conn.close())
       )(conn => run(conn))
   }
 
-  object DB extends ResultantOps[DB] with ToResultantMonadOps with DbROps[DB] {
+  trait DBOps extends ResultantOps[DB] with ToResultantMonadOps with DbROps[DB] {
 
     // A generalised "self-composing" RelMonad(L, DB) instance for all L with RelMonad(L, R), instantiated below.
-    def lowerRel[L[_]](implicit LRelR: RelMonad[L, R]) = new RelMonad[L, DB] {
-      def rPoint[A](v: => L[A])                     = DB[A](_ => LRelR.rPoint(v))
+    def lowerRel[L[_]](implicit LRelR: L %~> R) = new (L %~> DB) {
+      def rPoint[A](v: => L[A]): DB[A]              = DB[A](_ => LRelR.rPoint(v))
       def rBind[A, B](dba: DB[A])(f: L[A] => DB[B]) = DB[B](c => LRelR.rBind(dba.action(c))(a => f(a).action(c)))
     }
  
-    val DbRel:     RelMonad[DB, DB]     = new RelMonad.SelfR[DB]     // For DbROps[DB]
+    implicit val DbRel:          DB %~> DB = %~>.SelfR[DB]              // For DbROps[DB]
+    implicit val monad:      Result %~> DB = lowerRel[Result](R)        // For ResultantOps[DB]
+    implicit val RRel:            R %~> DB = lowerRel[R](RelMonad.SelfR[R])
+    implicit val mon:            Monad[DB] = monad
 
-    val ResultRel: RelMonad[Result, DB] = lowerRel[Result](R)        // For ResultantOps[DB]
-    implicit val monad:     ResultantMonad[DB]   = ResultantMonad(ResultRel)
+    /** Run with the action as first argument.  Only for DBT[R].DB, any other M will need its own `run`. */
+    def run[A](conf: DBConfig)(action: DB[A]): R[A] = action.run(conf)
+
+    // TODO: Figure out why we need this.
+    implicit class ToSyntax[A](self: DB[A]) {
+      def flatMap[B](f: A => DB[B]): DB[B] = monad.bind(self)(f)
+      def map[B](f: A => B): DB[B] = monad.map(self)(f)
+      def >>[B](f: => DB[B]): DB[B] = monad.bind(self)(_ => f)
+      def >>=[B](f: => DB[B]): DB[B] = self.flatMap(_ => f)
+      def filter(f: A => Boolean): DB[A] = self.filter(f)
+    }
+
+    implicit def fromDB[A](self: au.com.cba.omnia.answer.DB[A]): DB[A] = DbRel.rPoint(self)
   }
+
+  object DB extends DBOps
 
   /** Convenient operations that you can do on a `RelMonad[DB, _]`. */
   trait DbROps[M[_]] {
-    implicit val DbRel: RelMonad[DB, M]
-    implicit val monad: Functor[M]        // Seems required for map below (build this into RelMonad ?)
-
+    implicit val DbRel: DB %~> M
+    implicit val mon: Monad[M]        // Seems required for map below (build this into RelMonad ?)
+    val DBR = this
+    
     def ask[A](f: DBSession => A): M[A] =
       DbRel.rPoint(DB(s => R.point(f(s))))
 
@@ -138,7 +155,7 @@ class DBT[R[_]](implicit R: RelMonad[Result, R]) {
       *
       * @return The SQL connection 
       */
-    def connection(config: DBConfig): Result[java.sql.Connection] = Result.safe {
+    def connection(config: DBConfig): R[java.sql.Connection] = R.rPoint (Result.safe {
       if (!ConnectionPool.isInitialized(config.name)) {
         lazy val derivedDriver = config.jdbcUrl.split(":").take(3) match {
           case Array("jdbc", "sqlserver", _) => "com.microsoft.sqlserver.jdbc.SQLServerDriver"
@@ -152,6 +169,6 @@ class DBT[R[_]](implicit R: RelMonad[Result, R]) {
         ConnectionPool.add(config.name, config.jdbcUrl, config.user, config.password)
       }
       ConnectionPool.borrow(config.name)
-    }
-  }
-}
+    })
+  }  // End of DbROps[M[_]]
+}    // End of DBT[R]
