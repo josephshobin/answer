@@ -105,13 +105,13 @@ class DBT[R[_]](implicit R: RelMonad[Result, R]) {
     def run[A](conf: DBConfig)(action: DB[A]): R[A] = action.run(conf)
 
     // TODO: Figure out why we need this.
-    implicit class ToSyntax[A](self: DB[A]) {
-      def flatMap[B](f: A => DB[B]): DB[B] = monad.bind(self)(f)
-      def map[B](f: A => B): DB[B] = monad.map(self)(f)
-      def >>[B](f: => DB[B]): DB[B] = monad.bind(self)(_ => f)
-      def >>=[B](f: => DB[B]): DB[B] = self.flatMap(_ => f)
-      def filter(f: A => Boolean): DB[A] = self.filter(f)
-    }
+    // implicit class ToSyntax[A](self: DB[A]) {
+    //   def flatMap[B](f: A => DB[B]): DB[B] = monad.bind(self)(f)
+    //   def map[B](f: A => B): DB[B] = monad.map(self)(f)
+    //   def >>[B](f: => DB[B]): DB[B] = monad.bind(self)(_ => f)
+    //   def >>=[B](f: => DB[B]): DB[B] = self.flatMap(_ => f)
+    //   def filter(f: A => Boolean): DB[A] = self.filter(f)
+    // }
 
     implicit def fromDB[A](self: au.com.cba.omnia.answer.DB[A]): DB[A] = DbRel.rPoint(self)
   }
