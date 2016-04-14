@@ -39,14 +39,13 @@ object ExtractorMacro {
 
     val targetType: Type = c.universe.weakTypeOf[A]
 
-    /** Fail compilation with nice error message. */
+    /* Fail compilation with nice error message. */
     def abort(msg: String) =
       c.abort(c.enclosingPosition, s"Can't create Extractor for $targetType: $msg")
 
-    /** Process an individual column. 
-      * TODO: Check for the availability of ScalikeJdbc TypeBinder for typ and
-      * fail the compilation if one can't be found.
-      */
+    /* Process an individual column. 
+       TODO: Check for the availability of ScalikeJdbc TypeBinder for typ and
+       fail the compilation if one can't be found. */
     def processColumn(typ: Type, position: Int): Tree = q"rs.get[$typ]($position)"
 
     val targetTypes = targetType.decls.sorted.toList collect {
