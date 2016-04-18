@@ -41,7 +41,7 @@ case class DBConfig(jdbcUrl: String, user: String, password: String, driver: Opt
 }
 
 
-/** Builds a DB monad for any Result-related monad R */
+/** Builds a DB monad for any Result-relative monad R */
 class DBT[R[_]](implicit R: Result %~> R) {
 
   /** A datatype that operates on a scalikejdbc `DBSession` 
@@ -81,7 +81,7 @@ class DBT[R[_]](implicit R: Result %~> R) {
   object DB extends DBOps
 
   /** Operations for DBT[R].DB */
-  trait DBOps extends DbROps[DB] {
+  trait DBOps extends DbROps[DB] with ResultantOps[DB] {
 
     // A generalised "self-composing" L %~> DB instance for all L with L %~> R, instantiated twice below.
     def lowerRel[L[_]](implicit LRelR: L %~> R) = new (L %~> DB) {
@@ -89,23 +89,23 @@ class DBT[R[_]](implicit R: Result %~> R) {
       def rBind[A, B](dba: DB[A])(f: L[A] => DB[B]) = DB[B](c => LRelR.rBind(dba.action(c))(a => f(a).action(c)))
     }
  
-    implicit val DbRel:     DB %~> DB = %~>.SelfR[DB]                  // For DbROps[DB]
-    implicit val monad: Result %~> DB = lowerRel[Result](R)            // For ResultantOps[DB]
-    implicit val RRel:       R %~> DB = lowerRel[R](RelMonad.SelfR[R])
+    implicit def DbRel:         DB %~> DB = %~>.SelfR[DB]                  // For DbROps[DB]
+    implicit def ResultRel: Result %~> DB = lowerRel[Result](R)            // For ResultantOps[DB]
+    implicit def RRel:           R %~> DB = lowerRel[R](RelMonad.SelfR[R])
 
     /** Run with the action as first argument.  Only for DBT[R].DB, not for DBT[R].DB %~> M. */
     def run[A](conf: DBConfig)(action: DB[A]): R[A] = action.run(conf)
 
     /** An implicit conversion that is handy, but alas generally doesn't work in for-comprehensions. */
-    implicit def fromDB[A](self: au.com.cba.omnia.answer.DB[A]): DB[A] = DbRel.rPoint(self)
+    implicit def fromDB[A](self: au.com.cba.omnia.answer.DB[A]): DB[A] = DB(s => R.rPoint(self.action(s)))
   }
 
   /** Convenient operations that you can do when you have `RelMonad[DB, _]`. */
-  trait DbROps[M[_]] extends ResultantOps[M] with ToResultantMonadOps {
-    implicit val DbRel:     DB %~> M
-    implicit val monad: Result %~> M  // Supplies `map` via Monad[M], which is used below.
+  trait DbROps[M[_]] extends ToResultantMonadOps {
+    implicit def DbRel:         DB %~> M
+    implicit def ResultRel: Result %~> M  // Supplies `map` via Monad[M], which is used below.
 
-    val DBR = this                   // Allows using operations via `DBR.query` etc.
+    def DBR = this                   // Allows using operations via `DBR.query` etc.
 
     def ask[A](f: DBSession => A): M[A] =
       DbRel.rPoint(DB(s => R.point(f(s))))
