@@ -19,10 +19,10 @@ import au.com.cba.omnia.uniform.core.version.UniqueVersionPlugin._
 import au.com.cba.omnia.uniform.dependency.UniformDependencyPlugin._
 
 object build extends Build {
-  val thermometerVersion = "1.0.0-20150513002558-a6bcf7f"
-  val omnitoolVersion    = "1.10.0-20150430044321-3ca9118"
-  val scalikejdbcVersion = "2.2.6"
-  val hsqldbVersion      = "2.3.2"
+  val thermometerVersion = "1.4.3-20160617114144-562e6e0"
+  val omnitoolVersion    = "1.14.1-20160617114243-1143bc9"
+  val scalikejdbcVersion = "2.4.0"
+  val hsqldbVersion      = "2.3.4"
 
   lazy val standardSettings =
     Defaults.coreDefaultSettings ++
@@ -39,7 +39,7 @@ object build extends Build {
     ++ uniform.ghsettings
     ++ Seq(
          publishArtifact := false
-       , addCompilerPlugin("org.scalamacros" % "paradise" % "2.0.1" cross CrossVersion.full)
+       , addCompilerPlugin(depend.macroParadise())
     )
   , aggregate = Seq(core, macros)
   )
@@ -81,7 +81,7 @@ object build extends Build {
          , "org.specs2"      %% "specs2-matcher-extra" % depend.versions.specs % "test"
          ) ++ depend.testing()
          )
-       , addCompilerPlugin("org.scalamacros" % "paradise" % "2.0.1" cross CrossVersion.full)
+       , addCompilerPlugin(depend.macroParadise())
     )
   ).dependsOn(core)
 }
