@@ -19,7 +19,7 @@ import au.com.cba.omnia.uniform.core.version.UniqueVersionPlugin._
 import au.com.cba.omnia.uniform.dependency.UniformDependencyPlugin._
 
 object build extends Build {
-  val thermometerVersion = "1.5.1-20170118093110-cf2dbd8"
+  val thermometerVersion = "1.5.2-20170124200333-758c16c"
   val omnitoolVersion    = "1.14.4-20161223050214-5770b8e"
   val scalikejdbcVersion = "2.4.0"
   val hsqldbVersion      = "2.3.4"
