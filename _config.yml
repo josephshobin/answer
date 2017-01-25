@@ -1,5 +1,0 @@
-name: answer
-exclude: [Gemfile]
-markdown: kramdown
-
-releaseVersion: 0.3.2-20170118230601-bc7ccd7
