@@ -1,4 +1,4 @@
-//   Copyright 2014 Commonwealth Bank of Australia
+//   Copyright 2014-2018 Commonwealth Bank of Australia
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -61,7 +61,7 @@ object build extends Build {
            , "org.hsqldb"        % "hsqldb"               % hsqldbVersion         % "test"
            , "au.com.cba.omnia" %% "omnitool-core"        % omnitoolVersion       % "test" classifier "tests"
            , "org.specs2"       %% "specs2-matcher-extra" % depend.versions.specs % "test"
-        )
+        ).map(_.excludeAll(ExclusionRule(organization = "org.scala-lang.modules"))) // scalikejdbc scala-xml etc
     )
   )
 
@@ -81,7 +81,7 @@ object build extends Build {
           , "com.twitter"     %% "util-eval"            % "6.24.0"              % "test"
           , "org.hsqldb"       % "hsqldb"               % hsqldbVersion         % "test"
           , "org.specs2"      %% "specs2-matcher-extra" % depend.versions.specs % "test"
-        )
+        ).map(_.excludeAll(ExclusionRule(organization = "org.scala-lang.modules"))) // scalikejdbc scala-xml etc
     , addCompilerPlugin(depend.macroParadise())
     )
   ).dependsOn(core)
