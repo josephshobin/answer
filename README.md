@@ -1,4 +1,4 @@
-#answer
+# answer
 
 [![Build Status](https://travis-ci.org/CommBank/answer.svg?branch=master)](https://travis-ci.org/CommBank/answer)
 
@@ -30,7 +30,7 @@ implicit val userExtractor = new Extractor(rs => User(rs.string(1), rs.string(2)
 
 DB.query[User](sql"""SELECT FIRST_NAME, LAST_NAME, AGE FROM USER""").run(dbConfig)
 ```
-###Usage
+### Usage
 See https://commbank.github.io/answer
 
 [Scaladoc](https://commbank.github.io/answer/latest/api/index.html)

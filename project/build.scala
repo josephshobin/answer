@@ -1,4 +1,4 @@
-//   Copyright 2014 Commonwealth Bank of Australia
+//   Copyright 2014-2018 Commonwealth Bank of Australia
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -61,7 +61,7 @@ object build extends Build {
            , "org.hsqldb"        % "hsqldb"               % hsqldbVersion         % "test"
            , "au.com.cba.omnia" %% "omnitool-core"        % omnitoolVersion       % "test" classifier "tests"
            , "org.specs2"       %% "specs2-matcher-extra" % depend.versions.specs % "test"
-        )
+        ).map(_.excludeAll(ExclusionRule(organization = "org.scala-lang.modules"))) // scalikejdbc scala-xml etc
     )
   )
 
@@ -72,16 +72,17 @@ object build extends Build {
        standardSettings
     ++ uniform.project("answer-macros", "au.com.cba.omnia.answer.macros")
     ++ Seq(
-         libraryDependencies <++= scalaVersion.apply(sv => Seq(
-           "org.scala-lang"   % "scala-compiler"       % sv
-         , "org.scala-lang"   % "scala-reflect"        % sv
-         , "org.scalikejdbc" %% "scalikejdbc-test"     % scalikejdbcVersion    % "test"
-         , "com.twitter"     %% "util-eval"            % "6.24.0"              % "test"
-         , "org.hsqldb"       % "hsqldb"               % hsqldbVersion         % "test"
-         , "org.specs2"      %% "specs2-matcher-extra" % depend.versions.specs % "test"
-         ) ++ depend.testing()
-         )
-       , addCompilerPlugin(depend.macroParadise())
+      libraryDependencies ++=
+           depend.testing()
+        ++ Seq(
+            "org.scala-lang"   % "scala-compiler"       % scalaVersion.value
+          , "org.scala-lang"   % "scala-reflect"        % scalaVersion.value
+          , "org.scalikejdbc" %% "scalikejdbc-test"     % scalikejdbcVersion    % "test"
+          , "com.twitter"     %% "util-eval"            % "6.24.0"              % "test"
+          , "org.hsqldb"       % "hsqldb"               % hsqldbVersion         % "test"
+          , "org.specs2"      %% "specs2-matcher-extra" % depend.versions.specs % "test"
+        ).map(_.excludeAll(ExclusionRule(organization = "org.scala-lang.modules"))) // scalikejdbc scala-xml etc
+    , addCompilerPlugin(depend.macroParadise())
     )
   ).dependsOn(core)
 }
