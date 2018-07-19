@@ -72,16 +72,17 @@ object build extends Build {
        standardSettings
     ++ uniform.project("answer-macros", "au.com.cba.omnia.answer.macros")
     ++ Seq(
-         libraryDependencies <++= scalaVersion.apply(sv => Seq(
-           "org.scala-lang"   % "scala-compiler"       % sv
-         , "org.scala-lang"   % "scala-reflect"        % sv
-         , "org.scalikejdbc" %% "scalikejdbc-test"     % scalikejdbcVersion    % "test"
-         , "com.twitter"     %% "util-eval"            % "6.24.0"              % "test"
-         , "org.hsqldb"       % "hsqldb"               % hsqldbVersion         % "test"
-         , "org.specs2"      %% "specs2-matcher-extra" % depend.versions.specs % "test"
-         ) ++ depend.testing()
-         )
-       , addCompilerPlugin(depend.macroParadise())
+      libraryDependencies ++=
+           depend.testing()
+        ++ Seq(
+            "org.scala-lang"   % "scala-compiler"       % scalaVersion.value
+          , "org.scala-lang"   % "scala-reflect"        % scalaVersion.value
+          , "org.scalikejdbc" %% "scalikejdbc-test"     % scalikejdbcVersion    % "test"
+          , "com.twitter"     %% "util-eval"            % "6.24.0"              % "test"
+          , "org.hsqldb"       % "hsqldb"               % hsqldbVersion         % "test"
+          , "org.specs2"      %% "specs2-matcher-extra" % depend.versions.specs % "test"
+        )
+    , addCompilerPlugin(depend.macroParadise())
     )
   ).dependsOn(core)
 }
