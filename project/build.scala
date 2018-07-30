@@ -55,13 +55,15 @@ object build extends Build {
            depend.scalaz()
         ++ depend.testing() ++ depend.time()
         ++ depend.omnia("omnitool-core", omnitoolVersion)
-        ++ Seq(
-             "org.scalikejdbc"  %% "scalikejdbc"          % scalikejdbcVersion exclude("joda-time", "joda-time")
+        ++ withoutScalaLangModules(
+             "org.scalikejdbc"  %% "scalikejdbc"          % scalikejdbcVersion
+               exclude("joda-time", "joda-time")
+               exclude("org.joda",  "joda-convert")       // conflict between nscala (depend.time) and scalikejdbc
            , "org.scalikejdbc"  %% "scalikejdbc-test"     % scalikejdbcVersion    % "test"
            , "org.hsqldb"        % "hsqldb"               % hsqldbVersion         % "test"
            , "au.com.cba.omnia" %% "omnitool-core"        % omnitoolVersion       % "test" classifier "tests"
            , "org.specs2"       %% "specs2-matcher-extra" % depend.versions.specs % "test"
-        ).map(_.excludeAll(ExclusionRule(organization = "org.scala-lang.modules"))) // scalikejdbc scala-xml etc
+        )
     )
   )
 
@@ -74,15 +76,21 @@ object build extends Build {
     ++ Seq(
       libraryDependencies ++=
            depend.testing()
-        ++ Seq(
+        ++ withoutScalaLangModules(
             "org.scala-lang"   % "scala-compiler"       % scalaVersion.value
           , "org.scala-lang"   % "scala-reflect"        % scalaVersion.value
           , "org.scalikejdbc" %% "scalikejdbc-test"     % scalikejdbcVersion    % "test"
           , "com.twitter"     %% "util-eval"            % "6.24.0"              % "test"
           , "org.hsqldb"       % "hsqldb"               % hsqldbVersion         % "test"
           , "org.specs2"      %% "specs2-matcher-extra" % depend.versions.specs % "test"
-        ).map(_.excludeAll(ExclusionRule(organization = "org.scala-lang.modules"))) // scalikejdbc scala-xml etc
+        )
     , addCompilerPlugin(depend.macroParadise())
     )
   ).dependsOn(core)
+
+  /** Exclude conflicts from scalikejdbc, scala-compiler, specs2, etc (use project Scala version). */
+  def withoutScalaLangModules(moduleIds: ModuleID*): Seq[ModuleID] = moduleIds.map { mi =>
+    mi.exclude("org.scala-lang.modules", "scala-parser-combinators_2.11")
+      .exclude("org.scala-lang.modules", "scala-xml_2.11")
+  }
 }
