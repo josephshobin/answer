@@ -14,8 +14,6 @@
 
 package au.com.cba.omnia.answer
 
-import scala.util.control.NonFatal
-
 import java.sql.Connection
 
 import scalikejdbc.{DB => SDB, _}

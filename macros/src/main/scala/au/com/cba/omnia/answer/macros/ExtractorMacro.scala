@@ -16,8 +16,6 @@ package au.com.cba.omnia.answer.macros
 
 import scala.reflect.macros.whitebox.Context
 
-import scalikejdbc.{DB => SDB, _}
-
 import au.com.cba.omnia.answer.Extractor
 
 /**
