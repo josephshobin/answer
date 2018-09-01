@@ -19,10 +19,10 @@ import au.com.cba.omnia.uniform.core.version.UniqueVersionPlugin._
 import au.com.cba.omnia.uniform.dependency.UniformDependencyPlugin._
 
 object build extends Build {
-  val thermometerVersion = "1.5.10-20170501023059-67accaf"
-  val omnitoolVersion    = "1.15.3-20180313095619-4dcc61a-cdh-513"
-  val scalikejdbcVersion = "2.4.0"
-  val hsqldbVersion      = "2.3.4"
+  val thermometerVersion = "1.6.7-20180901040333-56b8c34-cdh-513"
+  val omnitoolVersion    = "1.15.4-20180901034024-3937ac5-cdh-513"
+  val scalikejdbcVersion = depend.versions.scalikejdbc
+  val hsqldbVersion      = depend.versions.hsqldb
 
   lazy val standardSettings =
     Defaults.coreDefaultSettings ++
@@ -55,15 +55,9 @@ object build extends Build {
            depend.scalaz()
         ++ depend.testing() ++ depend.time()
         ++ depend.omnia("omnitool-core", omnitoolVersion)
-        ++ withoutScalaLangModules(
-             "org.scalikejdbc"  %% "scalikejdbc"          % scalikejdbcVersion
-               exclude("joda-time", "joda-time")
-               exclude("org.joda",  "joda-convert")       // conflict between nscala (depend.time) and scalikejdbc
-           , "org.scalikejdbc"  %% "scalikejdbc-test"     % scalikejdbcVersion    % "test"
-           , "org.hsqldb"        % "hsqldb"               % hsqldbVersion         % "test"
-           , "au.com.cba.omnia" %% "omnitool-core"        % omnitoolVersion       % "test" classifier "tests"
-           , "org.specs2"       %% "specs2-matcher-extra" % depend.versions.specs % "test"
-        )
+        ++ depend.omnia("omnitool-core", omnitoolVersion, "test").map(_ classifier "tests")
+        ++ depend.scalikejdbc() ++ depend.hsqldb().map(_ % "test")
+        :+ "org.scalikejdbc"  %% "scalikejdbc-test"     % scalikejdbcVersion    % "test"
     )
   )
 
@@ -76,21 +70,9 @@ object build extends Build {
     ++ Seq(
       libraryDependencies ++=
            depend.testing()
-        ++ withoutScalaLangModules(
-            "org.scala-lang"   % "scala-compiler"       % scalaVersion.value
-          , "org.scala-lang"   % "scala-reflect"        % scalaVersion.value
-          , "org.scalikejdbc" %% "scalikejdbc-test"     % scalikejdbcVersion    % "test"
-          , "com.twitter"     %% "util-eval"            % "6.24.0"              % "test"
-          , "org.hsqldb"       % "hsqldb"               % hsqldbVersion         % "test"
-          , "org.specs2"      %% "specs2-matcher-extra" % depend.versions.specs % "test"
-        )
+        ++ depend.hsqldb().map(_ % "test")
+        :+ "org.scalikejdbc" %% "scalikejdbc-test"     % scalikejdbcVersion    % "test"
     , addCompilerPlugin(depend.macroParadise())
     )
   ).dependsOn(core)
-
-  /** Exclude conflicts from scalikejdbc, scala-compiler, specs2, etc (use project Scala version). */
-  def withoutScalaLangModules(moduleIds: ModuleID*): Seq[ModuleID] = moduleIds.map { mi =>
-    mi.exclude("org.scala-lang.modules", "scala-parser-combinators_2.11")
-      .exclude("org.scala-lang.modules", "scala-xml_2.11")
-  }
 }
