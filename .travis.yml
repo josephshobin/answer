@@ -15,7 +15,7 @@ script:
 - sbt test package
   && ci/sbt-ci-deploy.sh maven http://commbank.artifactoryonline.com/commbank ext-releases-local
   && ci/sbt-ci-build-doc.sh https://commbank.github.io/ https://github.com/CommBank/answer/
-  && ci/ci-push-branch.sh gh-pages
+  && if git rev-parse --verify refs/heads/gh-pages 2>&/dev/null; then ci/ci-push-branch.sh gh-pages; fi
 after_script:
 - rm -rf ci
 notifications:
