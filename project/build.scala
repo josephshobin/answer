@@ -19,10 +19,7 @@ import au.com.cba.omnia.uniform.core.version.UniqueVersionPlugin._
 import au.com.cba.omnia.uniform.dependency.UniformDependencyPlugin._
 
 object build extends Build {
-  val thermometerVersion = "1.6.7-20180901040333-56b8c34-cdh-513"
-  val omnitoolVersion    = "1.15.4-20180901034024-3937ac5-cdh-513"
-  val scalikejdbcVersion = depend.versions.scalikejdbc
-  val hsqldbVersion      = depend.versions.hsqldb
+  val omnitoolVersion    = "1.15.5-20180902220853-3c0c662-cdh-513"
 
   lazy val standardSettings =
     Defaults.coreDefaultSettings ++
@@ -39,7 +36,6 @@ object build extends Build {
     ++ uniform.ghsettings
     ++ Seq(
          publishArtifact := false
-       , addCompilerPlugin(depend.macroParadise())
     )
   , aggregate = Seq(core, macros)
   )
@@ -56,8 +52,8 @@ object build extends Build {
         ++ depend.testing() ++ depend.time()
         ++ depend.omnia("omnitool-core", omnitoolVersion)
         ++ depend.omnia("omnitool-core", omnitoolVersion, "test").map(_ classifier "tests")
+        ++ hadoopCP.modules.find(_.name == "commons-logging") // for scalikejdbc, depend on our CDH commons-logging (without the rest of CDH)
         ++ depend.scalikejdbc() ++ depend.hsqldb().map(_ % "test")
-        :+ "org.scalikejdbc"  %% "scalikejdbc-test"     % scalikejdbcVersion    % "test"
     )
   )
 
@@ -67,12 +63,5 @@ object build extends Build {
   , settings =
        standardSettings
     ++ uniform.project("answer-macros", "au.com.cba.omnia.answer.macros")
-    ++ Seq(
-      libraryDependencies ++=
-           depend.testing()
-        ++ depend.hsqldb().map(_ % "test")
-        :+ "org.scalikejdbc" %% "scalikejdbc-test"     % scalikejdbcVersion    % "test"
-    , addCompilerPlugin(depend.macroParadise())
-    )
-  ).dependsOn(core)
+  ).dependsOn(core % "compile->compile;test->test")
 }
