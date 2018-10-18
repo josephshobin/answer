@@ -19,10 +19,7 @@ import au.com.cba.omnia.uniform.core.version.UniqueVersionPlugin._
 import au.com.cba.omnia.uniform.dependency.UniformDependencyPlugin._
 
 object build extends Build {
-  val thermometerVersion = "1.5.10-20170501023059-67accaf"
-  val omnitoolVersion    = "1.14.9-20170710003444-8f25fcd"
-  val scalikejdbcVersion = "2.4.0"
-  val hsqldbVersion      = "2.3.4"
+  val omnitoolVersion    = "1.15.6-20181018062634-0de92e2"
 
   lazy val standardSettings =
     Defaults.coreDefaultSettings ++
@@ -39,7 +36,6 @@ object build extends Build {
     ++ uniform.ghsettings
     ++ Seq(
          publishArtifact := false
-       , addCompilerPlugin(depend.macroParadise())
     )
   , aggregate = Seq(core, macros)
   )
@@ -55,13 +51,9 @@ object build extends Build {
            depend.scalaz()
         ++ depend.testing() ++ depend.time()
         ++ depend.omnia("omnitool-core", omnitoolVersion)
-        ++ Seq(
-             "org.scalikejdbc"  %% "scalikejdbc"          % scalikejdbcVersion exclude("joda-time", "joda-time")
-           , "org.scalikejdbc"  %% "scalikejdbc-test"     % scalikejdbcVersion    % "test"
-           , "org.hsqldb"        % "hsqldb"               % hsqldbVersion         % "test"
-           , "au.com.cba.omnia" %% "omnitool-core"        % omnitoolVersion       % "test" classifier "tests"
-           , "org.specs2"       %% "specs2-matcher-extra" % depend.versions.specs % "test"
-        ).map(_.excludeAll(ExclusionRule(organization = "org.scala-lang.modules"))) // scalikejdbc scala-xml etc
+        ++ depend.omnia("omnitool-core", omnitoolVersion, "test").map(_ classifier "tests")
+        ++ hadoopCP.modules.find(_.name == "commons-logging") // for scalikejdbc, depend on our CDH commons-logging (without the rest of CDH)
+        ++ depend.scalikejdbc() ++ depend.hsqldb().map(_ % "test")
     )
   )
 
@@ -71,18 +63,5 @@ object build extends Build {
   , settings =
        standardSettings
     ++ uniform.project("answer-macros", "au.com.cba.omnia.answer.macros")
-    ++ Seq(
-      libraryDependencies ++=
-           depend.testing()
-        ++ Seq(
-            "org.scala-lang"   % "scala-compiler"       % scalaVersion.value
-          , "org.scala-lang"   % "scala-reflect"        % scalaVersion.value
-          , "org.scalikejdbc" %% "scalikejdbc-test"     % scalikejdbcVersion    % "test"
-          , "com.twitter"     %% "util-eval"            % "6.24.0"              % "test"
-          , "org.hsqldb"       % "hsqldb"               % hsqldbVersion         % "test"
-          , "org.specs2"      %% "specs2-matcher-extra" % depend.versions.specs % "test"
-        ).map(_.excludeAll(ExclusionRule(organization = "org.scala-lang.modules"))) // scalikejdbc scala-xml etc
-    , addCompilerPlugin(depend.macroParadise())
-    )
-  ).dependsOn(core)
+  ).dependsOn(core % "compile->compile;test->test")
 }
