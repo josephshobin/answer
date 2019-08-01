@@ -19,7 +19,7 @@ import au.com.cba.omnia.uniform.core.version.UniqueVersionPlugin._
 import au.com.cba.omnia.uniform.dependency.UniformDependencyPlugin._
 
 object build extends Build {
-  val omnitoolVersion    = "1.15.7-20181018075855-52b83f2"
+  val omnitoolVersion    = "1.15.9-20190730073144-b52646c"
 
   lazy val standardSettings =
     Defaults.coreDefaultSettings ++
